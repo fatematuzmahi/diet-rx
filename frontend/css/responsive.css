@@ -1,0 +1,1 @@
+@media (max-width: 600px) { .site-header { padding: 1rem; } .hero, .page, .auth-card { margin: 1rem auto; padding: 1.25rem; } .stats { grid-template-columns: 1fr; } }

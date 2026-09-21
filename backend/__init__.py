@@ -1,0 +1,1 @@
+"""DietRx Flask application."""
