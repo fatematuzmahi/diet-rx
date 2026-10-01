@@ -99,3 +99,16 @@ CREATE TABLE notification (
     alert_status NUMBER(1) DEFAULT 0 CHECK (alert_status IN (0, 1)),
     CONSTRAINT fk_notification_patient FOREIGN KEY (patient_id) REFERENCES patient(patient_id) ON DELETE CASCADE
 );
+
+ALTER TABLE patient ADD (
+    is_verified NUMBER(1) DEFAULT 0 NOT NULL,
+    verification_code_hash VARCHAR2(255),
+    verification_expires_at TIMESTAMP,
+    verified_at TIMESTAMP
+);
+-- Account Verification Fields
+ALTER TABLE patient ADD (
+    verification_code VARCHAR2(10),
+    verification_code_expires_at TIMESTAMP,
+    is_verified NUMBER(1) DEFAULT 0 NOT NULL
+);
