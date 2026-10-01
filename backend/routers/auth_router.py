@@ -1,5 +1,9 @@
 import logging
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 import secrets
 import smtplib
 from datetime import datetime, timedelta, timezone
@@ -216,6 +220,75 @@ def verify_email(data: VerificationRequest):
     except oracledb.Error as error:
         connection.rollback()
         raise HTTPException(status_code=500, detail="Unable to verify email.") from error
+    finally:
+        cursor.close()
+        connection.close()
+
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
+@router.post("/login")
+def login_user(data: LoginRequest):
+    email = _normalise_email(data.email)
+
+    if not email or not data.password:
+        raise HTTPException(
+            status_code=400,
+            detail="Email and password are required."
+        )
+
+    connection = get_connection()
+
+    if connection is None:
+        raise HTTPException(
+            status_code=500,
+            detail="Database connection failed"
+        )
+
+    cursor = connection.cursor()
+
+    try:
+        cursor.execute(
+            """
+            SELECT patient_id, name, email, password, is_verified
+            FROM patient
+            WHERE LOWER(email) = :email
+            """,
+            email=email,
+        )
+
+        patient = cursor.fetchone()
+
+        if patient is None:
+            raise HTTPException(
+                status_code=401,
+                detail="Invalid email or password."
+            )
+
+        patient_id, name, patient_email, password_hash, is_verified = patient
+
+        if not check_password_hash(password_hash, data.password):
+            raise HTTPException(
+                status_code=401,
+                detail="Invalid email or password."
+            )
+
+        if not is_verified:
+            raise HTTPException(
+                status_code=403,
+                detail="Please verify your email before logging in."
+            )
+
+        return {
+            "message": "Login successful.",
+            "user": {
+                "patient_id": patient_id,
+                "name": name,
+                "email": patient_email,
+            }
+        }
+
     finally:
         cursor.close()
         connection.close()
