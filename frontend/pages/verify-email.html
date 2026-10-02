@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verify email | DietRx</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <main class="auth-card">
+    <a class="brand" href="../index.html">DietRx</a>
+    <h1>Verify your email</h1>
+    <form id="verify-email-form">
+      <label>Email<input name="email" type="email" required></label>
+      <label>Verification code<input name="code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" required></label>
+      <button class="button" type="submit">Verify email</button>
+      <p id="form-message" aria-live="polite"></p>
+    </form>
+  </main>
+  <script src="../js/api.js"></script>
+  <script src="../js/auth.js"></script>
+</body>
+</html>

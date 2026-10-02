@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 <!doctype html>
+=======
+<!DOCTYPE html>
+>>>>>>> origin/feature/scrum-42-login-logout
 <html lang="en">
 
 <head>
@@ -20,6 +24,209 @@
     </main>
     <script src="../js/api.js"></script>
     <script src="../js/auth.js"></script>
+
+    <title>Register | DietRx</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/register.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+</head>
+
+<body>
+
+    <main class="register-container">
+
+        <!-- Logo Section -->
+        <div class="logo-section">
+
+            <img
+    src="../assets/images/dietrx-logo.png"
+    alt="DietRx Logo"
+    class="dietrx-logo"
+>
+
+            <h1 class="page-title">
+                Create your account
+            </h1>
+
+            <p class="page-subtitle">
+                Start your personalized prescription-based dietary journey.
+            </p>
+
+        </div>
+
+
+        <!-- Registration Form -->
+        <form id="register-form">
+
+            <!-- Name -->
+            <div class="form-group">
+
+                <label for="name">
+                    Name
+                </label>
+
+                <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    placeholder="Enter your full name"
+                    autocomplete="name"
+                    required
+                >
+
+            </div>
+
+
+            <!-- Email -->
+            <div class="form-group">
+
+                <label for="email">
+                    Email
+                </label>
+
+                <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="Enter your email address"
+                    autocomplete="email"
+                    required
+                >
+
+            </div>
+
+
+            <!-- Password -->
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <div class="password-wrapper">
+
+                    <input
+                        id="password"
+                        name="password"
+                        type="password"
+                        placeholder="Minimum 8 characters"
+                        minlength="8"
+                        autocomplete="new-password"
+                        required
+                    >
+
+                    <span
+                        class="toggle-password"
+                        onclick="togglePassword('password', this)"
+                        role="button"
+                        tabindex="0"
+                        aria-label="Show or hide password"
+                    >
+                        👁
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Confirm Password -->
+            <div class="form-group">
+
+                <label for="confirm-password">
+                    Confirm Password
+                </label>
+
+                <div class="password-wrapper">
+
+                    <input
+                        id="confirm-password"
+                        name="confirm_password"
+                        type="password"
+                        placeholder="Re-enter your password"
+                        minlength="8"
+                        autocomplete="new-password"
+                        required
+                    >
+
+                    <span
+                        class="toggle-password"
+                        onclick="togglePassword('confirm-password', this)"
+                        role="button"
+                        tabindex="0"
+                        aria-label="Show or hide confirm password"
+                    >
+                        👁
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Message -->
+            <p
+                id="form-message"
+                class="form-message"
+                aria-live="polite"
+            ></p>
+
+
+            <!-- Register Button -->
+            <button
+                type="submit"
+                class="register-button"
+            >
+                Create Account
+            </button>
+
+        </form>
+
+
+        <!-- Login Link -->
+        <p class="login-text">
+
+            Already registered?
+
+            <a href="login.html">
+                Login
+            </a>
+
+        </p>
+
+
+        <!-- Brand Note -->
+        <p class="medical-note">
+            Prescription-Based Dietary Optimization
+        </p>
+
+    </main>
+
+
+    <script>
+        function togglePassword(inputId, icon) {
+
+            const input = document.getElementById(inputId);
+
+            if (input.type === "password") {
+
+                input.type = "text";
+                icon.textContent = "🙈";
+
+            } else {
+
+                input.type = "password";
+                icon.textContent = "👁";
+
+            }
+        }
+    </script>
+
+
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+
 </body>
 
 </html>
