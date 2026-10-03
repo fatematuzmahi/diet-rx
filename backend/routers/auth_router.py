@@ -248,9 +248,10 @@ class LoginRequest(BaseModel):
 
 @router.post("/login")
 def login_user(data: LoginRequest):
-    email = _normalise_email(data.email)
+    email = data.email.strip().lower()
+    password = data.password
 
-    if not email or not data.password:
+    if not email or not password:
         raise HTTPException(
             status_code=400,
             detail="Email and password are required."
@@ -298,15 +299,11 @@ def login_user(data: LoginRequest):
                 detail="Please verify your email before logging in."
             )
 
-        access_token = create_access_token({
-            "patient_id": patient_id,
-            "email": patient_email
-        })
+        session_token = secrets.token_urlsafe(32)
 
         return {
             "message": "Login successful.",
-            "access_token": access_token,
-            "token_type": "bearer",
+            "session_token": session_token,
             "user": {
                 "patient_id": patient_id,
                 "name": name,
@@ -315,5 +312,12 @@ def login_user(data: LoginRequest):
         }
 
     finally:
-        cursor.close()
-        connection.close()
+      cursor.close()
+    connection.close()
+
+
+@router.post("/logout")
+def logout_user():
+    return {
+        "message": "Logout successful."
+    }
