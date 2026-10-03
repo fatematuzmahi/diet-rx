@@ -13,14 +13,32 @@ import oracledb
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from werkzeug.security import check_password_hash, generate_password_hash
+from jose import JWTError, jwt
 
 from backend.database.connection import get_connection
 
 
 VERIFICATION_CODE_TTL = timedelta(minutes=10)
+SECRET_KEY = os.getenv("JWT_SECRET_KEY", "dietrx-secret-key")
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 60
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
+def create_access_token(data: dict):
+    to_encode = data.copy()
+
+    expire = datetime.now(timezone.utc) + timedelta(
+        minutes=ACCESS_TOKEN_EXPIRE_MINUTES
+    )
+
+    to_encode.update({"exp": expire})
+
+    return jwt.encode(
+        to_encode,
+        SECRET_KEY,
+        algorithm=ALGORITHM
+    )
 
 
 class RegisterRequest(BaseModel):
@@ -280,8 +298,15 @@ def login_user(data: LoginRequest):
                 detail="Please verify your email before logging in."
             )
 
+        access_token = create_access_token({
+            "patient_id": patient_id,
+            "email": patient_email
+        })
+
         return {
             "message": "Login successful.",
+            "access_token": access_token,
+            "token_type": "bearer",
             "user": {
                 "patient_id": patient_id,
                 "name": name,
