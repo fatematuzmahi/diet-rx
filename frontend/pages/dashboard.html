@@ -1,1 +1,123 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Dashboard | DietRx</title><link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/dashboard.css"></head><body><header class="site-header"><a class="brand" href="../index.html">DietRx</a><nav><a href="diet_plan.html">Diet plan</a><a href="safety_checker.html">Safety</a><a href="grocery.html">Grocery</a></nav></header><main class="page"><h1>Your dashboard</h1><p>Track meals, water, exercise, and progress here.</p><section class="stats"><article><strong>0</strong><span>Meals logged</span></article><article><strong>0 L</strong><span>Water</span></article><article><strong>0</strong><span>Activities</span></article></section></main></body></html>
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
+    <title>Dashboard | DietRx</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+<body>
+    
+        <header class="site-header">
+    <a class="brand" href="../index.html">DietRx</a>
+
+    <nav>
+        <a href="diet_plan.html">Diet plan</a>
+        <a href="safety_checker.html">Safety</a>
+        <a href="grocery.html">Grocery</a>
+        <a href="#" id="logoutBtn">Logout</a>
+    </nav>
+</header>
+
+    <main class="page">
+        <h1>Your dashboard</h1>
+        <p>Track meals, water, exercise, and progress here.</p>
+        <section class="stats">
+            <article><strong>0</strong><span>Meals logged</span></article>
+            <article><strong>0 L</strong><span>Water</span></article>
+            <article><strong>0</strong><span>Activities</span></article>
+        </section>
+    </main>
+
+    <script>
+    // Dashboard protection
+    const token = localStorage.getItem("dietrx_token");
+
+    if (!token) {
+        window.location.replace("login.html");
+    }
+
+    // Logout
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    logoutBtn.addEventListener("click", function (event) {
+        event.preventDefault();
+
+        localStorage.removeItem("dietrx_user");
+        localStorage.removeItem("dietrx_token");
+
+        window.location.replace("login.html");
+    });
+</script>
+
+=======
+
+    <title>Dashboard | DietRx</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+
+<body>
+
+    <script>
+    function protectDashboard() {
+        const token = localStorage.getItem("session_token");
+
+        if (!token) {
+            window.location.replace("login.html");
+        }
+    }
+
+    protectDashboard();
+
+    window.addEventListener("pageshow", function () {
+        protectDashboard();
+    });
+</script>
+
+    <header class="site-header">
+        <a class="brand" href="../index.html">DietRx</a>
+
+        <nav>
+            <a href="diet_plan.html">Diet plan</a>
+            <a href="safety_checker.html">Safety</a>
+            <a href="grocery.html">Grocery</a>
+
+            <button id="logoutBtn" type="button">
+                Logout
+            </button>
+        </nav>
+    </header>
+
+    <main class="page">
+        <h1>Your dashboard</h1>
+
+        <p>Track meals, water, exercise, and progress here.</p>
+
+        <section class="stats">
+            <article>
+                <strong>0</strong>
+                <span>Meals logged</span>
+            </article>
+
+            <article>
+                <strong>0 L</strong>
+                <span>Water</span>
+            </article>
+
+            <article>
+                <strong>0</strong>
+                <span>Activities</span>
+            </article>
+        </section>
+    </main>
+
+    <script src="../js/auth.js"></script>
+
+>>>>>>> 9e4016a (Complete logout flow and protect dashboard access)
+</body>
+</html>
