@@ -18,9 +18,10 @@ app.add_middleware(
         "http://localhost:5500",
     ],
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
+
 
 
 app.include_router(password_router)
