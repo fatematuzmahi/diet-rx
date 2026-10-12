@@ -5,6 +5,7 @@ from backend.routers.password_router import router as password_router
 from backend.routers.auth_router import router as auth_router
 from backend.routers.doctor_router import router as doctor_router
 from backend.routers.protected_router import router as protected_router
+from backend.routers.health_profile_router import router as health_profile_router
 
 
 app = FastAPI(
@@ -30,6 +31,7 @@ app.include_router(password_router)
 app.include_router(auth_router)
 app.include_router(doctor_router)
 app.include_router(protected_router)
+app.include_router(health_profile_router)
 
 
 @app.get("/")
