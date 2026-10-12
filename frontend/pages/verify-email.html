@@ -5,16 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Verify email | DietRx</title>
   <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .button { width: 100%; margin-top: .25rem; }
+    .button.secondary { background: #ffffff; color: var(--green); border: 2px solid var(--green); }
+    .button.secondary:hover { background: var(--soft); }
+    .form-message { min-height: 1.25rem; margin: 0; font-size: .95rem; font-weight: normal; color: var(--green); }
+    .form-message.error { color: #b3261e; }
+  </style>
 </head>
 <body>
   <main class="auth-card">
     <a class="brand" href="../index.html">DietRx</a>
     <h1>Verify your email</h1>
     <form id="verify-email-form">
-      <label>Email<input name="email" type="email" required></label>
+      <label>Email<input name="email" type="email" autocomplete="email" required></label>
+      <button class="button secondary" type="button" id="send-code-button">Send Code</button>
+      <p id="send-code-message" class="form-message" aria-live="polite"></p>
       <label>Verification code<input name="code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" required></label>
-      <button class="button" type="submit">Verify email</button>
-      <p id="form-message" aria-live="polite"></p>
+      <button class="button" type="submit">Verify Email</button>
+      <p id="form-message" class="form-message" aria-live="polite"></p>
     </form>
   </main>
   <script src="../js/api.js"></script>

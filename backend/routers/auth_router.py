@@ -44,12 +44,21 @@ def create_access_token(data: dict):
 class RegisterRequest(BaseModel):
     name: str
     email: str
+    age: int
+    gender: str
+    height: float
+    weight: float
     password: str
+    confirm_password: str
 
 
 class VerificationRequest(BaseModel):
     email: str
     code: str
+
+
+class ResendVerificationCodeRequest(BaseModel):
+    email: str
 
 
 def generate_verification_code() -> str:
@@ -115,8 +124,11 @@ def register_user(data: RegisterRequest):
     print("DEBUG REG: registration started", flush=True)
     email = _normalise_email(data.email)
     name = data.name.strip()
-    if not name or not email or not data.password:
-        raise HTTPException(status_code=400, detail="Name, email, and password are required.")
+    gender = data.gender.strip()
+    if not name or not email or not gender or not data.password or not data.confirm_password:
+        raise HTTPException(status_code=400, detail="All registration fields are required.")
+    if data.password != data.confirm_password:
+        raise HTTPException(status_code=400, detail="Passwords do not match.")
 
     verification_code = generate_verification_code()
     connection = get_connection()
@@ -134,14 +146,18 @@ def register_user(data: RegisterRequest):
         cursor.execute(
             """
             INSERT INTO patient
-                (name, email, password, verification_code_hash,
+                (name, email, age, gender, height, weight, password, verification_code_hash,
                  verification_code_expires_at, is_verified)
             VALUES
-                (:name, :email, :password, :verification_code_hash,
+                (:name, :email, :age, :gender, :height, :weight, :password, :verification_code_hash,
                  :verification_code_expires_at, 0)
             """,
             name=name,
             email=email,
+            age=data.age,
+            gender=gender,
+            height=data.height,
+            weight=data.weight,
             password=password_hash,
             verification_code_hash=verification_code_hash,
             verification_code_expires_at=_utc_now() + VERIFICATION_CODE_TTL,
@@ -238,6 +254,69 @@ def verify_email(data: VerificationRequest):
     except oracledb.Error as error:
         connection.rollback()
         raise HTTPException(status_code=500, detail="Unable to verify email.") from error
+    finally:
+        cursor.close()
+        connection.close()
+
+
+@router.post("/resend-verification-code")
+def resend_verification_code(data: ResendVerificationCodeRequest):
+    email = _normalise_email(data.email)
+    if not email:
+        raise HTTPException(status_code=400, detail="Email is required.")
+
+    verification_code = generate_verification_code()
+    connection = get_connection()
+    if connection is None:
+        raise HTTPException(status_code=500, detail="Database connection failed")
+
+    cursor = connection.cursor()
+    try:
+        cursor.execute(
+            """
+            SELECT patient_id, is_verified
+            FROM patient
+            WHERE email = :email
+            """,
+            email=email,
+        )
+        patient = cursor.fetchone()
+        if patient is None:
+            raise HTTPException(status_code=404, detail="Account not found.")
+
+        patient_id, is_verified = patient
+        if is_verified == 1:
+            raise HTTPException(status_code=409, detail="This email address is already verified.")
+
+        cursor.execute(
+            """
+            UPDATE patient
+            SET verification_code_hash = :code_hash,
+                verification_code_expires_at = :expires_at
+            WHERE patient_id = :patient_id
+            """,
+            code_hash=hash_verification_code(verification_code),
+            expires_at=_utc_now() + VERIFICATION_CODE_TTL,
+            patient_id=patient_id,
+        )
+
+        try:
+            send_verification_email(email, verification_code)
+        except Exception as error:
+            connection.rollback()
+            raise HTTPException(
+                status_code=503,
+                detail="Unable to send the verification email. Please try again later.",
+            ) from error
+
+        connection.commit()
+        return {"message": "Verification code sent to your email."}
+    except HTTPException:
+        connection.rollback()
+        raise
+    except oracledb.Error as error:
+        connection.rollback()
+        raise HTTPException(status_code=500, detail="Unable to send the verification code.") from error
     finally:
         cursor.close()
         connection.close()
