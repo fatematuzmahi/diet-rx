@@ -380,13 +380,24 @@ def login_user(data: LoginRequest):
 
         session_token = secrets.token_urlsafe(32)
 
+        # SCRUM-44 (additive): also issue a verifiable stateless access token so
+        # role-based access control can be enforced. `session_token` is kept
+        # exactly as-is for backwards compatibility with the existing frontend.
+        # Role/type literals are duplicated (not imported) to avoid a circular
+        # import: backend.core.security imports SECRET_KEY/ALGORITHM from here.
+        access_token = create_access_token(
+            {"sub": str(patient_id), "role": "PATIENT", "typ": "access"}
+        )
+
         return {
             "message": "Login successful.",
             "session_token": session_token,
+            "access_token": access_token,
             "user": {
                 "patient_id": patient_id,
                 "name": name,
                 "email": patient_email,
+                "role": "PATIENT",
             }
         }
 

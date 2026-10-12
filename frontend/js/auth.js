@@ -34,6 +34,8 @@ document.querySelector("#login-form")?.addEventListener("submit", async (event) 
         });
 
         localStorage.setItem("session_token", result.session_token);
+        // SCRUM-44: persist the verifiable access token + role for RBAC.
+        if (result.access_token) localStorage.setItem("access_token", result.access_token);
         localStorage.setItem("user", JSON.stringify(result.user));
 
         window.location.href = "dashboard.html";
@@ -55,6 +57,7 @@ if (logoutBtn) {
         }
 
         localStorage.removeItem("session_token");
+        localStorage.removeItem("access_token");
         localStorage.removeItem("user");
 
         window.location.href = "login.html";
