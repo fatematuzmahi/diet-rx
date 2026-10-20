@@ -32,6 +32,10 @@ CREATE TABLE health_profile (
 );
 
 -- 4. Table: prescription
+-- PRESCRIPTION_ID is a GENERATED ALWAYS AS IDENTITY column: Oracle allocates the
+-- value itself. There is NO named sequence behind it -- never insert into this
+-- column and never reference a sequence (ORA-32795 / ORA-02289). Read the
+-- generated key back with RETURNING prescription_id INTO :id.
 CREATE TABLE prescription (
     prescription_id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     patient_id NUMBER NOT NULL,

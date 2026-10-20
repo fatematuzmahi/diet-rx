@@ -1,0 +1,256 @@
+/* SCRUM-46: Prescription Management UI (DietRx green/white, matches
+   dashboard / health-profile theme). Reuses shared design tokens. */
+.rx {
+    margin-top: 2rem;
+    background: #ffffff;
+    border: 1px solid #d6e6dc;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 10px 30px #17352a12;
+}
+
+.rx-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: .35rem;
+}
+
+.rx h2 {
+    margin: 0;
+    font-size: 1.35rem;
+    color: #167047;
+}
+
+.rx-subtitle {
+    margin: 0 0 1.25rem;
+    color: #5d6f66;
+    font-size: .95rem;
+    max-width: 68ch;
+}
+
+/* Status banner (success / error / info) */
+.rx-status {
+    min-height: 1.25rem;
+    margin-bottom: 1rem;
+    font-size: .92rem;
+    font-weight: 600;
+}
+
+.rx-status:empty {
+    margin-bottom: 0;
+}
+
+.rx-status.is-success { color: #167047; }
+.rx-status.is-error   { color: #b52a37; }
+.rx-status.is-loading { color: #4a5b52; }
+
+/* Panels */
+.rx-panel {
+    border: 1px solid #e2ece6;
+    border-radius: .85rem;
+    padding: 1.15rem 1.25rem;
+    margin-bottom: 1.25rem;
+    background: #fbfdfc;
+}
+
+.rx-panel h3 {
+    margin: 0 0 .85rem;
+    font-size: 1.05rem;
+    color: #17352a;
+}
+
+.rx-form { display: block; }
+
+.rx-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.rx-field-wide { grid-column: 1 / -1; }
+
+.rx-field label {
+    font-weight: 600;
+    color: #17352a;
+    margin-bottom: .3rem;
+    display: block;
+}
+
+.rx-field input,
+.rx-field select,
+.rx-field textarea {
+    width: 100%;
+    padding: .65rem .75rem;
+    border: 1px solid #b6c9bd;
+    border-radius: .5rem;
+    font: inherit;
+    color: #17352a;
+    background: #ffffff;
+}
+
+.rx-field textarea { resize: vertical; }
+
+.rx-field input:focus,
+.rx-field select:focus,
+.rx-field textarea:focus {
+    outline: none;
+    border-color: #167047;
+    box-shadow: 0 0 0 3px #1670471f;
+}
+
+.rx-hint {
+    margin: .25rem 0 0;
+    font-size: .8rem;
+    color: #7b8a81;
+}
+
+/* Actions + buttons */
+.rx-actions {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    margin-top: 1.25rem;
+    flex-wrap: wrap;
+}
+
+.rx-btn {
+    border: 0;
+    border-radius: .5rem;
+    padding: .7rem 1.15rem;
+    background: #167047;
+    color: #ffffff;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform .15s ease, box-shadow .15s ease, opacity .15s ease;
+}
+
+.rx-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px #16704733;
+}
+
+.rx-btn:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.rx-btn-ghost {
+    background: #eef5f0;
+    color: #167047;
+    padding: .45rem .8rem;
+    font-size: .85rem;
+    font-weight: 600;
+}
+
+.rx-btn-ghost:hover { background: #e1eee6; box-shadow: none; }
+
+/* List */
+.rx-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: .75rem;
+}
+
+.rx-item {
+    border: 1px solid #d6e6dc;
+    border-radius: .75rem;
+    padding: .9rem 1rem;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.rx-item-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem;
+    flex-wrap: wrap;
+}
+
+.rx-item-title { font-weight: 700; color: #17352a; }
+
+.rx-badges { display: flex; gap: .4rem; flex-wrap: wrap; }
+
+.rx-badge {
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .02em;
+    padding: .18rem .55rem;
+    border-radius: 999px;
+    text-transform: uppercase;
+    border: 1px solid transparent;
+}
+
+.rx-badge.status-active    { background: #eaf5ee; color: #167047; border-color: #cfe7d8; }
+.rx-badge.status-completed { background: #eef2f5; color: #44555f; border-color: #dbe3e8; }
+.rx-badge.status-cancelled { background: #fdeceD; color: #b52a37; border-color: #f3c9cd; }
+
+.rx-badge.validated-yes { background: #eaf5ee; color: #167047; border-color: #cfe7d8; }
+.rx-badge.validated-no  { background: #fbf3e2; color: #8a6413; border-color: #ecd9a8; }
+
+.rx-item-restrictions {
+    margin: 0;
+    color: #40514a;
+    font-size: .9rem;
+    white-space: pre-wrap;
+}
+
+.rx-item-meta {
+    color: #7b8a81;
+    font-size: .8rem;
+    display: flex;
+    gap: .9rem;
+    flex-wrap: wrap;
+}
+
+.rx-item-actions {
+    display: flex;
+    gap: .5rem;
+    flex-wrap: wrap;
+    margin-top: .15rem;
+}
+
+.rx-link {
+    background: none;
+    border: 0;
+    padding: 0;
+    color: #167047;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.rx-empty {
+    color: #5d6f66;
+    font-size: .92rem;
+    margin: .25rem 0 0;
+}
+
+/* Inline edit form */
+.rx-edit { border-top: 1px dashed #d6e6dc; padding-top: .85rem; }
+
+/* Decision-support disclaimer */
+.rx-disclaimer {
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px dashed #d6e6dc;
+    font-size: .82rem;
+    color: #7b8a81;
+    line-height: 1.5;
+}
+
+/* Responsive: single column on small screens */
+@media (max-width: 640px) {
+    .rx-grid { grid-template-columns: 1fr; }
+}
