@@ -104,6 +104,50 @@ CREATE TABLE notification (
     CONSTRAINT fk_notification_patient FOREIGN KEY (patient_id) REFERENCES patient(patient_id) ON DELETE CASCADE
 );
 
+-- 10. Table: dish_dna (SCRUM-47)
+-- The "Dish DNA" is the nutritional fingerprint of a dish: macro breakdown,
+-- micronutrient profile and the metabolic markers that drive the dynamic
+-- health-status badges in the UI. All nutrition values are PER SERVING.
+-- DISH_ID is GENERATED ALWAYS AS IDENTITY: Oracle allocates the value itself,
+-- so there is NO named sequence and application code must never insert into
+-- this column (ORA-32795) or reference one (ORA-02289). Read the generated key
+-- back with RETURNING dish_id INTO :new_id.
+CREATE TABLE dish_dna (
+    dish_id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    name            VARCHAR2(150) NOT NULL,
+    cuisine         VARCHAR2(100),
+    category        VARCHAR2(80),
+    description     VARCHAR2(500),
+    ingredients     CLOB,
+    serving_size_g      NUMBER(8, 2),
+    serving_description VARCHAR2(120),
+    calories      NUMBER(8, 2),
+    protein_g     NUMBER(8, 2),
+    carbs_g       NUMBER(8, 2),
+    fat_g         NUMBER(8, 2),
+    fiber_g       NUMBER(8, 2),
+    sugar_g       NUMBER(8, 2),
+    glycemic_index NUMBER(4, 1),
+    sodium_mg      NUMBER(9, 2),
+    saturated_fat_g NUMBER(8, 2),
+    vitamin_a_mcg NUMBER(9, 2),
+    vitamin_c_mg  NUMBER(9, 2),
+    vitamin_d_mcg NUMBER(9, 2),
+    vitamin_k_mcg NUMBER(9, 2),
+    b_vitamin_mg  NUMBER(9, 2),
+    calcium_mg NUMBER(9, 2),
+    iron_mg    NUMBER(9, 2),
+    potassium_mg NUMBER(9, 2),
+    diet_tags   VARCHAR2(300),
+    allergens   VARCHAR2(300),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_dish_dna_name ON dish_dna(name);
+CREATE INDEX idx_dish_dna_glycemic_index ON dish_dna(glycemic_index);
+CREATE INDEX idx_dish_dna_protein ON dish_dna(protein_g);
+
 ALTER TABLE patient ADD (
     is_verified NUMBER(1) DEFAULT 0 NOT NULL,
     verification_code_hash VARCHAR2(255),
