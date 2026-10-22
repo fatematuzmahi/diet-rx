@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 """SCRUM-48: Personalized Diet + Activity Plan endpoints (SRS 3.3.6).
 
 Endpoints
@@ -56,7 +55,7 @@ from backend.schemas.plan import (
     PlanSummary,
 )
 from backend.services import plan_service
-from backend.services.diet_generator import generate_plan
+from backend.services.diet_generator import generate_diet_plan
 
 logger = logging.getLogger(__name__)
 
@@ -339,12 +338,4 @@ def read_my_plan_history(principal: Principal = Depends(require_patient)):
     finally:
         cursor.close()
         connection.close()
-=======
-from __future__ import annotations
 
-from fastapi import APIRouter, Depends, Header, HTTPException, status
-from pydantic import BaseModel, Field
-from typing import Optional, Dict, Any, List
-
-router = APIRouter(prefix="/api/plans", tags=["Personalized Plan"])
->>>>>>> scrum-49
