@@ -1,0 +1,20 @@
+﻿
+FullName                                                          Length
+--------                                                          ------
+D:\software lab\dietRx\docs\Research                                    
+D:\software lab\dietRx\docs\SRS                                         
+D:\software lab\dietRx\docs\UML                                         
+D:\software lab\dietRx\docs\photo_2026-09-21_22-29-02.jpg         160942
+D:\software lab\dietRx\docs\photo_2026-09-21_22-29-07.jpg         174920
+D:\software lab\dietRx\docs\Research\.gitkeep                     1     
+D:\software lab\dietRx\docs\SRS\.gitkeep                          1     
+D:\software lab\dietRx\docs\UML\.gitkeep                          1     
+D:\software lab\dietRx\modules\Module1_Diet_Intelligence                
+D:\software lab\dietRx\modules\Module2_Safety_Monitoring                
+D:\software lab\dietRx\modules\Module3_Budget_Grocery                   
+D:\software lab\dietRx\modules\Module1_Diet_Intelligence\.gitkeep 1     
+D:\software lab\dietRx\modules\Module2_Safety_Monitoring\.gitkeep 1     
+D:\software lab\dietRx\modules\Module3_Budget_Grocery\.gitkeep    1     
+
+
+

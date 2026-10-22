@@ -1,0 +1,62 @@
+﻿
+Name                      Length LastWriteTime        
+----                      ------ -------------        
+scrum48_pytest.txt           186 10/21/2026 2:54:23 PM
+scrum48_status.txt             0 10/21/2026 2:56:21 PM
+scrum48_untracked.txt          0 10/21/2026 2:57:26 PM
+scrum48_dirs.txt             324 10/21/2026 3:01:02 PM
+scrum48_versions.txt          54 10/21/2026 3:01:03 PM
+scrum48_docs.txt             140 10/21/2026 3:03:26 PM
+scrum48_log.txt              243 10/21/2026 3:04:03 PM
+scrum48_branch.txt          1413 10/21/2026 3:04:04 PM
+scrum48_ahead.txt           1608 10/21/2026 3:06:32 PM
+scrum48_head.txt              13 10/21/2026 3:06:32 PM
+scrum48_dirty.txt              0 10/21/2026 3:06:32 PM
+scrum48_db.txt               202 10/21/2026 3:11:24 PM
+scrum48_root.txt              75 10/21/2026 3:11:24 PM
+scrum48_httpx.txt             31 10/21/2026 3:12:14 PM
+scrum48_scrumbranches.txt    349 10/21/2026 3:12:53 PM
+scrum48_headcommit.txt        81 10/21/2026 3:12:53 PM
+scrum48_rxmid.txt           7117 10/21/2026 3:13:37 PM
+scrum48_rxmid2.txt          3773 10/21/2026 3:15:05 PM
+scrum48_testmid.txt         9091 10/21/2026 3:15:59 PM
+scrum48_api.txt              751 10/21/2026 3:16:48 PM
+scrum48_rxhtml.txt          5003 10/21/2026 3:16:48 PM
+scrum48_rxjs.txt               0 10/21/2026 3:16:48 PM
+scrum48_rxjs2.txt           9308 10/21/2026 3:18:11 PM
+scrum48_rxcss.txt           5305 10/21/2026 3:18:11 PM
+scrum48_readme.txt           499 10/21/2026 3:18:40 PM
+scrum48_tests.txt           2611 10/21/2026 3:18:40 PM
+scrum48_ftreadme.txt          81 10/21/2026 3:18:59 PM
+scrum48_rxrouter_mid.txt    6232 10/21/2026 3:21:26 PM
+scrum48_rxrouter_mid2.txt   4655 10/21/2026 3:44:28 PM
+scrum48_test46_mid.txt      8943 10/21/2026 3:45:16 PM
+scrum48_budget.txt           123 10/21/2026 3:46:12 PM
+scrum48_files.txt            507 10/21/2026 3:46:36 PM
+scrum48_fe.txt              1468 10/21/2026 3:47:07 PM
+scrum48_auth.txt           14158 10/21/2026 3:49:30 PM
+scrum48_feauth.txt          3144 10/21/2026 3:49:30 PM
+scrum48_req.txt              328 10/21/2026 3:49:30 PM
+scrum48_pyfiles.txt         2215 10/21/2026 3:51:33 PM
+scrum48_rb47.txt             509 10/21/2026 3:51:33 PM
+scrum48_rb46.txt             795 10/21/2026 3:51:33 PM
+scrum48_dnschema.txt       18239 10/21/2026 3:56:53 PM
+scrum48_foodchecker.txt      306 10/21/2026 3:56:53 PM
+scrum48_dn47.txt            3497 10/21/2026 3:56:53 PM
+scrum48_presc_mid.txt       5890 10/21/2026 4:01:25 PM
+scrum48_presc_mid2.txt      4965 10/21/2026 4:01:58 PM
+scrum48_security.txt        6215 10/21/2026 4:01:58 PM
+scrum48_conn.txt            1426 10/21/2026 4:01:58 PM
+scrum48_test46.txt         15919 10/21/2026 4:02:21 PM
+scrum48_main.txt            1397 10/21/2026 4:02:21 PM
+scrum48_testfiles.txt       1307 10/21/2026 4:03:23 PM
+scrum48_test46_fake.txt     6428 10/21/2026 4:03:23 PM
+scrum48_frontfiles.txt      1468 10/21/2026 4:03:46 PM
+scrum48_gitlog.txt          1013 10/21/2026 4:03:46 PM
+scrum48_hprouter.txt        9731 10/21/2026 4:04:44 PM
+scrum48_dnrouter.txt        4708 10/21/2026 4:04:44 PM
+scrum48_prescjs_mid.txt     2591 10/21/2026 4:04:44 PM
+
+
+
+ok

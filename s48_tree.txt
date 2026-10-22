@@ -1,0 +1,88 @@
+﻿.env.example | 130
+.gitignore | 125
+AI | 
+AI/datasets | 
+AI/datasets/.gitkeep | 1
+AI/models | 
+AI/models/.gitkeep | 1
+AI/notebooks | 
+AI/notebooks/.gitkeep | 1
+AI/training | 
+AI/training/.gitkeep | 1
+README.md | 477
+backend | 
+backend/__init__.py | 32
+backend/app.py | 1133
+backend/config.py | 430
+backend/database | 
+backend/database/schema.sql | 203
+backend/extensions.py | 174
+backend/models | 
+backend/models/__init__.py | 173
+backend/models/diet_plan.py | 352
+backend/models/food.py | 304
+backend/models/prescription.py | 284
+backend/models/user.py | 648
+backend/routes | 
+backend/routes/__init__.py | 22
+backend/routes/auth_routes.py | 1270
+backend/routes/diet_routes.py | 207
+backend/routes/grocery_routes.py | 218
+backend/routes/safety_routes.py | 265
+backend/services | 
+backend/services/__init__.py | 57
+backend/services/budget_optimizer.py | 117
+backend/services/conflict_resolver.py | 122
+backend/services/diet_generator.py | 104
+backend/services/food_checker.py | 298
+backend/utils | 
+backend/utils/__init__.py | 30
+backend/utils/helper.py | 76
+docs | 
+docs/Research | 
+docs/Research/.gitkeep | 1
+docs/SRS | 
+docs/SRS/.gitkeep | 1
+docs/UML | 
+docs/UML/.gitkeep | 1
+docs/photo_2026-09-21_22-29-02.jpg | 160942
+docs/photo_2026-09-21_22-29-07.jpg | 174920
+frontend | 
+frontend/assets | 
+frontend/assets/icons | 
+frontend/assets/icons/.gitkeep | 1
+frontend/assets/images | 
+frontend/assets/images/.gitkeep | 1
+frontend/css | 
+frontend/css/dashboard.css | 36
+frontend/css/responsive.css | 167
+frontend/css/style.css | 1419
+frontend/index.html | 843
+frontend/js | 
+frontend/js/api.js | 375
+frontend/js/auth.js | 841
+frontend/js/diet.js | 476
+frontend/js/main.js | 40
+frontend/pages | 
+frontend/pages/dashboard.html | 812
+frontend/pages/diet_plan.html | 387
+frontend/pages/dish_dna.html | 400
+frontend/pages/grocery.html | 414
+frontend/pages/login.html | 725
+frontend/pages/register.html | 797
+frontend/pages/safety_checker.html | 620
+modules | 
+modules/Module1_Diet_Intelligence | 
+modules/Module1_Diet_Intelligence/.gitkeep | 1
+modules/Module2_Safety_Monitoring | 
+modules/Module2_Safety_Monitoring/.gitkeep | 1
+modules/Module3_Budget_Grocery | 
+modules/Module3_Budget_Grocery/.gitkeep | 1
+requirements.txt | 176
+tests | 
+tests/__init__.py | 1
+tests/backend_tests | 
+tests/backend_tests/test_auth_and_safety.py | 1196
+tests/backend_tests/test_health.py | 513
+tests/frontend_tests | 
+tests/frontend_tests/README.md | 75

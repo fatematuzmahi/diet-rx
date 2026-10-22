@@ -1,0 +1,156 @@
+/* SCRUM-48: Personalized Diet + Activity Plan styles.
+ *
+ * Reuses the SCRUM-45 health-profile look-and-feel (hp-* classes) and adds
+ * the plan-specific blocks: plan meta, conflicts, day cards, activities,
+ * notes and history.
+ */
+
+.plan-form-section {
+    margin-bottom: 1.5rem;
+}
+
+/* Summary line above the plan */
+.plan-meta {
+    margin: 1rem 0;
+}
+
+.plan-meta-line {
+    font-size: .9rem;
+    color: #4a5c52;
+    margin: 0;
+}
+
+/* Review banner -- shown when a conflict could not be resolved safely */
+.plan-review {
+    margin: 1rem 0;
+    padding: .85rem 1rem;
+    border-left: 4px solid #c86b2a;
+    border-radius: 6px;
+    background: #fdf3e7;
+    color: #7a4416;
+    font-size: .9rem;
+    line-height: 1.5;
+}
+
+/* Conflict list */
+.plan-conflicts {
+    margin: 1rem 0;
+}
+
+.plan-conflicts ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.plan-conflict {
+    margin-bottom: .6rem;
+    padding: .7rem .9rem;
+    border-radius: 6px;
+    border-left: 4px solid #b9c6bd;
+    background: #f4f8f5;
+    font-size: .88rem;
+    line-height: 1.5;
+}
+
+.plan-conflict-low {
+    border-left-color: #4a8f6a;
+}
+
+.plan-conflict-medium {
+    border-left-color: #c8a02a;
+}
+
+.plan-conflict-high {
+    border-left-color: #c0503a;
+}
+
+.plan-conflict-text,
+.plan-conflict-resolution {
+    display: block;
+}
+
+.plan-conflict-resolution {
+    margin-top: .3rem;
+    font-style: italic;
+    color: #4a5c52;
+}
+
+/* Meal-plan day cards */
+.plan-days {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.plan-day {
+    border: 1px solid #dbe8e0;
+    border-radius: 8px;
+    padding: .9rem 1rem;
+    background: #fff;
+}
+
+.plan-day h4 {
+    margin: 0 0 .5rem;
+    font-size: .95rem;
+    color: #2f6f4f;
+}
+
+.plan-day ul,
+.plan-activities ul,
+.plan-notes {
+    list-style: disc;
+    margin: 0;
+    padding-left: 1.1rem;
+}
+
+.plan-day li,
+.plan-activities li {
+    margin-bottom: .45rem;
+    font-size: .87rem;
+    line-height: 1.5;
+}
+
+.plan-meal-items,
+.plan-meal-calories,
+.plan-activity-detail {
+    color: #55655c;
+}
+
+.plan-meal-calories {
+    font-size: .82rem;
+}
+
+/* Notes and budget guidance */
+.plan-notes {
+    margin: .5rem 0 1rem;
+}
+
+.plan-notes li {
+    margin-bottom: .35rem;
+    font-size: .87rem;
+    line-height: 1.5;
+}
+
+.plan-note-empty {
+    color: #7b8a81;
+    font-style: italic;
+}
+
+/* Plan history */
+.plan-history {
+    margin-top: .5rem;
+}
+
+.plan-history ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.plan-history li {
+    padding: .5rem 0;
+    border-bottom: 1px solid #e6efe9;
+    font-size: .87rem;
+    color: #4a5c52;
+}

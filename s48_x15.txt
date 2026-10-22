@@ -1,0 +1,67 @@
+﻿
+FullName                                                                                                                          Length LastWriteTime         
+--------                                                                                                                          ------ -------------         
+C:\Users\ROWTECH\Downloads\Telegram Desktop\v3_ML_Lab_Test2_Cheatsheet.pdf                                                        104123 10/17/2026 12:32:15 PM
+C:\Users\ROWTECH\Downloads\Telegram Desktop\ML_Lab_Test2_Cheatsheet.docx                                                           26384 10/17/2026 12:32:15 PM
+C:\Users\ROWTECH\Downloads\diet-rx-scrum-45\diet-rx-scrum-45\tests\frontend_tests\README.md                                           75 10/13/2026 8:46:14 AM 
+C:\Users\ROWTECH\Downloads\diet-rx-scrum-45\diet-rx-scrum-45\frontend\assets\images\dietrx-logo.png                                78513 10/13/2026 8:46:13 AM 
+C:\Users\ROWTECH\Downloads\diet-rx-scrum-45\diet-rx-scrum-45\docs\photo_2026-09-21_22-29-07.jpg                                   174920 10/13/2026 8:46:13 AM 
+C:\Users\ROWTECH\Downloads\diet-rx-scrum-45\diet-rx-scrum-45\docs\photo_2026-09-21_22-29-02.jpg                                   160942 10/13/2026 8:46:13 AM 
+C:\Users\ROWTECH\Downloads\diet-rx-scrum-45\diet-rx-scrum-45\README.md                                                               477 10/13/2026 8:46:12 AM 
+C:\Users\ROWTECH\Downloads\DietRx 73 merged.pdf                                                                                  9595023 10/12/2026 6:00:37 PM 
+C:\Users\ROWTECH\Downloads\Telegram Desktop\DietRx 73 merged.pdf                                                                 9595023 10/12/2026 6:00:27 PM 
+C:\Users\ROWTECH\Downloads\SRS Module1.pdf                                                                                         36664 10/12/2026 6:00:20 PM 
+C:\Users\ROWTECH\Downloads\Telegram Desktop\SRS Module1.pdf                                                                        36664 10/12/2026 6:00:08 PM 
+C:\Users\ROWTECH\Downloads\Telegram Desktop\Quanta Dot.pdf                                                                       1328712 10/7/2026 8:51:14 PM  
+C:\Users\ROWTECH\Downloads\Telegram Desktop\Final budget.pdf                                                                       11492 10/6/2026 12:15:23 AM 
+C:\Users\ROWTECH\Downloads\Telegram Desktop\23101079_Report_07.docx                                                               962645 10/2/2026 11:12:18 PM 
+C:\Users\ROWTECH\Downloads\Telegram Desktop\RoboCare_An_Autonomous_Human_Following_Robot_for_Elderly_Health (2).pdf             12613546 10/2/2026 8:54:38 PM  
+C:\Users\ROWTECH\Downloads\Telegram Desktop\LabReport07_23101066.pdf                                                              761034 10/2/2026 6:09:42 PM  
+C:\Users\ROWTECH\Downloads\Telegram Desktop\RoboCare_An_Autonomous_Human_Following_Robot_for_Elderly_Health.pdf                 12613520 10/1/2026 11:50:51 PM 
+C:\Users\ROWTECH\Downloads\Logo.png                                                                                              1569236 10/1/2026 6:42:42 PM  
+C:\Users\ROWTECH\Downloads\dietrx-logo.png                                                                                         29433 10/1/2026 5:57:33 PM  
+C:\Users\ROWTECH\Downloads\1000050852.png                                                                                         165304 10/1/2026 5:55:59 PM  
+C:\Users\ROWTECH\Downloads\Telegram Desktop\Soil_Robot_Cirkit_Designer_Workflow (1).pdf                                            15181 9/29/2026 11:56:37 PM 
+C:\Users\ROWTECH\Downloads\ChatGPT Image Sep 26, 2026, 12_13_15 AM.png                                                           1660639 9/26/2026 12:13:16 AM 
+C:\Users\ROWTECH\Downloads\Telegram Desktop\RoboCare_Evaluation_Slides_Script (2).docx                                             20327 9/25/2026 12:05:36 AM 
+C:\Users\ROWTECH\Downloads\Telegram Desktop\RoboCare_FAQ_Slides_Script.docx                                                        10905 9/25/2026 12:05:35 AM 
+C:\Users\ROWTECH\Downloads\Telegram Desktop\22201134_Mini_Project_5_Bluetooth_Based_Android_Controlled_Robot.pdf                  344521 9/23/2026 7:45:46 PM  
+C:\Users\ROWTECH\Downloads\Telegram Desktop\23101079_Report_05 (2) (3).docx                                                       414037 9/23/2026 7:45:25 PM  
+C:\Users\ROWTECH\Downloads\Telegram Desktop\RoboCare_Evaluation_Slides_Script.docx                                                 21581 9/23/2026 7:45:24 PM  
+C:\Users\ROWTECH\Downloads\Telegram Desktop\RoboCare_Initial_FAQ.docx                                                              19329 9/23/2026 7:45:15 PM  
+C:\Users\ROWTECH\Downloads\Telegram Desktop\Job_Responsibility_Table.docx                                                          15577 9/23/2026 7:45:10 PM  
+C:\Users\ROWTECH\Downloads\Telegram Desktop\nahid2019.pdf                                                                        2114312 9/23/2026 6:55:28 PM  
+C:\Users\ROWTECH\Downloads\UI Pages(23101073) pdf.pdf                                                                            3682753 9/22/2026 12:33:37 PM 
+C:\Users\ROWTECH\Downloads\ilovepdf_merged.pdf                                                                                   3682753 9/22/2026 12:33:27 PM 
+C:\Users\ROWTECH\Downloads\Settings · DietRx.pdf                                                                                  228801 9/22/2026 12:17:35 PM 
+C:\Users\ROWTECH\Downloads\Professional Review · DietRx.pdf                                                                       187764 9/22/2026 12:17:23 PM 
+C:\Users\ROWTECH\Downloads\Notification Center · DietRx.pdf                                                                       172859 9/22/2026 12:17:09 PM 
+C:\Users\ROWTECH\Downloads\Budget-Aware Food Planner · DietRx.pdf                                                                 276912 9/22/2026 12:16:53 PM 
+C:\Users\ROWTECH\Downloads\Progress · DietRx.pdf                                                                                  387204 9/22/2026 12:16:38 PM 
+C:\Users\ROWTECH\Downloads\Daily Logging · DietRx.pdf                                                                             171878 9/22/2026 12:15:31 PM 
+C:\Users\ROWTECH\Downloads\Food & Activity Safety · DietRx.pdf                                                                    262648 9/22/2026 12:15:23 PM 
+C:\Users\ROWTECH\Downloads\Dish DNA · DietRx.pdf                                                                                  310382 9/22/2026 12:15:12 PM 
+C:\Users\ROWTECH\Downloads\Activity Plan · DietRx.pdf                                                                             222424 9/22/2026 12:15:02 PM 
+C:\Users\ROWTECH\Downloads\Personalized Diet Plan · DietRx.pdf                                                                    273740 9/22/2026 12:14:52 PM 
+C:\Users\ROWTECH\Downloads\Prescriptions · DietRx.pdf                                                                             285810 9/22/2026 12:14:05 PM 
+C:\Users\ROWTECH\Downloads\Health Profile · DietRx.pdf                                                                            367135 9/22/2026 12:13:52 PM 
+C:\Users\ROWTECH\Downloads\Dashboard · DietRx1.pdf                                                                                506222 9/22/2026 12:12:49 PM 
+C:\Users\ROWTECH\Downloads\DashboardDietRx.pdf                                                                                    544951 9/22/2026 11:25:50 AM 
+C:\Users\ROWTECH\Downloads\Screenshot 2026-09-22 015627.png                                                                       260687 9/22/2026 1:58:53 AM  
+C:\Users\ROWTECH\Desktop\Dietrx\README.md                                                                                           3330 9/22/2026 12:53:59 AM 
+C:\Users\ROWTECH\Desktop\Dietrx\.venv\Lib\site-packages\django\contrib\admin\static\admin\js\vendor\select2\LICENSE.md              1124 9/22/2026 12:45:57 AM 
+C:\Users\ROWTECH\Desktop\Dietrx\.venv\Lib\site-packages\django\contrib\admin\static\admin\css\vendor\select2\LICENSE-SELECT2.md     1124 9/22/2026 12:45:56 AM 
+C:\Users\ROWTECH\Desktop\Dietrx\.venv\Lib\site-packages\pip-26.2.1.dist-info\licenses\src\pip\_vendor\idna\LICENSE.md               1541 9/22/2026 12:45:25 AM 
+C:\Users\ROWTECH\Desktop\Dietrx\.venv\Lib\site-packages\pip\_vendor\idna\LICENSE.md                                                 1541 9/22/2026 12:45:25 AM 
+C:\Users\ROWTECH\Downloads\23101073 Lab 5.docx                                                                                    287949 9/20/2026 1:14:23 AM  
+C:\Users\ROWTECH\Downloads\Telegram Desktop\23201108.Report-5.docx                                                                287294 9/20/2026 1:12:36 AM  
+C:\Users\ROWTECH\Downloads\Telegram Desktop\23101050 IMG401 CT, MID SOLVES .pdf                                                    12644 9/16/2026 11:58:15 PM 
+C:\Users\ROWTECH\Downloads\Telegram Desktop\CamScanner 14-09-2026 12.32.pdf                                                     23260775 9/16/2026 11:35:25 PM 
+C:\Users\ROWTECH\Downloads\Telegram Desktop\23101050 IMG401 MID.pdf                                                               292953 9/16/2026 9:02:34 PM  
+C:\Users\ROWTECH\Downloads\Telegram Desktop\Intro + Process Models.pdf                                                           6919614 9/14/2026 6:45:21 AM  
+C:\Users\ROWTECH\Downloads\Telegram Desktop\SW(Broker,Cloud--23101019).pdf                                                       5487190 9/14/2026 6:44:20 AM  
+C:\Users\ROWTECH\Downloads\Telegram Desktop\Copy of Lecture 6 (1).pdf                                                            1386900 9/14/2026 6:42:21 AM  
+
+
+
+ok

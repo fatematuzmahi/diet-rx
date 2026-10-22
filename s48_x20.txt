@@ -1,0 +1,6 @@
+﻿OK DietRx Final SRS Requirement ##73.pdf: pages=22 chars=48136 -> DietRx_Final_SRS_Requirement_73.txt
+OK SRS Final REPORT DietRx.pdf: pages=28 chars=39428 -> SRS_Final_REPORT_DietRx.txt
+OK Software_SRS_Final REport.pdf: pages=28 chars=39481 -> Software_SRS_Final_REport.txt
+OK DietRx_Final_SRS_Report_Revised.pdf: pages=21 chars=39213 -> DietRx_Final_SRS_Report_Revised.txt
+MISSING C:\Users\ROWTECH\Downloads\DietRx_Requirement_Specifications_Final_Corrected.pdf
+OK DietRx 73 merged.pdf: pages=46 chars=77790 -> DietRx_73_merged.txt

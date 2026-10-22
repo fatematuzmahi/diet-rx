@@ -1,0 +1,1 @@
+﻿[('fitz', False), ('pypdf', False), ('PyPDF2', False), ('pdfplumber', False), ('pytesseract', False), ('PIL', False), ('pdf2image', False)]

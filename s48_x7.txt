@@ -1,0 +1,330 @@
+﻿7a1a554a5d6e4c0ef6397b0a275ed531ba5fd11f|cline checkpoint session=1792571850535_bgpus run=2
+25133942d258a394074eaa6f92265cca111f943c|index on cline checkpoint
+3e9e0b4b4ffed105d969e82c490e0b3de5885c20|untracked files on cline checkpoint
+
+s48_ai.txt
+s48_be.txt
+s48_br.txt
+s48_c47.txt
+s48_fe.txt
+s48_iss.txt
+s48_issues.json
+s48_log.txt
+s48_mod.txt
+s48_ms.json
+s48_st.txt
+s48_t.txt
+s48_tree.json
+s48_tree.txt
+0e4e8f2f1b3e457e3706da172a357d3f3961462a|Implement SCRUM-47: Dish DNA API with migrations, schemas, and tests
+
+backend/database/dish_dna_scrum47.sql
+backend/database/dish_dna_scrum47_rollback.sql
+backend/database/schema.sql
+backend/main.py
+backend/routers/dish_dna_router.py
+backend/schemas/dish_dna.py
+tests/backend_tests/test_dish_dna_scrum47.py
+87ab2d5b3e7bf2308b19ea3cd99e19a183edce1a|cline checkpoint session=1792485611211_hzlhp run=3
+c9405e1d0cccd9e2da6910d7b4e70383b34cf449|untracked files on cline checkpoint
+
+backend/database/dish_dna_scrum47.sql
+backend/database/dish_dna_scrum47_rollback.sql
+backend/routers/dish_dna_router.py
+backend/schemas/dish_dna.py
+tests/backend_tests/test_dish_dna_scrum47.py
+6f1cb89d64f7b828ad0da5f44b55dabbfda87a56|index on scrum-47: 05afd17 Fix SCRUM-46: Implement prescription management with identity column handling and tests
+05afd17eead5957285ef57a8f4a3b453cd9d983d|Fix SCRUM-46: Implement prescription management with identity column handling and tests
+
+backend/core/file_storage.py
+backend/database/inspect_prescription_tables.py
+backend/database/prescription_scrum46.sql
+backend/database/prescription_scrum46_rollback.sql
+backend/database/schema.sql
+backend/main.py
+backend/routers/prescription_router.py
+backend/schemas/prescription.py
+frontend/css/prescription.css
+frontend/js/prescription.js
+frontend/pages/dashboard.html
+frontend/pages/prescriptions.html
+tests/backend_tests/test_prescription_scrum46.py
+a69f7d34426ce9a0fc73cb9d580e7232030297fd|cline checkpoint session=1792485611211_hzlhp run=1
+5708686681563dcb6bbdc2d99eb0faea21e88f8f|untracked files on cline checkpoint
+
+_htmlcheck.py
+_inspect_out.tmp
+backend/core/file_storage.py
+backend/database/_cols_check.py
+backend/database/inspect_prescription_tables.py
+backend/database/prescription_scrum46.sql
+backend/database/prescription_scrum46_rollback.sql
+backend/routers/prescription_router.py
+backend/schemas/prescription.py
+frontend/css/prescription.css
+frontend/js/prescription.js
+frontend/pages/prescriptions.html
+a1313d6739838f3247cbb485bb69171929cc8d17|index on scrum-46: d9bd6b0 Complete SCRUM-45 patient health profile backend and UI
+33c3ec4aa14f68dacd4ae1040fbcb45ad61deeb1|cline checkpoint session=1791823002848_ikv59 run=2
+c147651af82bcaea6152e5d152725da74815c528|index on cline checkpoint
+40f22aebe1e1bc255851a561a1226b926a9e4104|untracked files on cline checkpoint
+
+backend/database/inspect_prescription_tables.py
+d9bd6b0bbcdb444bb38d7a3e419c72e59d329a2e|Complete SCRUM-45 patient health profile backend and UI
+
+backend/main.py
+backend/routers/health_profile_router.py
+backend/schemas/health_profile.py
+frontend/css/health_profile.css
+frontend/js/health_profile.js
+frontend/pages/dashboard.html
+tests/backend_tests/test_health_profile_scrum45.py
+9c0abfa1cd519cdf9fefe0345ddf47b9445e7744|cline checkpoint session=1791816119616_2ngvq run=2
+2911990e6b2643930673107cefc3525951420228|index on cline checkpoint
+14156175b9e41bb5835dbb424dd396650a3421e7|untracked files on cline checkpoint
+
+backend/schemas/health_profile.py
+cabfb332e42c0004cac0c636bc98cf38d5d2de2a|Implement SCRUM-44: Role-based access control and doctor authentication
+
+backend/core/__init__.py
+backend/core/security.py
+backend/main.py
+backend/routers/auth_router.py
+backend/routers/doctor_router.py
+backend/routers/protected_router.py
+frontend/js/api.js
+frontend/js/auth.js
+frontend/pages/dashboard.html
+tests/backend_tests/test_rbac_scrum44.py
+4947d9795f3424732cfb51c5e99ac9f29d3acd6a|cline checkpoint session=1791804855213_fngsw run=1
+1395b9ea19b89f7503709830022e860407e4c994|index on cline checkpoint
+efbfaf338557f64cb2bb03bd3b8caf2a8f370f5c|untracked files on cline checkpoint
+
+backend/database/_diag_verify_flow.py
+backend/database/check_patient.py
+7b1151c61c465d258dd021e5a6117b0bd101cfbe|Complete authentication and verification flow
+
+backend/routers/auth_router.py
+backend/routers/password_router.py
+frontend/js/auth.js
+frontend/pages/forgot-password.html
+frontend/pages/register.html
+frontend/pages/reset-password.html
+frontend/pages/verify-email.html
+43386a77ddf9844387ff6c7157c98d916fce5232|On integration/auth-complete: cline checkpoint session=1791793277820_zlg2v run=2
+7f292dce98315025aeb45f817ffd1d0a5ba19747|index on integration/auth-complete: 8acc4ec Add reset password page
+33de1b69f5dd33a1b392bfedf5e6e487a230d617|On integration/auth-complete: cline checkpoint session=1791793277820_zlg2v run=1
+e12b93ed8f8f79a31e8aeb4a4e8a93c7601ca182|index on integration/auth-complete: 8acc4ec Add reset password page
+8acc4ec364ff98f2e067b511b2502edf26841be5|Add reset password page
+
+frontend/pages/reset-password.html
+904e9ac7921235141f9e0a9b0ec6257c8ad03352|Complete authentication CORS and forgot password UI
+
+backend/main.py
+frontend/pages/forgot-password.html
+frontend/pages/login.html
+89f585cd391338b84a61792cc263b1fe9dc897d8|Fix dashboard session token and logout flow
+
+frontend/pages/dashboard.html
+cfdf4a91704e5ba49d539deda2298a5cd4aad151|Merge scrum-42 login logout into auth integration
+2e1dffa3521b24b9ff5fbfa5456bab29abd46a9d|Implement forgot reset password and login flow
+
+backend/main.py
+backend/routers/auth_router.py
+backend/routers/password_router.py
+075a8aaf1e5d447551af388668ffeabb3b7326f2|Merge remote-tracking branch 'origin/handoff/forgot-password-base' into feature/forgot-password
+786b2360734dd1dba6d4e6c872d41853f7d3d5f8|Add password recovery router handoff
+
+backend/main.py
+backend/routers/password_router.py
+5f55e0d23c2e682b9a751bb061e4f85fd91351d2|Merge remote-tracking branch 'origin/handoff/forgot-password-base' into feature/forgot-password
+e76fc600200095b9525b7ba0dbd6e2e144c845c8|Complete logout flow and protect dashboard access
+
+backend/routers/auth_router.py
+frontend/css/dashboard.css
+frontend/js/auth.js
+frontend/pages/dashboard.html
+9e4016ad60a6026053f16e416d2e5ba7141fec1a|Complete logout flow and protect dashboard access
+
+backend/routers/auth_router.py
+frontend/css/dashboard.css
+frontend/js/auth.js
+frontend/pages/dashboard.html
+51a4f1bee8458320727dbe4f3cc78222982d5b21|Add JWT authentication and login token response
+
+backend/routers/auth_router.py
+4c3fbfbc95887d6cfd1ea565a01ac6cf0b3d795b|Merge login logout feature and resolve register conflict
+29842380c71496a4ad9a6810e02652bd75fc218d|Add registration input validation
+
+frontend/pages/register.html
+65c42dd51b99b6be62955a20ff953df906cdd7b4|Fix logout and protect dashboard from unauthorized access
+
+frontend/pages/dashboard.html
+e98d150e3c1f5341b308ff2c72c9a64cd3c913d7|Fix login authentication flow
+
+backend/routers/auth_router.py
+c9280ce3f5c9e2a8ef4de065458529274790c655|:wqMerge remote-tracking branch 'origin/feature/forgot-password' into feature/scrum-40-account-verification
+8c76780fae648e2b06a7dd1f71a372b90a3486f3|Add account verification frontend and authentication updates
+
+backend/database/inspect_users_columns.py
+backend/main.py
+backend/routers/auth_router.py
+frontend/assets/images/dietrx-logo.png
+frontend/css/login.css
+frontend/css/register.css
+frontend/js/api.js
+frontend/js/auth.js
+frontend/pages/login.html
+frontend/pages/register.html
+frontend/pages/verify-email.html
+60eee9754bb7b5c25fd6397c74d5e81f2f6e3e70|schema: update patient verification columns
+
+backend/database/schema.sql
+f9135500a37b7cf324c02d7a49faae37c2d814fd|Complete SCRUM-39 registration backend and frontend wiring
+
+backend/main.py
+backend/routers/auth_router.py
+frontend/js/register.js
+d5d34c2a62fc9dcc02b1e289fe9e8467944a69a3|Merge remote-tracking branch 'origin/fastapi-migration' into feature-authentication
+dcb7d47995c0adfeb8bf62ed38fb308dfdebfcb1|Merge pull request #1 from fatematuzmahi/feature/database-setup
+cf4a21e8692a03b5e6d3f1c8ab57cf7a6494f3a2|Fix registration form structure
+
+frontend/pages/register.html
+9795379da37b6e57251aa8c9b422cfacce5b814b|feat: setup oracle database connection using sqlalchemy and python-oracledb
+
+backend/database/connection.py
+backend/database/schema.sql
+a9c019d7ca49601a10d0187f58bf9f4a55acaff9|Add registration UI and frontend validation
+
+frontend/css/register.css
+frontend/js/register.js
+frontend/pages/register.html
+11cf0f2b146b6fd3b248ee223893a47c154aabbd|Add FastAPI authentication router
+
+backend/main.py
+backend/routers/auth_router.py
+b2c09af6dfc4a0c6cd4169b1f1928e15eb26eba5|Add authentication schema placeholder
+
+backend/schemas/auth_schema.py
+2acb3993b867291d79f3b68965c648cb1bea8047|Import existing DietRx UI templates and static assets
+
+frontend/static/css/components.css
+frontend/static/css/dashboard.css
+frontend/static/css/style.css
+frontend/static/js/app.js
+frontend/static/js/charts.js
+frontend/static/js/dashboard.js
+frontend/templates/activity/index.html
+frontend/templates/authentication/forgot_password.html
+frontend/templates/authentication/login.html
+frontend/templates/authentication/logout.html
+frontend/templates/authentication/password_reset.html
+frontend/templates/authentication/password_reset_complete.html
+frontend/templates/authentication/password_reset_done.html
+frontend/templates/authentication/password_reset_email.txt
+frontend/templates/authentication/password_reset_subject.txt
+frontend/templates/authentication/register.html
+frontend/templates/base.html
+frontend/templates/base_auth.html
+frontend/templates/budget/index.html
+frontend/templates/caregiver/index.html
+frontend/templates/daily_log/index.html
+frontend/templates/dashboard/index.html
+frontend/templates/diet/local_foods.html
+frontend/templates/diet/plan.html
+frontend/templates/dish_dna/index.html
+frontend/templates/errors/403.html
+frontend/templates/errors/404.html
+frontend/templates/errors/500.html
+frontend/templates/errors/base_error.html
+frontend/templates/grocery/index.html
+frontend/templates/notifications/index.html
+frontend/templates/partials/alerts.html
+frontend/templates/partials/empty_state.html
+frontend/templates/partials/footer.html
+frontend/templates/partials/loading.html
+frontend/templates/partials/navbar.html
+frontend/templates/partials/page_header.html
+frontend/templates/partials/sidebar.html
+frontend/templates/partials/status_badge.html
+frontend/templates/partials/toast.html
+frontend/templates/prescription/conflicts.html
+frontend/templates/prescription/list.html
+frontend/templates/prescription/upload.html
+frontend/templates/professional/index.html
+frontend/templates/profile/index.html
+frontend/templates/progress/index.html
+frontend/templates/safety/index.html
+frontend/templates/settings/index.html
+70f70173b409dee1971e807ecd409abfd69ebff9|Add FastAPI and Oracle dependencies
+
+requirements.txt
+89d56ac7c05af02d4f39c4fdcc5e9b0d83bdaae3|Initialize FastAPI backend structure
+
+backend/core/_ _init_ _.py
+backend/main.py
+backend/routers/_ _init_ _.py
+backend/schemas/_ _init_ _.py
+backend/uploads/.gitkeep
+eb092077b9e511f2fc2142315219444438c7a7af|first commit
+
+.env.example
+.gitignore
+AI/datasets/.gitkeep
+AI/models/.gitkeep
+AI/notebooks/.gitkeep
+AI/training/.gitkeep
+README.md
+backend/__init__.py
+backend/app.py
+backend/config.py
+backend/database/schema.sql
+backend/extensions.py
+backend/models/__init__.py
+backend/models/diet_plan.py
+backend/models/food.py
+backend/models/prescription.py
+backend/models/user.py
+backend/routes/__init__.py
+backend/routes/auth_routes.py
+backend/routes/diet_routes.py
+backend/routes/grocery_routes.py
+backend/routes/safety_routes.py
+backend/services/__init__.py
+backend/services/budget_optimizer.py
+backend/services/conflict_resolver.py
+backend/services/diet_generator.py
+backend/services/food_checker.py
+backend/utils/__init__.py
+backend/utils/helper.py
+docs/Research/.gitkeep
+docs/SRS/.gitkeep
+docs/UML/.gitkeep
+docs/photo_2026-09-21_22-29-02.jpg
+docs/photo_2026-09-21_22-29-07.jpg
+frontend/assets/icons/.gitkeep
+frontend/assets/images/.gitkeep
+frontend/css/dashboard.css
+frontend/css/responsive.css
+frontend/css/style.css
+frontend/index.html
+frontend/js/api.js
+frontend/js/auth.js
+frontend/js/diet.js
+frontend/js/main.js
+frontend/pages/dashboard.html
+frontend/pages/diet_plan.html
+frontend/pages/dish_dna.html
+frontend/pages/grocery.html
+frontend/pages/login.html
+frontend/pages/register.html
+frontend/pages/safety_checker.html
+modules/Module1_Diet_Intelligence/.gitkeep
+modules/Module2_Safety_Monitoring/.gitkeep
+modules/Module3_Budget_Grocery/.gitkeep
+requirements.txt
+tests/__init__.py
+tests/backend_tests/test_auth_and_safety.py
+tests/backend_tests/test_health.py
+tests/frontend_tests/README.md
+ok

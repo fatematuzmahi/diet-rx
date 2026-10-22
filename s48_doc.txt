@@ -1,0 +1,16 @@
+d:\software lab\dietRx\docs\photo_2026-09-21_22-29-02.jpg
+d:\software lab\dietRx\docs\photo_2026-09-21_22-29-07.jpg
+d:\software lab\dietRx\docs\Research
+d:\software lab\dietRx\docs\SRS
+d:\software lab\dietRx\docs\UML
+d:\software lab\dietRx\docs\Research\.gitkeep
+d:\software lab\dietRx\docs\SRS\.gitkeep
+d:\software lab\dietRx\docs\UML\.gitkeep
+d:\software lab\dietRx\AI\datasets
+d:\software lab\dietRx\AI\models
+d:\software lab\dietRx\AI\notebooks
+d:\software lab\dietRx\AI\training
+d:\software lab\dietRx\AI\datasets\.gitkeep
+d:\software lab\dietRx\AI\models\.gitkeep
+d:\software lab\dietRx\AI\notebooks\.gitkeep
+d:\software lab\dietRx\AI\training\.gitkeep
