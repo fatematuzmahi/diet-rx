@@ -11,3 +11,10 @@ instance/
 .DS_Store
 Thumbs.db
 node_modules/
+
+# Temporary AI-generated log files, test outputs, and draft files
+s48_*
+_pyflakes.txt
+_full_out.txt
+_fix_rowcount.py
+s48_pdf/

@@ -1,6 +1,0 @@
-DietRx_73_merged.txt
-DietRx_Chapter5.txt
-DietRx_Final_SRS_Report_Revised.txt
-DietRx_Final_SRS_Requirement_73.txt
-Software_SRS_Final_REport.txt
-SRS_Final_REPORT_DietRx.txt

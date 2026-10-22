@@ -1,3 +1,0 @@
-﻿D:\software lab\dietRx\modules\Module1_Diet_Intelligence\.gitkeep
-D:\software lab\dietRx\modules\Module2_Safety_Monitoring\.gitkeep
-D:\software lab\dietRx\modules\Module3_Budget_Grocery\.gitkeep

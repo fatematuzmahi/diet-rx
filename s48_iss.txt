@@ -1,3 +1,0 @@
-﻿COUNT 1
-1 | feat: setup Oracle FreeSQL database connection | Summary
- This PR establishes a production-ready, secure database connection between the FastAPI backend and Oracle FreeSQL (Cloud) using SQLAlchemy an

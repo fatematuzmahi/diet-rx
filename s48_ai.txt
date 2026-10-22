@@ -1,9 +1,0 @@
-﻿
-FullName                                     Length
---------                                     ------
-D:\software lab\dietRx\AI\datasets\.gitkeep       1
-D:\software lab\dietRx\AI\models\.gitkeep         1
-D:\software lab\dietRx\AI\notebooks\.gitkeep      1
-D:\software lab\dietRx\AI\training\.gitkeep       1
-
-
