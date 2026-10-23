@@ -1,16 +1,46 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Dish DNA | DietRx</title><link rel="stylesheet" href="../css/style.css"></head><body><main class="page"><header class="site-header">
-    <a class="brand" href="../index.html">DietRx</a>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dish DNA | DietRx</title>
+    <link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/dish_dna.css">
+</head>
+<body>
+    <header class="site-header">
+        <a class="brand" href="../index.html">DietRx</a>
 
-    <nav>
-        <a href="dashboard.html">Dashboard</a>
-        <a href="diet_plan.html">Diet plan</a>
-        <a href="prescriptions.html">Prescriptions</a>
-        <a href="safety_checker.html">Safety</a>
-        <a href="grocery.html">Grocery</a>
-        <a href="meal-plan.html">Meal Plan</a>
-        <a href="dish_dna.html">Dish DNA</a>
-        <a href="#" id="logoutBtn">Logout</a>
-    </nav>
-</header>
+        <nav>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="diet_plan.html">Diet plan</a>
+            <a href="prescriptions.html">Prescriptions</a>
+            <a href="safety_checker.html">Safety</a>
+            <a href="grocery.html">Grocery</a>
+            <a href="meal-plan.html">Meal Plan</a>
+            <a href="dish_dna.html">Dish DNA</a>
+            <a href="#" id="logoutBtn">Logout</a>
+        </nav>
+    </header>
 
-<h1>Dish DNA</h1><p>Nutrition, ingredients, and dietary suitability for local dishes.</p></main></body></html>
+    <main class="page">
+        <section class="dish-dna-section">
+            <div class="search-bar-wrapper">
+                <input type="text" id="dish-search" class="search-input" placeholder="Search for a local dish...">
+                <button class="button" id="search-btn">Search</button>
+            </div>
+
+            <div id="dish-list" class="dish-list">
+                <!-- Dishes will be rendered here by JavaScript -->
+            </div>
+
+            <div id="dish-detail" class="dish-detail" hidden>
+                <!-- Dish DNA card will be rendered here -->
+            </div>
+        </section>
+    </main>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/dish_dna.js"></script>
+</body>
+</html>
