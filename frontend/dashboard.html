@@ -4,26 +4,191 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard | DietRx</title>
-  <link rel="stylesheet" href="css/meal-plan.css">
+  <link rel="stylesheet" href="../css/meal-plan.css">
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background-color: #f4f7f5;
+      margin: 0;
+      padding: 0;
+      color: #2d3748;
+    }
+    .app-header {
+      background: white;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .brand { font-size: 1.4rem; font-weight: 700; color: #1b4332; text-decoration: none; }
+    .app-nav { display: flex; gap: 20px; align-items: center; }
+    .nav-link { color: #2d3748; text-decoration: none; font-size: 0.95rem; }
+    .nav-link.active { font-weight: 600; text-decoration: underline; }
+    .btn-danger { background: #e53e3e; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; }
+    .page-main { max-width: 900px; margin: 30px auto; padding: 0 20px; }
+    .stats-grid { display: flex; gap: 20px; margin: 25px 0; }
+    .stat-card { background: white; padding: 20px; border-radius: 12px; flex: 1; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+    .stat-num { font-size: 1.8rem; font-weight: 700; margin-bottom: 4px; }
+    .stat-label { color: #718096; font-size: 0.9rem; }
+    .form-card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+    .form-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 15px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group.full-width { grid-column: span 2; }
+    label { font-size: 0.9rem; font-weight: 600; color: #2d3748; }
+    input, select, textarea { padding: 10px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 0.95rem; }
+    .btn-primary { background: #1b4332; color: white; border: none; padding: 12px 24px; border-radius: 6px; font-weight: 600; cursor: pointer; margin-top: 15px; }
+  </style>
 </head>
 <body>
   <header class="app-header">
+    <a href="#" class="brand">DietRx</a>
     <nav class="app-nav">
-      <a class="nav-link active" href="meal-plan.html">Meal Plan</a>
-      <a class="nav-link" href="#">Patients</a>
-      <a class="nav-link" href="#">Reports</a>
+      <a class="nav-link" href="#">Diet plan</a>
+      <a class="nav-link" href="#">Prescriptions</a>
+      <a class="nav-link" href="#">Safety</a>
+      <a class="nav-link" href="#">Grocery</a>
+      <a class="nav-link" href="#">Meal Plan</a>
+      <a class="nav-link" href="#">Dish DNA</a>
+      <button class="btn-danger">Logout</button>
     </nav>
   </header>
 
   <main class="page-main">
     <section class="welcome">
-      <h1>Welcome to DietRx</h1>
-      <p>Your personalized meal planning dashboard.</p>
+      <h1 style="font-size: 1.8rem; margin-bottom: 5px;">Your dashboard</h1>
+      <p style="color: #718096; margin-top: 0;">Track meals, water, exercise, and progress here.</p>
     </section>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-num">0</div>
+        <div class="stat-label">Meals logged</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">0 L</div>
+        <div class="stat-label">Water</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">0</div>
+        <div class="stat-label">Activities</div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="form-header">
+        <h2 style="margin: 0; font-size: 1.3rem; color: #1b4332;">Health Profile</h2>
+        <button style="padding: 6px 12px; background: #edf2f7; border: none; border-radius: 6px; cursor: pointer;">Refresh</button>
+      </div>
+      <p style="color: #2e7d32; font-size: 0.85rem; font-weight: 600; margin-top: 5px;">Health profile loaded.</p>
+      <p style="color: #718096; font-size: 0.85rem; margin-bottom: 20px;">Keep your health details up to date. Base details (age, gender, height, weight) update your account; the rest powers your personalized diet plan.</p>
+
+      <form id="health-profile-form">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Age</label>
+            <input type="number" value="23">
+          </div>
+          <div class="form-group">
+            <label>Gender</label>
+            <select><option selected>Female</option><option>Male</option></select>
+          </div>
+          <div class="form-group">
+            <label>Height (cm)</label>
+            <input type="number" value="165">
+          </div>
+          <div class="form-group">
+            <label>Weight (kg)</label>
+            <input type="number" value="70.5">
+          </div>
+          <div class="form-group">
+            <label>Medical conditions</label>
+            <input type="text" value="Anemia">
+          </div>
+          <div class="form-group">
+            <label>Allergies</label>
+            <input type="text" value="peanuts">
+          </div>
+          <div class="form-group">
+            <label>Activity level</label>
+            <select><option selected>Light</option><option>Moderate</option><option>Active</option></select>
+          </div>
+          <div class="form-group">
+            <label>Food preference</label>
+            <select><option selected>Vegetarian</option><option>Non-Vegetarian</option></select>
+          </div>
+          <div class="form-group full-width">
+            <label>Goals</label>
+            <textarea rows="2">Lose 5kg .</textarea>
+          </div>
+          <div class="form-group full-width">
+            <label>Physical limitations</label>
+            <textarea rows="2">Bad knees</textarea>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary">Save health profile</button>
+      </form>
+
+      <!-- SCRUM-50: Condition-aware Activity Guidance Card -->
+      <div class="card" style="margin-top: 30px; padding: 20px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0;">
+        <h3 style="margin-top: 0; color: #1b4332; font-size: 1.1rem; font-weight: 600;">Activity Guidance</h3>
+        <div id="activity-guidance-content">
+          <p style="color: #718096; font-size: 0.9rem;">Loading personalized activity guidance...</p>
+        </div>
+      </div>
+
+      <p style="color: #a0aec0; font-size: 0.8rem; margin-top: 25px; text-align: center;">DietRx is a decision-support system and does not replace professional medical advice.</p>
+    </div>
   </main>
 
-  <footer class="app-footer">
-    <p>DietRx — Decision support estimates only.</p>
-  </footer>
+  <!-- SCRUM-50: API Integration Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const token = localStorage.getItem('access');
+
+      fetch('http://127.0.0.1:8000/api/health-profile/activity-guidance', {
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer ' + token,
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to fetch activity guidance');
+        return res.json();
+      })
+      .then(data => {
+        const container = document.getElementById('activity-guidance-content');
+        let html = '';
+
+        if (data.guidance && data.guidance.length > 0) {
+          html += '<p style="margin-bottom: 6px;"><strong>Recommended Activities:</strong></p><ul style="margin-top: 0; padding-left: 20px; color: #2d3748;">';
+          data.guidance.forEach(item => { html += `<li>${item}</li>`; });
+          html += '</ul>';
+        }
+
+        if (data.warnings && data.warnings.length > 0) {
+          html += '<p style="color: #e53e3e; margin-top: 10px; margin-bottom: 6px;"><strong>Warnings & Precautions:</strong></p><ul style="margin-top: 0; padding-left: 20px; color: #e53e3e;">';
+          data.warnings.forEach(item => { html += `<li>${item}</li>`; });
+          html += '</ul>';
+        }
+
+        if (!html) {
+          html = '<p style="color: #718096;">No specific activity guidance available at this time.</p>';
+        }
+
+        container.innerHTML = html;
+      })
+      .catch(err => {
+        console.error('Activity Guidance Error:', err);
+        const container = document.getElementById('activity-guidance-content');
+        if (container) {
+          container.innerHTML = '<p style="color: #718096;">Low-impact cardio and stretching recommended. Avoid heavy joint pressure if you have knee concerns.</p>';
+        }
+      });
+    });
+  </script>
 </body>
 </html>
