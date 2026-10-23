@@ -264,21 +264,21 @@ def supersede_previous_plans(cursor, patient_id: int) -> int:
     now = _utc_now_naive()
     cursor.execute(
         "UPDATE diet_plan SET status = :status, updated_at = :updated_at "
-        "WHERE patient_id = :patient_id AND status = :current",
+        "WHERE patient_id = :patient_id AND status = :current_status",
         status=STATUS_SUPERSEDED,
         updated_at=now,
         patient_id=patient_id,
-        current=STATUS_CURRENT,
+        current_status=STATUS_CURRENT,
     )
     diet_rows = cursor.rowcount or 0
 
     cursor.execute(
         "UPDATE activity_plan SET status = :status, updated_at = :updated_at "
-        "WHERE patient_id = :patient_id AND status = :current",
+        "WHERE patient_id = :patient_id AND status = :current_status",
         status=STATUS_SUPERSEDED,
         updated_at=now,
         patient_id=patient_id,
-        current=STATUS_CURRENT,
+        current_status=STATUS_CURRENT,
     )
     activity_rows = cursor.rowcount or 0
     return diet_rows + activity_rows
@@ -289,6 +289,7 @@ def _read_generated_id(plan_id_var) -> int:
     value = plan_id_var.getvalue()
     if isinstance(value, (list, tuple)):
         return int(value[0])
+    return int(value)
 
 
 # --------------------------------------------------------------------------- #
@@ -421,8 +422,6 @@ def _activities_from_rows(activity_rows) -> List[PlanActivity]:
                 PlanActivity(name=name, duration_minutes=duration, intensity=intensity)
             )
     return activities
-
-    return int(value)
 
 
 def _needs_review(conflicts: Sequence[Dict]) -> bool:

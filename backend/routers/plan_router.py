@@ -55,7 +55,7 @@ from backend.schemas.plan import (
     PlanSummary,
 )
 from backend.services import plan_service
-from backend.services.diet_generator import generate_diet_plan
+from backend.services.plan_generator import generate_plan
 
 logger = logging.getLogger(__name__)
 
@@ -237,7 +237,7 @@ def generate_my_plan(
         connection.rollback()
         logger.error(
             "SCRUM-48 plan generation failed: %s",
-            getattr(error.args[0] if error.args else None, "code", None),
+            error,
         )
         raise HTTPException(
             status_code=500, detail="Unable to generate the plan right now."
@@ -279,7 +279,7 @@ def read_my_current_plan(principal: Principal = Depends(require_patient)):
         connection.rollback()
         logger.error(
             "SCRUM-48 plan read failed: %s",
-            getattr(error.args[0] if error.args else None, "code", None),
+            error,
         )
         raise HTTPException(
             status_code=500, detail="Unable to read the stored plan right now."
@@ -330,7 +330,7 @@ def read_my_plan_history(principal: Principal = Depends(require_patient)):
         connection.rollback()
         logger.error(
             "SCRUM-48 plan history failed: %s",
-            getattr(error.args[0] if error.args else None, "code", None),
+            error,
         )
         raise HTTPException(
             status_code=500, detail="Unable to read the plan history right now."
@@ -338,4 +338,3 @@ def read_my_plan_history(principal: Principal = Depends(require_patient)):
     finally:
         cursor.close()
         connection.close()
-
