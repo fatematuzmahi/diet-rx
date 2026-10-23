@@ -249,3 +249,65 @@ def update_my_health_profile(
         cursor.close()
         connection.close()
 
+# --------------------------------------------------------------------------- #
+# GET /api/health-profile/activity-guidance (SCRUM-50)
+# --------------------------------------------------------------------------- #
+@router.get("/activity-guidance")
+def get_activity_guidance(
+    principal: Principal = Depends(require_patient),
+):
+    """Generate condition-aware activity guidance for the authenticated patient."""
+    patient_id = _patient_pk(principal)
+    connection = _require_connection()
+    cursor = connection.cursor()
+
+    try:
+        cursor.execute(
+            """
+            SELECT conditions, activity_level, physical_limitations
+            FROM health_profile
+            WHERE patient_id = :patient_id
+            """,
+            patient_id=patient_id,
+        )
+        row = cursor.fetchone()
+
+        if row is None:
+            return {
+                "guidance": ["Please complete your health profile to receive personalized activity recommendations."],
+                "warnings": []
+            }
+
+        conditions, activity_level, physical_limitations = row
+        guidance = []
+        warnings = []
+
+        conditions_str = (conditions or "").lower()
+        limitations_str = (physical_limitations or "").lower()
+
+        # Condition-aware guidance rules
+        if "hypertension" in conditions_str or "high blood pressure" in conditions_str:
+            guidance.append("Engage in moderate-intensity aerobic exercises like brisk walking, swimming, or cycling (30 mins/day).")
+            warnings.append("Avoid heavy weightlifting or high-intensity interval training without medical supervision.")
+
+        if "diabetes" in conditions_str:
+            guidance.append("Maintain a consistent workout schedule to help regulate blood glucose levels.")
+            warnings.append("Check blood sugar levels before and after intense exercise.")
+
+        if "joint" in limitations_str or "arthritis" in conditions_str:
+            guidance.append("Focus on low-impact activities such as swimming, water aerobics, or stationary cycling.")
+            warnings.append("Avoid high-impact jumping or heavy running.")
+
+        if not guidance:
+            guidance.append("Maintain at least 150 minutes of moderate physical activity per week.")
+
+        return {
+            "patient_id": patient_id,
+            "conditions": conditions,
+            "activity_level": activity_level,
+            "guidance": guidance,
+            "warnings": warnings,
+        }
+    finally:
+        cursor.close()
+        connection.close()
