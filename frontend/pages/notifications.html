@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reminders | DietRx</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/notifications.css">
+</head>
+<body>
+    <header class="site-header">
+        <a class="brand brand-logo" href="../index.html" aria-label="DietRx home">
+            <img src="../assets/images/dietrx-logo.png" alt="DietRx" onerror="this.hidden=true; this.nextElementSibling.hidden=false;">
+            <span hidden>DietRx</span>
+        </a>
+        <nav>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="diet_plan.html">Diet plan</a>
+            <a href="prescriptions.html">Prescriptions</a>
+            <a href="safety_checker.html">Safety</a>
+            <a href="grocery.html">Grocery</a>
+            <a href="meal-plan.html">Meal Plan</a>
+            <a href="dish_dna.html">Dish DNA</a>
+            <a href="daily_log.html">Daily Log</a>
+            <a href="notifications.html" aria-current="page">Reminders</a>
+            <a href="#" id="logoutBtn">Logout</a>
+        </nav>
+    </header>
+
+    <main class="page nt-page">
+        <!-- Hero -->
+        <section class="nt-hero">
+            <div class="nt-hero-text">
+                <p class="nt-eyebrow" id="nt-date">Today</p>
+                <h1>Reminders &amp; Alerts</h1>
+                <p class="nt-sub">Gentle nudges for meals, water, medicine, activity and goals, plus safety alerts when something needs your attention.</p>
+                <div class="nt-hero-actions">
+                    <button type="button" class="nt-btn nt-btn-light" id="nt-desktop-btn">🔔 Enable desktop alerts</button>
+                    <a class="nt-btn nt-btn-ghost" href="#nt-reminders">Manage reminders ↓</a>
+                </div>
+            </div>
+            <div class="nt-bell" aria-label="Unread notifications">
+                <span class="nt-bell-icon" aria-hidden="true">🔔</span>
+                <strong id="nt-unread">0</strong>
+                <span>unread today</span>
+            </div>
+        </section>
+
+        <!-- Stats -->
+        <section class="nt-stats" aria-label="Last 7 days">
+            <article class="nt-stat"><span>📬</span><div><strong id="st-delivered">0</strong><small>Shown (7 days)</small></div></article>
+            <article class="nt-stat"><span>✅</span><div><strong id="st-rate">0%</strong><small>Marked done</small></div></article>
+            <article class="nt-stat"><span>⏳</span><div><strong id="st-pending">0</strong><small>Still open</small></div></article>
+            <article class="nt-stat"><span>🛡️</span><div><strong id="st-safety">0</strong><small>Safety alerts</small></div></article>
+        </section>
+
+        <div class="nt-grid">
+            <!-- Today's feed -->
+            <section class="nt-card nt-feed-card">
+                <div class="nt-card-head">
+                    <h2>Today</h2>
+                    <button type="button" class="nt-link-btn" id="nt-refresh">↻ Refresh</button>
+                </div>
+                <div id="nt-feed" aria-live="polite"></div>
+            </section>
+
+            <!-- Reminder form -->
+            <section class="nt-card nt-form-card" id="nt-form-card">
+                <div class="nt-card-head">
+                    <h2 id="nt-form-title">New reminder</h2>
+                    <button type="button" class="nt-link-btn" id="nt-cancel-edit" hidden>Cancel edit</button>
+                </div>
+                <form id="nt-form" novalidate>
+                    <fieldset class="nt-field">
+                        <legend>Type</legend>
+                        <div class="nt-chips" id="nt-type-options">
+                            <label class="nt-chip"><input type="radio" name="rtype" value="MEAL" checked><span>🍽️ Meal</span></label>
+                            <label class="nt-chip"><input type="radio" name="rtype" value="WATER"><span>💧 Water</span></label>
+                            <label class="nt-chip"><input type="radio" name="rtype" value="MEDICATION"><span>💊 Medicine</span></label>
+                            <label class="nt-chip"><input type="radio" name="rtype" value="EXERCISE"><span>🏃 Exercise</span></label>
+                            <label class="nt-chip"><input type="radio" name="rtype" value="GOAL"><span>🎯 Goal</span></label>
+                        </div>
+                    </fieldset>
+
+                    <div class="nt-row">
+                        <div class="nt-field nt-grow">
+                            <label for="nt-title">Title</label>
+                            <input type="text" id="nt-title" maxlength="150" placeholder="e.g. Lunch">
+                        </div>
+                        <div class="nt-field">
+                            <label for="nt-time">Time</label>
+                            <input type="time" id="nt-time" value="08:00">
+                        </div>
+                    </div>
+
+                    <fieldset class="nt-field">
+                        <legend>Repeat on</legend>
+                        <div class="nt-days" id="nt-days">
+                            <label><input type="checkbox" value="MON" checked><span>M</span></label>
+                            <label><input type="checkbox" value="TUE" checked><span>T</span></label>
+                            <label><input type="checkbox" value="WED" checked><span>W</span></label>
+                            <label><input type="checkbox" value="THU" checked><span>T</span></label>
+                            <label><input type="checkbox" value="FRI" checked><span>F</span></label>
+                            <label><input type="checkbox" value="SAT" checked><span>S</span></label>
+                            <label><input type="checkbox" value="SUN" checked><span>S</span></label>
+                        </div>
+                        <div class="nt-presets">
+                            <button type="button" class="nt-mini" data-days="ALL">Every day</button>
+                            <button type="button" class="nt-mini" data-days="WEEKDAYS">Weekdays</button>
+                            <button type="button" class="nt-mini" data-days="WEEKEND">Weekend</button>
+                        </div>
+                    </fieldset>
+
+                    <div class="nt-field">
+                        <label for="nt-message">Note <span class="nt-optional">optional</span></label>
+                        <input type="text" id="nt-message" maxlength="300" placeholder="e.g. Take with food">
+                    </div>
+
+                    <p class="nt-form-error" id="nt-form-error" role="alert" hidden></p>
+                    <button type="submit" class="nt-submit" id="nt-submit">Save reminder</button>
+                </form>
+            </section>
+        </div>
+
+        <!-- Reminder list -->
+        <section class="nt-card nt-list-card" id="nt-reminders">
+            <div class="nt-card-head">
+                <h2>My reminders</h2>
+                <span class="nt-count" id="nt-count">0</span>
+            </div>
+            <div id="nt-list"></div>
+        </section>
+
+        <p class="nt-disclaimer">DietRx reminders and alerts are decision support only. They are not a medical diagnosis or emergency advice. If you feel unwell, contact your doctor or local emergency services.</p>
+    </main>
+
+    <div class="nt-toast" id="nt-toast" role="status" aria-live="polite" hidden></div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/notifications.js"></script>
+</body>
+</html>

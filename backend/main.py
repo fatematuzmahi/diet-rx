@@ -10,6 +10,7 @@ from backend.routers.prescription_router import router as prescription_router
 from backend.routers.dish_dna_router import router as dish_dna_router
 from backend.routers.plan_router import router as plan_router
 from backend.routers.daily_log_router import router as daily_log_router
+from backend.routers.notification_router import router as notification_router
 
 
 app = FastAPI(
@@ -39,6 +40,7 @@ app.include_router(prescription_router)
 app.include_router(dish_dna_router)
 app.include_router(plan_router)
 app.include_router(daily_log_router)
+app.include_router(notification_router)
 
 
 @app.get("/")
