@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Log | DietRx</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/daily_log.css">
+</head>
+<body>
+    <header class="site-header">
+        <a class="brand" href="../index.html">DietRx</a>
+
+        <nav>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="diet_plan.html">Diet plan</a>
+            <a href="prescriptions.html">Prescriptions</a>
+            <a href="safety_checker.html">Safety</a>
+            <a href="grocery.html">Grocery</a>
+            <a href="meal-plan.html">Meal Plan</a>
+            <a href="dish_dna.html">Dish DNA</a>
+            <a href="daily_log.html" aria-current="page">Daily Log</a>
+            <a href="#" id="logoutBtn">Logout</a>
+        </nav>
+    </header>
+
+    <main class="page dl-page">
+        <!-- Hero + date navigation -->
+        <section class="dl-hero">
+            <div class="dl-hero-text">
+                <p class="dl-eyebrow">Your day at a glance</p>
+                <h1>Daily Log</h1>
+                <p class="dl-sub">Record meals, water, activity, medicine and goals. Every entry is linked to your current plan.</p>
+            </div>
+            <div class="dl-date-nav" aria-label="Choose a day">
+                <button type="button" class="dl-icon-btn" id="dl-prev" aria-label="Previous day">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+                </button>
+                <label class="dl-date-pill">
+                    <span id="dl-date-label">Today</span>
+                    <input type="date" id="dl-date" aria-label="Log date">
+                </label>
+                <button type="button" class="dl-icon-btn" id="dl-next" aria-label="Next day">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+                </button>
+            </div>
+        </section>
+
+        <div id="dl-plan-banner" class="dl-banner" hidden></div>
+
+        <!-- Progress rings -->
+        <section class="dl-rings" aria-label="Progress for this day">
+            <article class="dl-ring-card dl-c-water">
+                <div class="dl-ring-wrap">
+                    <svg class="dl-ring" viewBox="0 0 80 80" aria-hidden="true">
+                        <circle class="dl-ring-track" cx="40" cy="40" r="34"/>
+                        <circle class="dl-ring-bar" id="ring-water" cx="40" cy="40" r="34"/>
+                    </svg>
+                    <span class="dl-ring-icon" aria-hidden="true">💧</span>
+                </div>
+                <div class="dl-ring-text">
+                    <small>Water</small>
+                    <strong><span id="val-water">0</span><em> / 2000 ml</em></strong>
+                </div>
+            </article>
+            <article class="dl-ring-card dl-c-meal">
+                <div class="dl-ring-wrap">
+                    <svg class="dl-ring" viewBox="0 0 80 80" aria-hidden="true">
+                        <circle class="dl-ring-track" cx="40" cy="40" r="34"/>
+                        <circle class="dl-ring-bar" id="ring-meal" cx="40" cy="40" r="34"/>
+                    </svg>
+                    <span class="dl-ring-icon" aria-hidden="true">🍽️</span>
+                </div>
+                <div class="dl-ring-text">
+                    <small>Meals</small>
+                    <strong><span id="val-meal">0</span><em> / 4</em></strong>
+                </div>
+            </article>
+            <article class="dl-ring-card dl-c-activity">
+                <div class="dl-ring-wrap">
+                    <svg class="dl-ring" viewBox="0 0 80 80" aria-hidden="true">
+                        <circle class="dl-ring-track" cx="40" cy="40" r="34"/>
+                        <circle class="dl-ring-bar" id="ring-activity" cx="40" cy="40" r="34"/>
+                    </svg>
+                    <span class="dl-ring-icon" aria-hidden="true">🏃</span>
+                </div>
+                <div class="dl-ring-text">
+                    <small>Activity</small>
+                    <strong><span id="val-activity">0</span><em> / 30 min</em></strong>
+                </div>
+            </article>
+            <article class="dl-ring-card dl-c-med">
+                <div class="dl-ring-wrap">
+                    <svg class="dl-ring" viewBox="0 0 80 80" aria-hidden="true">
+                        <circle class="dl-ring-track" cx="40" cy="40" r="34"/>
+                        <circle class="dl-ring-bar" id="ring-med" cx="40" cy="40" r="34"/>
+                    </svg>
+                    <span class="dl-ring-icon" aria-hidden="true">💊</span>
+                </div>
+                <div class="dl-ring-text">
+                    <small>Medicine</small>
+                    <strong><span id="val-med">—</span><em id="val-med-sub"> taken</em></strong>
+                </div>
+            </article>
+        </section>
+
+        <!-- Quick actions -->
+        <section class="dl-quick" aria-label="Quick add">
+            <span class="dl-quick-label">Quick add</span>
+            <button type="button" class="dl-quick-btn dl-c-water" data-water="250">💧 +250 ml</button>
+            <button type="button" class="dl-quick-btn dl-c-water" data-water="500">💧 +500 ml</button>
+            <button type="button" class="dl-quick-btn dl-c-meal" data-quick-tab="MEAL">🍽️ Meal</button>
+            <button type="button" class="dl-quick-btn dl-c-activity" data-quick-tab="ACTIVITY">🏃 Activity</button>
+            <button type="button" class="dl-quick-btn dl-c-med" data-quick-tab="MEDICATION">💊 Medicine</button>
+            <button type="button" class="dl-quick-btn dl-c-goal" data-quick-tab="GOAL">🎯 Goal</button>
+        </section>
+
+        <div class="dl-grid">
+            <!-- Entry form -->
+            <section class="dl-card dl-form-card" id="dl-form-card">
+                <div class="dl-card-head">
+                    <h2 id="dl-form-title">Add an entry</h2>
+                    <button type="button" class="dl-link-btn" id="dl-cancel-edit" hidden>Cancel edit</button>
+                </div>
+
+                <div class="dl-tabs" role="tablist" aria-label="Entry type">
+                    <button type="button" role="tab" class="dl-tab" data-type="MEAL">🍽️<span>Meal</span></button>
+                    <button type="button" role="tab" class="dl-tab" data-type="WATER">💧<span>Water</span></button>
+                    <button type="button" role="tab" class="dl-tab" data-type="ACTIVITY">🏃<span>Activity</span></button>
+                    <button type="button" role="tab" class="dl-tab" data-type="MEDICATION">💊<span>Medicine</span></button>
+                    <button type="button" role="tab" class="dl-tab" data-type="GOAL">🎯<span>Goal</span></button>
+                </div>
+
+                <form id="dl-form" novalidate>
+                    <fieldset class="dl-field" data-for="MEAL">
+                        <legend>Which meal?</legend>
+                        <div class="dl-chips" id="dl-slot-options">
+                            <label class="dl-chip"><input type="radio" name="slot" value="BREAKFAST"><span>🌅 Breakfast</span></label>
+                            <label class="dl-chip"><input type="radio" name="slot" value="LUNCH"><span>☀️ Lunch</span></label>
+                            <label class="dl-chip"><input type="radio" name="slot" value="SNACK"><span>🍎 Snack</span></label>
+                            <label class="dl-chip"><input type="radio" name="slot" value="DINNER"><span>🌙 Dinner</span></label>
+                        </div>
+                    </fieldset>
+
+                    <div class="dl-field" data-for="MEAL ACTIVITY MEDICATION GOAL">
+                        <label for="dl-title" id="dl-title-label">What did you eat?</label>
+                        <input type="text" id="dl-title" maxlength="150" autocomplete="off">
+                        <datalist id="dl-dish-options"></datalist>
+                        <p class="dl-hint" id="dl-title-hint" hidden></p>
+                    </div>
+
+                    <div class="dl-field" data-for="MEAL WATER ACTIVITY MEDICATION">
+                        <label for="dl-quantity" id="dl-quantity-label">Servings</label>
+                        <div class="dl-qty-row">
+                            <input type="number" id="dl-quantity" min="0" step="any" inputmode="decimal">
+                            <span class="dl-unit" id="dl-unit">serving</span>
+                        </div>
+                        <div class="dl-chips dl-presets" data-for="WATER">
+                            <button type="button" class="dl-chip-btn" data-preset="150">150 ml</button>
+                            <button type="button" class="dl-chip-btn" data-preset="250">250 ml</button>
+                            <button type="button" class="dl-chip-btn" data-preset="500">500 ml</button>
+                            <button type="button" class="dl-chip-btn" data-preset="750">750 ml</button>
+                        </div>
+                    </div>
+
+                    <fieldset class="dl-field" data-for="ACTIVITY MEDICATION GOAL">
+                        <legend id="dl-status-legend">Status</legend>
+                        <div class="dl-chips" id="dl-status-options"></div>
+                    </fieldset>
+
+                    <div class="dl-field dl-field-time">
+                        <label for="dl-time">Time</label>
+                        <input type="time" id="dl-time">
+                    </div>
+
+                    <div class="dl-field">
+                        <label for="dl-notes">Notes <span class="dl-optional">optional</span></label>
+                        <textarea id="dl-notes" rows="2" maxlength="500" placeholder="Anything worth remembering?"></textarea>
+                    </div>
+
+                    <p class="dl-form-error" id="dl-form-error" role="alert" hidden></p>
+
+                    <button type="submit" class="dl-submit" id="dl-submit">Save entry</button>
+                </form>
+            </section>
+
+            <!-- Timeline -->
+            <section class="dl-card dl-timeline-card">
+                <div class="dl-card-head">
+                    <h2>Entries</h2>
+                    <span class="dl-count" id="dl-count">0</span>
+                </div>
+                <div id="dl-timeline" aria-live="polite"></div>
+            </section>
+        </div>
+
+        <!-- Weekly / monthly trend -->
+        <section class="dl-card dl-trend-card">
+            <div class="dl-card-head dl-trend-head">
+                <div>
+                    <h2>Your progress</h2>
+                    <p class="dl-streak" id="dl-streak" hidden></p>
+                </div>
+                <div class="dl-toggles">
+                    <div class="dl-segment" role="group" aria-label="Metric">
+                        <button type="button" data-metric="water_ml" class="is-active">Water</button>
+                        <button type="button" data-metric="activity_min">Activity</button>
+                        <button type="button" data-metric="meals">Meals</button>
+                    </div>
+                    <div class="dl-segment" role="group" aria-label="Range">
+                        <button type="button" data-days="7" class="is-active">7 days</button>
+                        <button type="button" data-days="30">30 days</button>
+                    </div>
+                </div>
+            </div>
+            <div class="dl-chart" id="dl-chart" aria-live="polite"></div>
+            <p class="dl-trend-note" id="dl-trend-note"></p>
+        </section>
+
+        <p class="dl-disclaimer">DietRx is a decision-support system and does not replace professional medical advice. Daily logs are self-reported. If you feel unwell or are unsure about a medicine, contact your doctor.</p>
+    </main>
+
+    <div class="dl-toast" id="dl-toast" role="status" aria-live="polite" hidden></div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/daily_log.js"></script>
+</body>
+</html>

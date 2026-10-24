@@ -9,6 +9,7 @@ from backend.routers.health_profile_router import router as health_profile_route
 from backend.routers.prescription_router import router as prescription_router
 from backend.routers.dish_dna_router import router as dish_dna_router
 from backend.routers.plan_router import router as plan_router
+from backend.routers.daily_log_router import router as daily_log_router
 
 
 app = FastAPI(
@@ -29,7 +30,6 @@ app.add_middleware(
 )
 
 
-
 app.include_router(password_router)
 app.include_router(auth_router)
 app.include_router(doctor_router)
@@ -38,6 +38,7 @@ app.include_router(health_profile_router)
 app.include_router(prescription_router)
 app.include_router(dish_dna_router)
 app.include_router(plan_router)
+app.include_router(daily_log_router)
 
 
 @app.get("/")
