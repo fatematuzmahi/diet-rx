@@ -177,6 +177,10 @@
             list.appendChild(item);
         });
         activitiesEl.appendChild(list);
+        // Safety cautions for the activities (knee, anaemia, heart ...).
+        (plan.cautions || []).forEach(function (caution) {
+            activitiesEl.appendChild(makeElement("p", "plan-activity-caution", "⚠️ " + caution));
+        });
     }
 
     function renderList(node, entries) {

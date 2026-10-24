@@ -389,6 +389,7 @@ def row_to_plan(cursor, row) -> Dict[str, Any]:
         "requires_review": bool(requires_review),
         "budget_notes": snapshot.get("budget_notes", []) if isinstance(snapshot, dict) else [],
         "notes": snapshot.get("notes", []) if isinstance(snapshot, dict) else [],
+        "cautions": snapshot.get("cautions", []) if isinstance(snapshot, dict) else [],
     }
 
 

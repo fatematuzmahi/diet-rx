@@ -188,7 +188,7 @@ RESTRICTION_ADJUSTMENTS: Dict[str, List[str]] = {
     "high_protein": ["Include an extra protein source such as eggs, dal, soy or paneer."],
     "low_protein": ["Keep protein portions moderate and discuss amounts with your doctor."],
     "low_purine": ["Limit organ meats, red meat and concentrated meat gravies."],
-    "vegetarian": ["No meat or fish; protein comes from dal, soy, paneer, eggs or curd."],
+    "vegetarian": ["No meat, fish or eggs; protein comes from dal, soy, paneer or curd."],
     "vegan": ["No animal products; protein comes from dal, soy, nuts and seeds."],
     "gluten_free": ["Use rice, millet or potato instead of wheat-based breads."],
     "lactose_free": ["Use lactose-free milk or soy alternatives instead of plain curd."],
@@ -196,23 +196,109 @@ RESTRICTION_ADJUSTMENTS: Dict[str, List[str]] = {
     "reduce_calories": ["Keep portions modest and avoid fried snacks and sugary drinks."],
     "increase_fluid": ["Drink at least 8 glasses of water spread through the day."],
     "avoid_sugar_alcohol": ["No alcohol; choose water or unsweetened drinks instead."],
+    "iron_rich": [
+        "Low iron / anaemia: include iron-rich foods every day, such as dal, leafy "
+        "greens (spinach, lal shak) and, if your diet allows, eggs, fish or meat.",
+        "Pair iron-rich meals with vitamin C foods such as lemon, guava or amla, and "
+        "keep tea or coffee at least one hour away from meals.",
+    ],
 }
 
 #: Items excluded from the plan when a rule token is active.
 RESTRICTION_EXCLUSIONS: Dict[str, List[str]] = {
-    "vegetarian": ["Grilled fish", "Chicken curry", "Fish curry", "Egg curry", "Egg bhurji", "Chicken stew"],
+    "vegetarian": ["Grilled fish", "Chicken curry", "Fish curry", "Egg curry", "Egg bhurji",
+                   "Chicken stew", "Boiled eggs", "Boiled egg"],
     "vegan": ["Grilled fish", "Chicken curry", "Fish curry", "Egg curry", "Egg bhurji",
               "Chicken stew", "Boiled eggs", "Curd", "Buttermilk", "Paneer curry", "Oats porridge with milk"],
     "gluten_free": ["Whole wheat bread", "Whole wheat toast", "Vegetable paratha", "Roti", "Khichuri"],
     "lactose_free": ["Curd", "Buttermilk", "Oats porridge with milk", "Paneer curry"],
     "low_sugar": ["Apple", "Banana", "Seasonal fruit", "Mixed fruit salad", "Coconut water"],
+    # Tea reduces iron absorption, so it is left out for low iron / anaemia.
+    "iron_rich": ["Green tea"],
 }
+
+#: Conditions that mean the patient needs an iron-rich plan.
+IRON_DEFICIENCY_MARKERS = (
+    "anemi",
+    "anaemi",
+    "iron deficien",
+    "low iron",
+    "low hemoglobin",
+    "low haemoglobin",
+)
+
+#: Allergen word -> every word that means a menu item contains it. A recorded
+#: allergy such as "Peanuts" or "Eggs" is matched by meaning, not by the exact
+#: spelling, so "Peanut chikki" or "Egg bhurji" is still removed.
+ALLERGEN_FAMILIES: Dict[str, Tuple[str, ...]] = {
+    "peanut": ("peanut", "chikki"),
+    "nut": ("nut", "peanut", "chikki", "almond", "cashew"),
+    "egg": ("egg", "bhurji"),
+    "milk": ("milk", "curd", "buttermilk", "paneer", "yogurt", "doi"),
+    "dairy": ("milk", "curd", "buttermilk", "paneer", "yogurt", "doi"),
+    "lactose": ("milk", "curd", "buttermilk", "paneer", "yogurt", "doi"),
+    "fish": ("fish",),
+    "seafood": ("fish", "prawn", "shrimp"),
+    "chicken": ("chicken",),
+    "wheat": ("wheat", "roti", "paratha", "bread", "toast", "biscuit"),
+    "gluten": ("wheat", "roti", "paratha", "bread", "toast", "biscuit"),
+    "soy": ("soy",),
+    "lentil": ("lentil", "dal", "khichuri"),
+    "chickpea": ("chickpea", "chana"),
+}
+
+#: Values that mean "no allergy recorded".
+_NO_ALLERGY_VALUES = ("none", "no", "nil", "n/a", "na", "no allergy", "no allergies")
 
 
 def _contains_any(text: str, markers: Sequence[str]) -> bool:
     """True when any marker appears in the (lower-cased) text."""
     haystack = (text or "").lower()
     return any(marker.lower() in haystack for marker in markers)
+
+
+def _singular(word: str) -> str:
+    """Very small plural -> singular helper ("peanuts" -> "peanut")."""
+    if len(word) > 4 and word.endswith("ies"):
+        return word[:-3] + "y"
+    if len(word) > 3 and word.endswith("s") and not word.endswith("ss"):
+        return word[:-1]
+    return word
+
+
+def _words(text: str) -> List[str]:
+    """Lower-cased singular words of a menu item or allergy entry."""
+    cleaned = "".join(ch if ch.isalpha() else " " for ch in (text or "").lower())
+    return [_singular(word) for word in cleaned.split()]
+
+
+def allergen_terms(allergies: Optional[str]) -> List[Tuple[str, Tuple[str, ...]]]:
+    """Turn the free-text allergy field into (label, matching words) pairs."""
+    terms: List[Tuple[str, Tuple[str, ...]]] = []
+    for raw in (allergies or "").replace(";", ",").split(","):
+        label = raw.strip()
+        if not label or label.lower() in _NO_ALLERGY_VALUES:
+            continue
+        words = _words(label)
+        if not words:
+            continue
+        matches: List[str] = []
+        for word in words:
+            matches.extend(ALLERGEN_FAMILIES.get(word, (word,)))
+        terms.append((label, tuple(dict.fromkeys(matches))))
+    return terms
+
+
+def _matches_allergen(item: str, terms: Sequence[Tuple[str, Tuple[str, ...]]]) -> bool:
+    """True when a menu item contains one of the recorded allergens."""
+    item_words = _words(item)
+    for _label, matches in terms:
+        for match in matches:
+            if any(word == match or word.endswith(match) for word in item_words):
+                if match == "nut" and "coconut" in item_words:
+                    continue  # coconut is not a tree nut
+                return True
+    return False
 
 
 def _filter_items(
@@ -230,18 +316,14 @@ def _filter_items(
     for token in restrictions:
         excluded.extend(RESTRICTION_EXCLUSIONS.get(token, []))
 
-    allergen_items = [
-        item.strip().lower()
-        for item in (allergies or "").replace(";", ",").split(",")
-        if item.strip()
-    ]
+    terms = allergen_terms(allergies)
 
     kept: List[str] = []
     for item in items:
         lowered = item.lower()
         if any(bad.lower() == lowered or bad.lower() in lowered for bad in excluded):
             continue
-        if any(allergen in lowered for allergen in allergen_items):
+        if _matches_allergen(item, terms):
             continue
         kept.append(item)
     return kept
@@ -332,7 +414,11 @@ def _build_meals(
         if not kept:
             # Every candidate was excluded -- fall back to the safest neutral
             # option so the day is never left without a meal.
-            kept = ["Plain rice", "Cooked seasonal vegetables", "Lentil soup"][: 3]
+            kept = _filter_items(
+                ["Plain rice", "Cooked seasonal vegetables", "Lentil soup"],
+                restrictions,
+                allergies,
+            ) or ["Plain rice"]
         macros = _estimate_macros(kept)
         meals.append(
             {
@@ -409,6 +495,10 @@ CONDITION_CAUTIONS: List[Tuple[str, str]] = [
     ("copd", "COPD: use light intensity only and follow your breathing plan."),
     ("joint", "Joint problems: avoid high-impact movements and choose low-impact options."),
     ("back", "Back problems: avoid heavy lifting and keep movements gentle and controlled."),
+    ("knee", "Knee problems: choose low-impact options such as walking or cycling, "
+             "and avoid jumping, deep squats and running."),
+    ("anemi", "Anaemia: build activity up slowly and stop if you feel dizzy, weak or breathless."),
+    ("anaemi", "Anaemia: build activity up slowly and stop if you feel dizzy, weak or breathless."),
 ]
 
 
@@ -441,6 +531,7 @@ def _build_activities(
     activity_level: Optional[str],
     restrictions: Sequence[str],
     conditions: Optional[str],
+    physical_limitations: Optional[str] = None,
 ) -> Tuple[List[Dict], List[str]]:
     """Build the activity suggestions plus the safety cautions for them.
 
@@ -454,9 +545,11 @@ def _build_activities(
     catalogue = ACTIVITY_CATALOGUE.get(level, DEFAULT_ACTIVITIES)
 
     restricted = "avoid_exercise" in restrictions
-    condition_text = (conditions or "").lower()
+    # Conditions AND physical limitations ("Bad knee") both shape the activities.
+    condition_text = f"{conditions or ''} {physical_limitations or ''}".lower()
 
     # Condition-driven cautions (SRS 3.3.3.3).
+    knee_problem = "knee" in condition_text
     for marker, caution in CONDITION_CAUTIONS:
         if marker in condition_text and caution not in cautions:
             cautions.append(caution)
@@ -481,6 +574,9 @@ def _build_activities(
 
         # An explicit "no exercise" restriction removes every non-gentle option.
         if restricted and any(bad in lowered for bad in RESTRICTED_ACTIVITIES):
+            continue
+        # Running and jumping-style exercises are hard on a bad knee.
+        if knee_problem and any(bad in lowered for bad in ("jogging", "running", "body-weight")):
             continue
         # High-intensity activity is dropped for unsafe conditions.
         if any(marker in condition_text for marker in HIGH_INTENSITY_UNSAFE_CONDITIONS):
@@ -586,6 +682,7 @@ _RULE_NOTE_SOURCES = (
     "reduce_calories",
     "increase_fluid",
     "avoid_sugar_alcohol",
+    "iron_rich",
 )
 
 
@@ -633,10 +730,27 @@ def generate_plan(
     )
 
     # A food preference (vegetarian / vegan / no beef ...) is a restriction too.
-    preference_tokens = detect_rules(food_preference)
+    # "Non-vegetarian" must NOT switch on the vegetarian rule.
+    preference_text = (food_preference or "").lower().replace("-", " ")
+    for phrase in ("non vegetarian", "non veg", "nonveg"):
+        preference_text = preference_text.replace(phrase, " ")
+    preference_tokens = detect_rules(preference_text)
     for token in preference_tokens:
         if token not in restrictions:
             restrictions.append(token)
+
+    # Low iron / anaemia in the conditions or a prescription -> iron-rich plan.
+    health_text = " ".join(
+        [conditions or ""]
+        + [
+            str(p.get("restrictions") or "") if isinstance(p, dict)
+            else str(getattr(p, "restrictions", "") or "")
+            for p in prescriptions
+        ]
+    ).lower()
+    if any(marker in health_text for marker in IRON_DEFICIENCY_MARKERS):
+        if "iron_rich" not in restrictions:
+            restrictions.append("iron_rich")
 
     # -- 2. Detect conflicts ------------------------------------------------ #
     conflicts = find_dietary_conflicts(
@@ -685,7 +799,9 @@ def generate_plan(
         )
 
     # -- 5. Activities ------------------------------------------------------ #
-    activities, cautions = _build_activities(activity_level, restrictions, conditions)
+    activities, cautions = _build_activities(
+        activity_level, restrictions, conditions, physical_limitations
+    )
 
     # -- 6. Budget ---------------------------------------------------------- #
     budget_notes = _budget_notes(monthly_budget, restrictions)
@@ -697,6 +813,12 @@ def generate_plan(
             for note in RESTRICTION_ADJUSTMENTS.get(token, []):
                 if note not in applied_notes:
                     applied_notes.append(note)
+
+    # Say which allergies were applied, so the user can see WHY items are missing.
+    for label, _matches in allergen_terms(allergies):
+        applied_notes.append(
+            f"Allergy to {label}: every item that contains it was left out of the plan."
+        )
 
     bmi = _bmi(weight_kg, height_cm)
     if bmi is not None:

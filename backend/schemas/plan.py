@@ -150,6 +150,7 @@ class PlanGenerateResponse(BaseModel):
     conflicts: List[PlanConflict] = Field(default_factory=list)
     requires_review: bool = False
     budget_notes: List[str] = Field(default_factory=list)
+    cautions: List[str] = Field(default_factory=list)
     notes: List[str] = Field(
         default_factory=list,
         description="Plain-language notes explaining how the plan was adjusted.",

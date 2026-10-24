@@ -110,7 +110,7 @@ CONTRADICTORY_PAIRS: Dict[Tuple[str, str], Tuple[str, str]] = {
 COMPATIBLE_PAIRS: Dict[Tuple[str, str], str] = {
     ("vegetarian", "high_protein"): (
         "Both rules were kept: the protein comes from vegetarian sources such "
-        "as dal, soy, paneer, eggs or curd, so no meat or fish is suggested."
+        "as dal, soy, paneer or curd, so no meat, fish or eggs are suggested."
     ),
     ("vegan", "high_protein"): (
         "Both rules were kept: the protein comes from plant sources such as "
