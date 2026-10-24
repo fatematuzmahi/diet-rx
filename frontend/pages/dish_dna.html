@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dish DNA | DietRx</title>
     <link rel="stylesheet" href="../css/style.css">
-<link rel="stylesheet" href="../css/dish_dna.css">
+    <link rel="stylesheet" href="../css/dish_dna.css">
 </head>
 <body>
     <header class="site-header">
-        <a class="brand" href="../index.html">DietRx</a>
-
+        <a class="brand brand-logo" href="../index.html" aria-label="DietRx home">
+            <img src="../assets/images/dietrx-logo.png" alt="DietRx" onerror="this.hidden=true; this.nextElementSibling.hidden=false;">
+            <span hidden>DietRx</span>
+        </a>
         <nav>
             <a href="dashboard.html">Dashboard</a>
             <a href="diet_plan.html">Diet plan</a>
@@ -18,27 +20,62 @@
             <a href="safety_checker.html">Safety</a>
             <a href="grocery.html">Grocery</a>
             <a href="meal-plan.html">Meal Plan</a>
-            <a href="dish_dna.html">Dish DNA</a>
+            <a href="dish_dna.html" aria-current="page">Dish DNA</a>
+            <a href="daily_log.html">Daily Log</a>
+            <a href="notifications.html">Reminders</a>
             <a href="#" id="logoutBtn">Logout</a>
         </nav>
     </header>
 
-    <main class="page">
-        <section class="dish-dna-section">
-            <div class="search-bar-wrapper">
-                <input type="text" id="dish-search" class="search-input" placeholder="Search for a local dish...">
-                <button class="button" id="search-btn">Search</button>
+    <main class="page dd-page">
+        <!-- Hero + search -->
+        <section class="dd-hero">
+            <div class="dd-hero-text">
+                <p class="dd-eyebrow">Dish DNA</p>
+                <h1>Know what's on your plate</h1>
+                <p class="dd-sub">Explore local and Bengali dishes, see their full nutrition, and check how each one fits your health profile.</p>
+                <form class="dd-search" id="dd-search-form" role="search">
+                    <span class="dd-search-icon" aria-hidden="true">🔍</span>
+                    <input type="search" id="dish-search" placeholder="Search a dish, e.g. dal, fish, rice" autocomplete="off" aria-label="Search dishes">
+                    <button type="submit" id="search-btn">Search</button>
+                </form>
             </div>
-
-            <div id="dish-list" class="dish-list">
-                <!-- Dishes will be rendered here by JavaScript -->
-            </div>
-
-            <div id="dish-detail" class="dish-detail" hidden>
-                <!-- Dish DNA card will be rendered here -->
+            <div class="dd-profile" id="dd-profile">
+                <span class="dd-profile-icon" aria-hidden="true">🧬</span>
+                <strong>Personal check</strong>
+                <p id="dd-profile-text">Loading your health profile…</p>
             </div>
         </section>
+
+        <!-- Filters -->
+        <section class="dd-filters" aria-label="Filter dishes">
+            <div class="dd-chips" id="dd-category-chips"></div>
+            <div class="dd-filter-right">
+                <select id="dd-cuisine" aria-label="Cuisine">
+                    <option value="">All cuisines</option>
+                </select>
+                <span class="dd-count" id="dd-count"></span>
+            </div>
+        </section>
+
+        <!-- Dish grid -->
+        <section id="dish-list" class="dd-grid" aria-live="polite"></section>
+
+        <!-- Dish detail -->
+        <section id="dish-detail" class="dd-detail" hidden></section>
+
+        <!-- Compare -->
+        <section id="dd-compare" class="dd-compare" hidden></section>
+
+        <p class="dd-disclaimer" id="dd-disclaimer">DietRx is a decision-support system and does not replace professional medical advice. Nutrition values shown here are demo data and are not clinically verified.</p>
     </main>
+
+    <!-- Compare tray -->
+    <div class="dd-tray" id="dd-tray" hidden>
+        <span id="dd-tray-text">1 dish selected</span>
+        <button type="button" class="dd-tray-btn" id="dd-tray-compare">Compare</button>
+        <button type="button" class="dd-tray-clear" id="dd-tray-clear" aria-label="Clear selection">✕</button>
+    </div>
 
     <script src="../js/api.js"></script>
     <script src="../js/dish_dna.js"></script>

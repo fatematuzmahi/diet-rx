@@ -64,7 +64,7 @@ WHEN NOT MATCHED THEN
           calcium_mg, iron_mg, potassium_mg, diet_tags, allergens)
   VALUES ('Chicken Curry', 'North Indian', 'Main', 'Tender chicken in aromatic curry', 'Chicken, spices, yogurt',
           200, '1 serving', 420, 30, 12, 28, 1, 3, 50, 380, 8,
-          150, 8, 1, 4, 2, 30, 2.5, 350, 'non-veg', 'none');
+          150, 8, 1, 4, 2, 30, 2.5, 350, 'non-veg', 'milk');
 
 MERGE INTO dish_dna d
 USING (SELECT 'Lentil Soup (Dal)' AS name FROM dual) s
