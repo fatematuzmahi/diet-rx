@@ -8,35 +8,144 @@
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/dashboard.css">
     <link rel="stylesheet" href="../css/health_profile.css">
+    <link rel="stylesheet" href="../css/dashboard_home.css">
 </head>
 <body>
-    
-        <header class="site-header">
-    <a class="brand" href="../index.html">DietRx</a>
 
-    <nav>
-        <a href="diet_plan.html">Diet plan</a>
-        <a href="prescriptions.html">Prescriptions</a>
-        <a href="safety_checker.html">Safety</a>
-        <a href="grocery.html">Grocery</a><a href="meal-plan.html">Meal Plan</a><a href="dish_dna.html">Dish DNA</a>
-        
-        <a href="#" id="logoutBtn">Logout</a>
-    </nav>
-</header>
+    <header class="site-header">
+        <a class="brand brand-logo" href="../index.html" aria-label="DietRx home">
+            <img src="../assets/images/dietrx-logo.png" alt="DietRx" onerror="this.hidden=true; this.nextElementSibling.hidden=false;">
+            <span hidden>DietRx</span>
+        </a>
 
-    <main class="page">
-        <h1>Your dashboard</h1>
-        <p>Track meals, water, exercise, and progress here.</p>
-        <section class="stats">
-            <article><strong>0</strong><span>Meals logged</span></article>
-            <article><strong>0 L</strong><span>Water</span></article>
-            <article><strong>0</strong><span>Activities</span></article>
+        <nav>
+            <a href="dashboard.html" aria-current="page">Dashboard</a>
+            <a href="diet_plan.html">Diet plan</a>
+            <a href="prescriptions.html">Prescriptions</a>
+            <a href="safety_checker.html">Safety</a>
+            <a href="grocery.html">Grocery</a>
+            <a href="meal-plan.html">Meal Plan</a>
+            <a href="dish_dna.html">Dish DNA</a>
+            <a href="daily_log.html">Daily Log</a>
+            <a href="#" id="logoutBtn">Logout</a>
+        </nav>
+    </header>
+
+    <main class="page db-page">
+
+        <!-- Hero -->
+        <section class="db-hero">
+            <div class="db-hero-text">
+                <div class="db-hero-top">
+                    <span class="db-logo-badge"><img src="../assets/images/dietrx-logo.png" alt="" onerror="this.parentElement.hidden=true;"></span>
+                    <p class="db-eyebrow" id="db-date">Today</p>
+                </div>
+                <h1><span id="db-greeting">Hello</span>, <span id="db-name">there</span> 👋</h1>
+                <p class="db-sub">Here is how your day is going. Small, steady steps add up to big results.</p>
+                <div class="db-hero-actions">
+                    <button type="button" class="db-btn db-btn-light" id="db-quick-water">💧 Log 250 ml water</button>
+                    <a class="db-btn db-btn-ghost" href="daily_log.html">Open Daily Log →</a>
+                </div>
+            </div>
+            <div class="db-score" aria-label="Today's overall progress">
+                <svg class="db-score-ring" viewBox="0 0 120 120" aria-hidden="true">
+                    <circle class="db-score-track" cx="60" cy="60" r="52"/>
+                    <circle class="db-score-bar" id="db-score-bar" cx="60" cy="60" r="52"/>
+                </svg>
+                <div class="db-score-text">
+                    <strong id="db-score">0%</strong>
+                    <span>of today's goals</span>
+                </div>
+            </div>
         </section>
 
+        <!-- Today at a glance -->
+        <section class="db-stats" aria-label="Today at a glance">
+            <a class="db-stat db-c-water" href="daily_log.html">
+                <span class="db-stat-icon" aria-hidden="true">💧</span>
+                <div class="db-stat-text">
+                    <span class="db-stat-label">Water</span>
+                    <strong id="stat-water">0 L</strong>
+                    <small>of 2 L goal</small>
+                </div>
+                <div class="db-bar"><span id="bar-water"></span></div>
+            </a>
+            <a class="db-stat db-c-meal" href="daily_log.html">
+                <span class="db-stat-icon" aria-hidden="true">🍽️</span>
+                <div class="db-stat-text">
+                    <span class="db-stat-label">Meals logged</span>
+                    <strong id="stat-meals">0</strong>
+                    <small>of 4 meals</small>
+                </div>
+                <div class="db-bar"><span id="bar-meals"></span></div>
+            </a>
+            <a class="db-stat db-c-activity" href="daily_log.html">
+                <span class="db-stat-icon" aria-hidden="true">🏃</span>
+                <div class="db-stat-text">
+                    <span class="db-stat-label">Activities</span>
+                    <strong id="stat-activity">0</strong>
+                    <small id="stat-activity-sub">0 of 30 min</small>
+                </div>
+                <div class="db-bar"><span id="bar-activity"></span></div>
+            </a>
+            <a class="db-stat db-c-med" href="daily_log.html">
+                <span class="db-stat-icon" aria-hidden="true">💊</span>
+                <div class="db-stat-text">
+                    <span class="db-stat-label">Medicine</span>
+                    <strong id="stat-med">—</strong>
+                    <small id="stat-med-sub">none logged</small>
+                </div>
+                <div class="db-bar"><span id="bar-med"></span></div>
+            </a>
+        </section>
+
+        <!-- Plan + activity guidance -->
+        <div class="db-grid">
+            <section class="db-card db-plan">
+                <div class="db-card-head">
+                    <h2>📋 Your current plan</h2>
+                    <a class="db-link" href="diet_plan.html">View plan →</a>
+                </div>
+                <div id="db-plan-body"><div class="db-skeleton"></div><div class="db-skeleton short"></div></div>
+            </section>
+
+            <section class="db-card db-guidance">
+                <div class="db-card-head">
+                    <h2>🏃 Activity guidance</h2>
+                    <span class="db-pill">For you</span>
+                </div>
+                <div id="db-guidance-body"><div class="db-skeleton"></div><div class="db-skeleton short"></div></div>
+            </section>
+        </div>
+
+        <!-- Week + explore -->
+        <div class="db-grid">
+            <section class="db-card db-week">
+                <div class="db-card-head">
+                    <h2>💧 Water this week</h2>
+                    <span class="db-muted" id="db-week-avg"></span>
+                </div>
+                <div class="db-mini-chart" id="db-week-chart"></div>
+            </section>
+            <section class="db-card db-explore">
+                <div class="db-card-head">
+                    <h2>✨ Explore DietRx</h2>
+                </div>
+                <div class="db-tiles">
+                    <a class="db-tile" href="diet_plan.html"><span>🥗</span><strong>Diet plan</strong><small>Your personalized plan</small></a>
+                    <a class="db-tile" href="meal-plan.html"><span>🍱</span><strong>Meal Plan</strong><small>Meals for the week</small></a>
+                    <a class="db-tile" href="dish_dna.html"><span>🧬</span><strong>Dish DNA</strong><small>What's in your food</small></a>
+                    <a class="db-tile" href="safety_checker.html"><span>🛡️</span><strong>Safety</strong><small>Check a food</small></a>
+                    <a class="db-tile" href="prescriptions.html"><span>📄</span><strong>Prescriptions</strong><small>Doctor's instructions</small></a>
+                    <a class="db-tile" href="grocery.html"><span>🛒</span><strong>Grocery</strong><small>Shopping list</small></a>
+                </div>
+            </section>
+        </div>
+
         <!-- SCRUM-45: Patient Health Profile (SRS 3.1.3.3) -->
-        <section class="health-profile" aria-labelledby="health-profile-heading">
+        <section class="health-profile db-card" id="health-profile" aria-labelledby="health-profile-heading">
             <div class="hp-head">
-                <h2 id="health-profile-heading">Health Profile</h2>
+                <h2 id="health-profile-heading">🩺 Health Profile</h2>
                 <button id="hp-refresh" class="hp-btn hp-btn-ghost" type="button">Refresh</button>
             </div>
             <p class="hp-subtitle">
@@ -125,48 +234,50 @@
                 <div class="hp-actions">
                     <button id="hp-save" class="hp-btn" type="submit">Save health profile</button>
                 </div>
-
-                <p class="hp-disclaimer">
-                    DietRx is a decision-support system and does not replace professional medical advice.
-                </p>
             </form>
         </section>
+
+        <p class="db-disclaimer">
+            DietRx is a decision-support system and does not replace professional medical advice.
+            If you feel unwell, contact your doctor.
+        </p>
     </main>
+
+    <div class="db-toast" id="db-toast" role="status" aria-live="polite" hidden></div>
 
     <script>
     // Dashboard protection
-   const token = localStorage.getItem("session_token");
+    const token = localStorage.getItem("session_token");
 
     if (!token) {
         window.location.replace("login.html");
     }
     window.addEventListener("pageshow", function () {
-    const currentToken = localStorage.getItem("session_token");
-
-    if (!currentToken) {
-        window.location.replace("login.html");
-    }
-});
+        const currentToken = localStorage.getItem("session_token");
+        if (!currentToken) {
+            window.location.replace("login.html");
+        }
+    });
 
     // Logout
     const logoutBtn = document.getElementById("logoutBtn");
 
     logoutBtn.addEventListener("click", function (event) {
         event.preventDefault();
-
         localStorage.removeItem("dietrx_user");
-localStorage.removeItem("session_token");
-// SCRUM-44: also drop the RBAC access token so it cannot be reused after logout.
-localStorage.removeItem("access_token");
-localStorage.removeItem("user");
-
-window.location.replace("login.html");
+        localStorage.removeItem("session_token");
+        // SCRUM-44: also drop the RBAC access token so it cannot be reused after logout.
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("user");
+        window.location.replace("login.html");
     });
-</script>
+    </script>
 
     <!-- SCRUM-45: health profile data access + UI wiring -->
     <script src="../js/api.js"></script>
     <script src="../js/health_profile.js"></script>
+    <!-- SCRUM-53: today's progress, plan, activity guidance -->
+    <script src="../js/dashboard_home.js"></script>
 
 </body>
 </html>
