@@ -13,6 +13,7 @@ from backend.routers.daily_log_router import router as daily_log_router
 from backend.routers.notification_router import router as notification_router
 from backend.routers.meal_plan_router import router as meal_plan_router
 from backend.routers.safety_router import router as safety_router
+from backend.routers.grocery_router import router as grocery_router
 
 
 app = FastAPI(
@@ -45,6 +46,7 @@ app.include_router(daily_log_router)
 app.include_router(notification_router)
 app.include_router(meal_plan_router)
 app.include_router(safety_router)
+app.include_router(grocery_router)
 
 @app.get("/")
 def root():

@@ -1,12 +1,157 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Grocery | DietRx</title><link rel="stylesheet" href="../css/style.css"></head><body><main class="page"><a class="brand" href="dashboard.html">DietRx</a>
-<nav>
-    <a href="dashboard.html">Dashboard</a>
-    <a href="diet_plan.html">Diet plan</a>
-    <a href="prescriptions.html">Prescriptions</a>
-    <a href="safety_checker.html">Safety</a>
-    <a href="grocery.html">Grocery</a>
-    <a href="meal-plan.html">Meal Plan</a>
-    <a href="dish_dna.html">Dish DNA</a>
-    <a href="#" id="logoutBtn">Logout</a>
-</nav>
-<h1>Budget grocery list</h1><p>Your meal-plan grocery list and budget alternatives will appear here.</p></main></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grocery List | DietRx</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/grocery.css">
+    <script>
+        if (!(localStorage.getItem("access_token") || localStorage.getItem("session_token"))) {
+            window.location.replace("login.html");
+        }
+    </script>
+</head>
+<body>
+    <header class="site-header">
+        <a class="brand brand-logo" href="../index.html" aria-label="DietRx home">
+            <img src="../assets/images/dietrx-logo.png" alt="DietRx" onerror="this.hidden=true; this.nextElementSibling.hidden=false;">
+            <span hidden>DietRx</span>
+        </a>
+        <nav>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="diet_plan.html">Diet plan</a>
+            <a href="prescriptions.html">Prescriptions</a>
+            <a href="safety_checker.html">Safety</a>
+            <a href="grocery.html" aria-current="page">Grocery</a>
+            <a href="meal-plan.html">Meal Plan</a>
+            <a href="dish_dna.html">Dish DNA</a>
+            <a href="daily_log.html">Daily Log</a>
+            <a href="notifications.html">Reminders</a>
+            <a href="#" id="logoutBtn">Logout</a>
+        </nav>
+    </header>
+
+    <main class="page gr-page">
+        <!-- Hero -->
+        <section class="gr-hero">
+            <div class="gr-hero-text">
+                <p class="gr-eyebrow" id="gr-eyebrow">Grocery list</p>
+                <h1>Your weekly grocery list</h1>
+                <p class="gr-sub" id="gr-sub">Built from your accepted meal plan, with estimated costs and your budget.</p>
+                <div class="gr-badges" id="gr-badges"></div>
+                <div class="gr-hero-actions">
+                    <button type="button" class="gr-btn gr-btn-light" id="gr-copy">📋 Copy list</button>
+                    <button type="button" class="gr-btn gr-btn-ghost" id="gr-print">🖨️ Print</button>
+                    <a class="gr-btn gr-btn-ghost" href="meal-plan.html">🍽️ Meal plan</a>
+                </div>
+            </div>
+            <div class="gr-budget-ring" aria-label="Share of monthly budget">
+                <div class="gr-ring" id="gr-ring">
+                    <div class="gr-ring-text">
+                        <strong id="gr-ring-value">—</strong>
+                        <span id="gr-ring-label">of monthly budget</span>
+                    </div>
+                </div>
+                <p class="gr-ring-status" id="gr-ring-status">Loading…</p>
+            </div>
+        </section>
+
+        <p class="gr-status" id="gr-status" role="status" aria-live="polite"></p>
+
+        <!-- Notices -->
+        <section class="gr-notice is-new" id="gr-new-plan" hidden>
+            <span aria-hidden="true">🔄</span>
+            <div>
+                <strong>Updated for your new plan</strong>
+                <p>You accepted a new meal plan, so this list was rebuilt automatically.</p>
+            </div>
+        </section>
+        <section class="gr-notice is-warn" id="gr-notes" hidden>
+            <span aria-hidden="true">ℹ️</span>
+            <div>
+                <strong>About these costs</strong>
+                <p id="gr-notes-text"></p>
+            </div>
+        </section>
+
+        <!-- Empty -->
+        <section class="gr-card gr-empty" id="gr-empty" hidden>
+            <span aria-hidden="true">🛒</span>
+            <strong>No grocery list yet</strong>
+            <p id="gr-empty-text">Accept your meal plan first. Your grocery list is built from the plan you accept.</p>
+            <a class="gr-btn gr-btn-primary" href="meal-plan.html">✅ Go to my meal plan</a>
+        </section>
+
+        <div id="gr-content" hidden>
+            <!-- Summary -->
+            <section class="gr-stats">
+                <article class="gr-stat">
+                    <span class="gr-stat-icon" aria-hidden="true">🧾</span>
+                    <div><small id="gr-total-label">Estimated cost</small><strong id="gr-total">—</strong></div>
+                </article>
+                <article class="gr-stat">
+                    <span class="gr-stat-icon" aria-hidden="true">📅</span>
+                    <div><small>Per day</small><strong id="gr-day">—</strong></div>
+                </article>
+                <article class="gr-stat">
+                    <span class="gr-stat-icon" aria-hidden="true">🗓️</span>
+                    <div><small>Per month</small><strong id="gr-month">—</strong></div>
+                </article>
+                <article class="gr-stat">
+                    <span class="gr-stat-icon" aria-hidden="true">🏷️</span>
+                    <div><small>Items with a price</small><strong id="gr-coverage">—</strong></div>
+                </article>
+            </section>
+
+            <div class="gr-grid">
+                <!-- List -->
+                <section class="gr-card">
+                    <div class="gr-card-head">
+                        <h2>Shopping list</h2>
+                        <span class="gr-pill" id="gr-progress">0 / 0 in basket</span>
+                    </div>
+                    <div class="gr-toolbar">
+                        <label class="gr-search">
+                            <span aria-hidden="true">🔍</span>
+                            <input type="search" id="gr-filter" placeholder="Find an item…" autocomplete="off">
+                        </label>
+                        <label class="gr-toggle">
+                            <input type="checkbox" id="gr-hide-done">
+                            <span>Hide items in basket</span>
+                        </label>
+                    </div>
+                    <div class="gr-bar" aria-hidden="true"><i id="gr-progress-bar"></i></div>
+                    <div id="gr-list"></div>
+                </section>
+
+                <aside class="gr-side">
+                    <!-- Budget -->
+                    <section class="gr-card">
+                        <div class="gr-card-head"><h2>Budget</h2><span class="gr-pill is-soft" id="gr-budget-pill">—</span></div>
+                        <div id="gr-budget"></div>
+                    </section>
+
+                    <!-- Shop online -->
+                    <section class="gr-card">
+                        <div class="gr-card-head"><h2>Shop online</h2><span class="gr-pill is-soft">🔒 Private</span></div>
+                        <ul class="gr-points">
+                            <li><span>🔗</span><div>Use <b>Buy</b> next to an item to open a shop search in a new tab.</div></li>
+                            <li><span>🛡️</span><div>Only the item name is sent. Never your name, account or health details.</div></li>
+                            <li><span>💱</span><div>Shop prices and stock can differ from DietRx estimates.</div></li>
+                            <li><span>🧺</span><div>Fresh items are best bought at your local market.</div></li>
+                        </ul>
+                    </section>
+                </aside>
+            </div>
+        </div>
+
+        <p class="gr-disclaimer" id="gr-disclaimer">DietRx is a decision-support system and does not replace professional medical advice. Costs are estimates; DietRx does not guarantee prices on outside websites.</p>
+    </main>
+
+    <div class="gr-toast" id="gr-toast" role="status" aria-live="polite" hidden></div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/grocery.js"></script>
+</body>
+</html>
