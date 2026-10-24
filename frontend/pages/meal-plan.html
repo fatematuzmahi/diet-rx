@@ -1,136 +1,127 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Meal Plan | DietRx</title>
-  <link rel="stylesheet" href="../css/meal-plan.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal Plan | DietRx</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/meal-plan.css">
+    <script>
+        if (!(localStorage.getItem("access_token") || localStorage.getItem("session_token"))) {
+            window.location.replace("login.html");
+        }
+    </script>
 </head>
 <body>
-  <header class="app-header">
-    <nav class="app-nav">
-      <a class="nav-link" href="dashboard.html">Dashboard</a>
-      <a class="nav-link" href="diet_plan.html">Diet plan</a>
-      <a class="nav-link" href="prescriptions.html">Prescriptions</a>
-      <a class="nav-link" href="safety_checker.html">Safety</a>
-      <a class="nav-link" href="grocery.html">Grocery</a>
-      <a class="nav-link active" href="meal-plan.html">Meal Plan</a>
-      <a class="nav-link" href="dish_dna.html">Dish DNA</a>
-    </nav>
-    <div class="app-header-actions">
-      <button class="button button--ghost" id="generate-plan-btn">Generate Plan</button>
-    </div>
-  </header>
+    <header class="site-header">
+        <a class="brand brand-logo" href="../index.html" aria-label="DietRx home">
+            <img src="../assets/images/dietrx-logo.png" alt="DietRx" onerror="this.hidden=true; this.nextElementSibling.hidden=false;">
+            <span hidden>DietRx</span>
+        </a>
+        <nav>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="diet_plan.html">Diet plan</a>
+            <a href="prescriptions.html">Prescriptions</a>
+            <a href="safety_checker.html">Safety</a>
+            <a href="grocery.html">Grocery</a>
+            <a href="meal-plan.html" aria-current="page">Meal Plan</a>
+            <a href="dish_dna.html">Dish DNA</a>
+            <a href="daily_log.html">Daily Log</a>
+            <a href="notifications.html">Reminders</a>
+            <a href="#" id="logoutBtn">Logout</a>
+        </nav>
+    </header>
 
-  <main class="page-main">
-    <section class="summary-hero">
-      <div class="calorie-ring"></div>
-      <span class="status-pill">Draft</span>
-    </section>
+    <main class="page mp-page">
+        <!-- Hero -->
+        <section class="mp-hero">
+            <div class="mp-hero-text">
+                <p class="mp-eyebrow" id="mp-date">Today</p>
+                <h1>Today's meal plan</h1>
+                <p class="mp-sub" id="mp-sub">Your meals for today, straight from your personalized plan.</p>
+                <div class="mp-badges" id="mp-badges"></div>
+                <div class="mp-hero-actions">
+                    <button type="button" class="mp-btn mp-btn-light" id="mp-accept" hidden>✅ Accept this plan</button>
+                    <a class="mp-btn mp-btn-ghost" href="diet_plan.html">📅 Full 7-day plan</a>
+                </div>
+            </div>
+            <div class="mp-progress" aria-label="Calories eaten today">
+                <div class="mp-ring" id="mp-ring">
+                    <div class="mp-ring-text">
+                        <strong id="mp-eaten">0</strong>
+                        <span>of <b id="mp-target">—</b> kcal</span>
+                    </div>
+                </div>
+                <p id="mp-meals-done">0 of 0 meals eaten</p>
+            </div>
+        </section>
 
-    <section class="macro-cards">
-      <div class="card macro-card protein">
-        <h3>Protein</h3>
-        <div class="progress-bar">
-          <div class="progress" style="width: 60%"></div>
+        <p class="mp-status" id="mp-status" role="status" aria-live="polite"></p>
+
+        <!-- Notices -->
+        <section class="mp-notice is-review" id="mp-review" hidden>
+            <span aria-hidden="true">⚠️</span>
+            <div>
+                <strong>Needs professional review</strong>
+                <p>Some rules in this plan conflict. A doctor or nutritionist must check it before you accept it.</p>
+            </div>
+        </section>
+        <section class="mp-notice" id="mp-older-accepted" hidden>
+            <span aria-hidden="true">ℹ️</span>
+            <div>
+                <strong>You have a newer plan</strong>
+                <p id="mp-older-text"></p>
+            </div>
+        </section>
+
+        <!-- Empty -->
+        <section class="mp-card mp-empty" id="mp-empty" hidden>
+            <span aria-hidden="true">🍽️</span>
+            <strong>No meal plan yet</strong>
+            <p>Create your personalized plan first. It uses your allergies, food preference, conditions, goals and budget.</p>
+            <a class="mp-btn mp-btn-primary" href="diet_plan.html">✨ Create my plan</a>
+        </section>
+
+        <div class="mp-grid" id="mp-content" hidden>
+            <!-- Today's meals -->
+            <section class="mp-card">
+                <div class="mp-card-head">
+                    <h2>Today's meals</h2>
+                    <span class="mp-pill" id="mp-day-pill">Day 1</span>
+                </div>
+                <div class="mp-meals" id="mp-meals"></div>
+            </section>
+
+            <aside class="mp-side">
+                <!-- Macros -->
+                <section class="mp-card">
+                    <div class="mp-card-head"><h2>Today's nutrition</h2></div>
+                    <div class="mp-macros" id="mp-macros"></div>
+                </section>
+
+                <!-- Rules -->
+                <section class="mp-card">
+                    <div class="mp-card-head"><h2>Your plan follows</h2></div>
+                    <div class="mp-rules" id="mp-rules"></div>
+                </section>
+
+                <!-- Tomorrow -->
+                <section class="mp-card">
+                    <div class="mp-card-head">
+                        <h2>Tomorrow</h2>
+                        <span class="mp-pill is-soft" id="mp-tomorrow-pill">Day 2</span>
+                    </div>
+                    <ul class="mp-tomorrow" id="mp-tomorrow"></ul>
+                </section>
+            </aside>
         </div>
-        <span class="value">120 g / 150 g</span>
-      </div>
-      <div class="card macro-card carbs">
-        <h3>Carbs</h3>
-        <div class="progress-bar">
-          <div class="progress" style="width: 70%"></div>
-        </div>
-        <span class="value">250 g / 300 g</span>
-      </div>
-      <div class="card macro-card fat">
-        <h3>Fat</h3>
-        <div class="progress-bar">
-          <div class="progress" style="width: 50%"></div>
-        </div>
-        <span class="value">80 g / 100 g</span>
-      </div>
-    </section>
 
-    <section class="budget-card" aria-labelledby="budget-title">
-      <h3 id="budget-title">Budget</h3>
-      <div class="budget-info">
-        <span class="estimated-cost">Estimated: $45</span>
-        <span class="budget-limit">Budget: $60</span>
-        <span class="within-pill within">Within budget</span>
-      </div>
-    </section>
+        <p class="mp-disclaimer">DietRx is a decision-support system and does not replace professional medical advice. Final clinical decisions remain with qualified healthcare professionals.</p>
+    </main>
 
-    <section class="meal-timeline">
-      <h3>Meal Timeline</h3>
-      <ul class="timeline-list">
-        <li class="timeline-item bengali-breakfast">
-          <span class="meal-time">07:30</span>
-          <span class="meal-name">Breakfast</span>
-          <span class="bangla-name">Nathaniel</span>
-          <span class="meal-cost">$8</span>
-          <span class="meal-macros">P 20 / C 30 / F 10</span>
-          <span class="safety-badge Safe">Safe</span>
-        </li>
-        <li class="timeline-item bengali-lunch">
-          <span class="meal-time">13:30</span>
-          <span class="meal-name">Lunch</span>
-          <span class="bangla-name">Macher Jhol</span>
-          <span class="meal-cost">$15</span>
-          <span class="meal-macros">P 30 / C 40 / F 20</span>
-          <span class="safety-badge Caution">Caution</span>
-        </li>
-        <li class="timeline-item bengali-snack">
-          <span class="meal-time">16:30</span>
-          <span class="meal-name">Afternoon Snack</span>
-          <span class="bangla-name">Mishti</span>
-          <span class="meal-cost">$5</span>
-          <span class="meal-macros">P 10 / C 20 / F 5</span>
-          <span class="safety-badge Safe">Safe</span>
-        </li>
-        <li class="timeline-item bengali-dinner">
-          <span class="meal-time">20:30</span>
-          <span class="meal-name">Dinner</span>
-          <span class="bangla-name">Shorshe Ilish</span>
-          <span class="meal-cost">$17</span>
-          <span class="meal-macros">P 25 / C 35 / F 15</span>
-          <span class="safety-badge Avoid">Avoid</span>
-        </li>
-      </ul>
-      <details class="conflict-detail" open>
-        <summary>Conflict explanation</summary>
-        <p>Some foods conflict with active prescriptions; a professional review is recommended.</p>
-      </details>
-    </section>
+    <div class="mp-toast" id="mp-toast" role="status" aria-live="polite" hidden></div>
 
-    <section class="regenerate-panel">
-      <h3>Regenerate Plan</h3>
-      <form id="regenerate-form">
-        <div class="form-group">
-          <label>Calorie target</label>
-          <input type="number" id="regenerate-calories" min="800" max="3500" value="2000">
-        </div>
-        <div class="form-group">
-          <label>Budget</label>
-          <input type="number" id="regenerate-budget" min="0" max="200" value="60">
-        </div>
-        <div class="form-group">
-          <label>Schedule</label>
-          <select id="regenerate-schedule">
-            <option value="bengali">Bengali</option>
-            <option value="standard">Standard</option>
-          </select>
-        </div>
-        <button type="submit" class="button button--primary" id="regenerate-btn">Regenerate</button>
-      </form>
-      <div class="loader" id="regenerate-loader" hidden>Regenerating...</div>
-    </section>
-  </main>
-
-  <footer class="app-footer">
-    <p>DietRx — Decision support estimates only.</p>
-  </footer>
-
-  <script type="module" src="../js/meal-plan.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/meal-plan.js"></script>
 </body>
 </html>
