@@ -146,7 +146,7 @@
   <!-- SCRUM-50: API Integration Script -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      const token = localStorage.getItem('access');
+      const token = localStorage.getItem('access_token');
 
       fetch('http://127.0.0.1:8000/api/health-profile/activity-guidance', {
         method: 'GET',
@@ -185,10 +185,10 @@
         console.error('Activity Guidance Error:', err);
         const container = document.getElementById('activity-guidance-content');
         if (container) {
-          container.innerHTML = '<p style="color: #718096;">Low-impact cardio and stretching recommended. Avoid heavy joint pressure if you have knee concerns.</p>';
-        }
-      });
+        container.innerHTML = '<p style="color: #e53e3e;">Could not load activity guidance. Please log in again and check that the server is running.</p>';
+       }
     });
+  });
   </script>
 </body>
 </html>

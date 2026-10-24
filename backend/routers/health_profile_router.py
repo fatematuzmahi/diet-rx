@@ -31,6 +31,7 @@ committed together (or rolled back together), preserving the 1-to-1 relationship
 
 from __future__ import annotations
 
+import oracledb
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from backend.core.security import Principal, require_patient
@@ -252,6 +253,68 @@ def update_my_health_profile(
 # --------------------------------------------------------------------------- #
 # GET /api/health-profile/activity-guidance (SCRUM-50)
 # --------------------------------------------------------------------------- #
+# (condition / limitation keywords, guidance tip, warning)
+ACTIVITY_RULES = (
+    (("hypertens", "high blood pressure"), "conditions",
+     "Do moderate aerobic exercise such as brisk walking, swimming or cycling, about 30 minutes a day.",
+     "Avoid heavy weightlifting and high-intensity interval training without medical supervision."),
+    (("diabet",), "conditions",
+     "Keep a regular exercise time every day; a 10-15 minute walk after meals helps control blood sugar.",
+     "Check your blood sugar before and after hard exercise, and carry a quick sugar snack."),
+    (("heart", "cardiac"), "conditions",
+     "Choose light activity such as easy walking, and increase slowly.",
+     "Stop at once and get help if you feel chest pain, dizziness or very short of breath."),
+    (("asthma",), "conditions",
+     "Warm up for 10 minutes and keep your inhaler with you during exercise.",
+     "Avoid exercising outside in cold air or heavy dust and smoke."),
+    (("anemi", "anaemi"), "conditions",
+     "Start with short, gentle sessions such as walking or yoga.",
+     "Rest if you feel dizzy, tired or breathless; do not push through it."),
+    (("pregnan",), "conditions",
+     "Gentle walking, swimming or prenatal yoga are usually suitable.",
+     "Avoid contact sports, lying flat on your back for long, and any exercise your doctor has not approved."),
+    (("knee", "joint", "arthritis"), "both",
+     "Focus on low-impact activities such as swimming, stationary cycling or chair exercises.",
+     "Avoid jumping, running, deep squats and climbing many stairs."),
+    (("back", "spine"), "both",
+     "Try gentle stretching, walking and core-strength exercises.",
+     "Avoid heavy lifting and sudden twisting movements."),
+)
+
+ACTIVITY_LEVEL_TIPS = {
+    "sedentary": "You are mostly inactive: start with a 10-minute walk each day and add 5 minutes every week.",
+    "light": "Build up to at least 150 minutes of moderate activity per week.",
+    "moderate": "Keep up at least 150 minutes of moderate activity per week and add 2 days of muscle exercise.",
+    "active": "Keep your routine, and include rest days so your body can recover.",
+}
+
+
+def build_activity_guidance(conditions, activity_level, physical_limitations):
+    """Pure rule function (no database), so it can be tested on its own."""
+    conditions_str = (conditions or "").lower()
+    limitations_str = (physical_limitations or "").lower()
+    guidance = []
+    warnings = []
+
+    for keywords, source, tip, warning in ACTIVITY_RULES:
+        text = conditions_str if source == "conditions" else conditions_str + " " + limitations_str
+        if any(keyword in text for keyword in keywords):
+            guidance.append(tip)
+            warnings.append(warning)
+
+    level = (activity_level or "").lower()
+    for key, tip in ACTIVITY_LEVEL_TIPS.items():
+        if key in level:
+            guidance.append(tip)
+            break
+
+    if not guidance:
+        guidance.append("Aim for at least 150 minutes of moderate physical activity per week.")
+    if warnings:
+        warnings.append("Talk to your doctor before starting a new exercise programme.")
+    return guidance, warnings
+
+
 @router.get("/activity-guidance")
 def get_activity_guidance(
     principal: Principal = Depends(require_patient),
@@ -274,40 +337,24 @@ def get_activity_guidance(
 
         if row is None:
             return {
+                "patient_id": patient_id,
                 "guidance": ["Please complete your health profile to receive personalized activity recommendations."],
-                "warnings": []
+                "warnings": [],
             }
 
         conditions, activity_level, physical_limitations = row
-        guidance = []
-        warnings = []
-
-        conditions_str = (conditions or "").lower()
-        limitations_str = (physical_limitations or "").lower()
-
-        # Condition-aware guidance rules
-        if "hypertension" in conditions_str or "high blood pressure" in conditions_str:
-            guidance.append("Engage in moderate-intensity aerobic exercises like brisk walking, swimming, or cycling (30 mins/day).")
-            warnings.append("Avoid heavy weightlifting or high-intensity interval training without medical supervision.")
-
-        if "diabetes" in conditions_str:
-            guidance.append("Maintain a consistent workout schedule to help regulate blood glucose levels.")
-            warnings.append("Check blood sugar levels before and after intense exercise.")
-
-        if "joint" in limitations_str or "arthritis" in conditions_str:
-            guidance.append("Focus on low-impact activities such as swimming, water aerobics, or stationary cycling.")
-            warnings.append("Avoid high-impact jumping or heavy running.")
-
-        if not guidance:
-            guidance.append("Maintain at least 150 minutes of moderate physical activity per week.")
+        guidance, warnings = build_activity_guidance(conditions, activity_level, physical_limitations)
 
         return {
             "patient_id": patient_id,
             "conditions": conditions,
             "activity_level": activity_level,
+            "physical_limitations": physical_limitations,
             "guidance": guidance,
             "warnings": warnings,
         }
+    except oracledb.Error:
+        raise HTTPException(status_code=500, detail="Unable to load activity guidance right now.")
     finally:
         cursor.close()
         connection.close()
