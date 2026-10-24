@@ -131,6 +131,7 @@
     </section>
   </main>
 
+<script src="../js/api.js"></script>
   <script>
     const form = document.getElementById("safety-form");
     const result = document.getElementById("result");
@@ -162,10 +163,13 @@
       };
 
       try {
-        // Update this path if your FastAPI route uses a different URL.
-        const response = await fetch("/safety/check", {
+        // SCRUM-52: FastAPI route on port 8000, with the login token.
+        const response = await fetch(API_BASE_URL + "/api/safety/check", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("access_token")
+          },
           body: JSON.stringify(payload)
         });
 
@@ -204,4 +208,3 @@
   </script>
 </body>
 </html>
-
