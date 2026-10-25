@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Today's Balance | DietRx</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/drift.css">
+    <script>
+        if (!(localStorage.getItem("access_token") || localStorage.getItem("session_token"))) {
+            window.location.replace("login.html");
+        }
+    </script>
+</head>
+<body>
+    <header class="site-header">
+        <a class="brand brand-logo" href="../index.html" aria-label="DietRx home">
+            <img src="../assets/images/dietrx-logo.png" alt="DietRx" onerror="this.hidden=true; this.nextElementSibling.hidden=false;">
+            <span hidden>DietRx</span>
+        </a>
+        <nav>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="diet_plan.html">Diet plan</a>
+            <a href="meal-plan.html">Meal Plan</a>
+            <a href="drift.html" aria-current="page">Balance</a>
+            <a href="daily_log.html">Daily Log</a>
+            <a href="safety_checker.html">Safety</a>
+            <a href="grocery.html">Grocery</a>
+            <a href="dish_dna.html">Dish DNA</a>
+            <a href="notifications.html">Reminders</a>
+            <a href="#" id="logoutBtn">Logout</a>
+        </nav>
+    </header>
+
+    <main class="page dr-page">
+        <!-- Hero -->
+        <section class="dr-hero">
+            <div class="dr-hero-text">
+                <p class="dr-eyebrow" id="dr-eyebrow">Today's balance</p>
+                <h1>How is today going?</h1>
+                <p class="dr-sub" id="dr-sub">DietRx compares what you logged with today's plan and gently rebalances the meals still to come.</p>
+                <div class="dr-badges" id="dr-badges"></div>
+                <div class="dr-hero-actions">
+                    <a class="dr-btn dr-btn-light" href="daily_log.html">➕ Log a meal</a>
+                    <a class="dr-btn dr-btn-ghost" href="meal-plan.html">🍽️ Today's meal plan</a>
+                    <button type="button" class="dr-btn dr-btn-ghost" id="dr-refresh">🔄 Refresh</button>
+                </div>
+            </div>
+            <div class="dr-gauge" aria-label="Calories eaten today">
+                <div class="dr-ring" id="dr-ring">
+                    <div class="dr-ring-text">
+                        <strong id="dr-eaten">0</strong>
+                        <span>of <b id="dr-target">—</b> kcal</span>
+                    </div>
+                </div>
+                <p class="dr-left" id="dr-left">—</p>
+            </div>
+        </section>
+
+        <p class="dr-status-line" id="dr-status-line" role="status" aria-live="polite"></p>
+
+        <!-- Verdict -->
+        <section class="dr-verdict" id="dr-verdict" hidden>
+            <span class="dr-verdict-icon" id="dr-verdict-icon" aria-hidden="true">✅</span>
+            <div>
+                <strong id="dr-verdict-title">On track</strong>
+                <p id="dr-verdict-text"></p>
+            </div>
+        </section>
+
+        <!-- Empty -->
+        <section class="dr-card dr-empty" id="dr-empty" hidden>
+            <span aria-hidden="true">⚖️</span>
+            <strong>No plan to compare with yet</strong>
+            <p id="dr-empty-text">Create your meal plan first. Drift is measured against it.</p>
+            <a class="dr-btn dr-btn-primary" href="diet_plan.html">✨ Create my plan</a>
+        </section>
+
+        <div class="dr-grid" id="dr-content" hidden>
+            <!-- Timeline -->
+            <section class="dr-card">
+                <div class="dr-card-head">
+                    <h2>Today's meals</h2>
+                    <span class="dr-pill" id="dr-day-pill">Day 1</span>
+                </div>
+                <ol class="dr-timeline" id="dr-timeline"></ol>
+            </section>
+
+            <aside class="dr-side">
+                <!-- What changed -->
+                <section class="dr-card">
+                    <div class="dr-card-head"><h2>What changed today</h2><span class="dr-pill is-soft" id="dr-event-count">0</span></div>
+                    <ul class="dr-events" id="dr-events"></ul>
+                </section>
+
+                <!-- Safety rules -->
+                <section class="dr-card">
+                    <div class="dr-card-head"><h2>Safety rules</h2><span class="dr-pill is-soft">🛡️</span></div>
+                    <ul class="dr-rules">
+                        <li><span>📏</span><div>A meal changes by at most <b id="dr-limit">25</b>% of its planned size.</div></li>
+                        <li><span>🥗</span><div>Only the portion of foods already in your plan changes, so your allergies and diet rules always apply.</div></li>
+                        <li><span>🩺</span><div>Bigger changes are shown as a suggestion only, or need a doctor's review.</div></li>
+                        <li><span>❓</span><div>Calories are never guessed. Pick a dish from Dish DNA when you log a meal.</div></li>
+                    </ul>
+                    <ul class="dr-notes" id="dr-notes"></ul>
+                </section>
+            </aside>
+        </div>
+
+        <p class="dr-disclaimer" id="dr-disclaimer">DietRx is a decision-support system and does not replace professional medical advice.</p>
+    </main>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/drift.js"></script>
+</body>
+</html>
