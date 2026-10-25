@@ -170,3 +170,12 @@
         padding: 18px;
     }
 }
+
+/* Logo size (style.css has none) */
+.site-header .brand-logo { display: inline-flex; align-items: center; text-decoration: none; }
+.site-header .brand-logo img { display: block; height: 76px; width: auto; margin: -8px 0; mix-blend-mode: multiply; }
+
+/* Partial estimates: a missing price is never shown as 0 */
+.cost-note { margin: 12px 0 0; padding: 10px 14px; border-radius: 12px; background: #fff4dc; color: #6b4700; font-size: 0.9rem; }
+.cost-partial { color: #6b4700; font-weight: 600; font-size: 0.85em; }
+.cost-missing { color: #8a6d3b; font-style: italic; }

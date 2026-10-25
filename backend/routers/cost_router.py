@@ -1,5 +1,12 @@
 
-"""SCRUM-58: Meal-plan cost estimation API."""
+"""SCRUM-58: Meal-plan cost estimation API.
+
+    GET /api/cost/estimate
+
+Prices are matched exactly like the grocery list (SCRUM-60), the patient's
+saved swaps (SCRUM-59) are included, and the budget is read in any SCRUM-57
+mode (daily / weekly / monthly / plan).
+"""
 
 from __future__ import annotations
 
@@ -13,6 +20,8 @@ from backend.core.security import Principal, require_patient
 from backend.database.connection import get_connection
 from backend.services import plan_service
 from backend.services.cost_estimator import estimate_plan_cost
+from backend.routers.grocery_router import _load_swaps
+from backend.routers.price_router import _budget_payload, _read_budget
 
 logger = logging.getLogger(__name__)
 
@@ -64,21 +73,13 @@ def _load_prices(cursor):
 
 
 def _load_budget(cursor, patient_id: int):
-    cursor.execute(
-        """
-        SELECT monthly_budget, preferred_market
-        FROM budget
-        WHERE patient_id = :patient_id
-        """,
-        patient_id=patient_id,
-    )
-    row = cursor.fetchone()
-    if row is None:
-        return None, None
-    return (
-        float(row[0]) if row[0] is not None else None,
-        row[1],
-    )
+    """The patient's latest budget in any mode (SCRUM-57), or not found."""
+    try:
+        return _budget_payload(_read_budget(cursor, patient_id))
+    except oracledb.Error as error:
+        if _oracle_code(error) in (_TABLE_MISSING, 904):
+            return _budget_payload(None)  # budget columns not set up: compare without a budget
+        raise
 
 
 def _load_plan(cursor, patient_id: int):
@@ -138,12 +139,15 @@ def read_cost_estimate(
             }
 
         prices = _load_prices(cursor)
-        monthly_budget, preferred_market = _load_budget(cursor, patient_id)
+        budget = _load_budget(cursor, patient_id)
+        preferred_market = budget.get("preferred_market")
+        swap_map, _active, _paused = _load_swaps(cursor, patient_id, prices)
 
         result = estimate_plan_cost(
             days=plan.get("days", []),
             prices=prices,
-            monthly_budget=monthly_budget,
+            swaps=swap_map,
+            budget=budget,
         )
 
         return {

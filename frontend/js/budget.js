@@ -51,11 +51,32 @@ function renderTopItems(items = []) {
     });
 }
 
-function renderMissingPrices(items = []) {
+// Meal / day cost: a missing price is never shown as ৳0.
+function setCost(cell, value, complete) {
+    clear(cell);
+    if (value === null || value === undefined) {
+        addText(cell, "span", "No price yet", "cost-missing");
+        return;
+    }
+    cell.append(money(value));
+    if (complete === false) {
+        addText(cell, "span", " · partial", "cost-partial");
+    }
+}
+
+function renderMissingPrices(items = [], partly = []) {
     const list = document.getElementById("missing-prices");
     clear(list);
 
-    if (!items.length) {
+    partly.forEach((item) => {
+        addText(
+            list,
+            "li",
+            `${item.name} — partly priced (${item.occurrences} occurrence(s))`
+        );
+    });
+
+    if (!items.length && !partly.length) {
         addText(list, "li", "All plan items have recorded prices.");
         return;
     }
@@ -106,7 +127,7 @@ function renderDays(days = []) {
 
             dayCell.textContent = day.label || `Day ${day.day ?? index + 1}`;
             mealCell.textContent = "No meals";
-            costCell.textContent = money(0);
+            costCell.textContent = "—";
 
             row.append(dayCell, mealCell, costCell);
             body.appendChild(row);
@@ -124,7 +145,7 @@ function renderDays(days = []) {
                 : "";
 
             mealCell.textContent = meal.meal_type || "Meal";
-            costCell.textContent = money(meal.cost_bdt);
+            setCost(costCell, meal.cost_bdt, meal.complete);
 
             row.append(dayCell, mealCell, costCell);
             body.appendChild(row);
@@ -137,7 +158,7 @@ function renderDays(days = []) {
 
         labelCell.textContent = "";
         totalLabelCell.textContent = "Day total";
-        totalCostCell.textContent = money(day.cost_bdt);
+        setCost(totalCostCell, day.cost_bdt, day.complete);
 
         totalLabelCell.style.fontWeight = "700";
         totalCostCell.style.fontWeight = "700";
@@ -156,8 +177,14 @@ function renderBudget(budget = {}) {
     bar.classList.remove("above");
 
     if (budget.status === "not_set" || budget.monthly_budget_bdt == null) {
-        message.textContent = "No monthly budget set. Add your budget to compare estimated costs.";
+        message.textContent = "No budget set. Set your budget on the Budget page to compare estimated costs.";
         details.textContent = "";
+        return;
+    }
+
+    if (budget.status === "unknown") {
+        message.textContent = "No plan item has a recorded price yet, so the cost can't be compared with your budget.";
+        details.textContent = `Budget: ${money(budget.monthly_budget_bdt)} a month.`;
         return;
     }
 
@@ -166,6 +193,9 @@ function renderBudget(budget = {}) {
 
     if (budget.status === "within") {
         message.textContent = "Your estimated monthly cost is within your budget.";
+    } else if (budget.status === "within_so_far") {
+        message.textContent =
+            "Within your budget so far. Some items have no price yet, so the real cost will be higher.";
     } else {
         message.textContent = "Your estimated monthly cost is above your budget.";
         bar.classList.add("above");
@@ -192,7 +222,13 @@ function renderEstimate(data) {
     renderBudget(data.budget);
     renderDays(data.days);
     renderTopItems(data.top_items);
-    renderMissingPrices(data.missing_prices);
+    renderMissingPrices(data.missing_prices, data.partly_priced);
+
+    const note = document.getElementById("cost-note");
+    note.hidden = data.complete !== false;
+    note.textContent = data.per_day_bdt === null
+        ? "No plan item has a recorded price yet, so the cost can't be estimated."
+        : `Only ${data.priced_items} of ${data.total_items} plan items have a full recorded price, so these totals are lower than the real cost.`;
 
     document.getElementById("coverage").textContent =
         `Price coverage: ${Number(data.coverage_percent ?? 0)}% of plan items matched recorded prices.`;

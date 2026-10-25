@@ -1,10 +1,9 @@
-```html
 <!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Budget & Cost | DietRx</title>
+    <title>Cost Estimate | DietRx</title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/budget.css">
     <script>
@@ -28,7 +27,8 @@
         <a href="safety_checker.html">Safety</a>
         <a href="grocery.html">Grocery</a>
         <a href="meal-plan.html">Meal Plan</a>
-        <a href="budget.html" aria-current="page">Budget</a>
+        <a href="prices.html">Budget</a>
+        <a href="budget.html" aria-current="page">Cost</a>
         <a href="dish_dna.html">Dish DNA</a>
         <a href="daily_log.html">Daily Log</a>
         <a href="notifications.html">Reminders</a>
@@ -39,7 +39,7 @@
 <main class="budget-page">
     <section class="budget-hero">
         <p class="eyebrow">SMART COST ESTIMATION</p>
-        <h1>Your meal plan budget</h1>
+        <h1>Your meal plan cost</h1>
         <p>Estimate your meal plan cost using recorded food prices.</p>
     </section>
 
@@ -50,15 +50,16 @@
     <section id="budget-content" hidden>
         <div class="cost-cards">
             <article class="cost-card">
-                <p>Average per day</p><h2 id="per-day">৳0</h2>
+                <p>Average per day</p><h2 id="per-day">—</h2>
             </article>
             <article class="cost-card">
-                <p>Estimated per week</p><h2 id="per-week">৳0</h2>
+                <p>Estimated per week</p><h2 id="per-week">—</h2>
             </article>
             <article class="cost-card">
-                <p>Estimated per month</p><h2 id="per-month">৳0</h2>
+                <p>Estimated per month</p><h2 id="per-month">—</h2>
             </article>
         </div>
+        <p id="cost-note" class="cost-note" hidden></p>
 
         <section class="budget-panel">
             <h2>Monthly budget comparison</h2>
@@ -106,4 +107,3 @@
 <script src="../js/budget.js"></script>
 </body>
 </html>
-```

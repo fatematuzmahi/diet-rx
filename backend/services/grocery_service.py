@@ -224,6 +224,51 @@ def ingredient_price(key: str, dish: Optional[str], prices: Sequence[Dict[str, A
     return exact_price(dish, prices) if dish else None
 
 
+def price_plan_item(
+    plan_item: str,
+    prices: Sequence[Dict[str, Any]],
+    swaps: Optional[Dict[str, Dict[str, Any]]] = None,
+) -> Dict[str, Any]:
+    """Cost of ONE serving of a meal-plan item, priced exactly like the grocery list.
+
+    Used by the cost estimate (SCRUM-58) so both pages always agree:
+    exact-name prices only, a whole-dish price when one is recorded, otherwise
+    each ingredient on its own, and the patient's saved swaps (SCRUM-59).
+
+    Returns ``cost`` (None when nothing could be priced), ``complete`` (every
+    ingredient priced), ``parts`` and ``priced_parts``, and the oldest
+    ``price_date`` used.
+    """
+    swaps = swaps or {}
+    keys = PLAN_ITEM_MAP.get((plan_item or "").strip().lower()) or ("other:" + (plan_item or "").strip().lower(),)
+    whole_dish = None if any(k in swaps for k in keys) else exact_price(plan_item, prices)
+    rows: List[Tuple[Optional[Dict[str, Any]], float]] = []
+    if whole_dish is not None:
+        rows.append((whole_dish, 1.0))
+        parts = 1
+    else:
+        parts = len(keys)
+        for key in keys:
+            amount, row, hops = 1.0, None, 0
+            current = key
+            while current in swaps and hops < 5:
+                swap = swaps[current]
+                current, amount, row = swap["to_key"], amount * float(swap["ratio"]), swap.get("price_row")
+                hops += 1
+            if hops == 0:
+                row = ingredient_price(key, plan_item if len(keys) == 1 else None, prices)
+            rows.append((row, amount))
+    priced = [(r, a) for r, a in rows if r is not None and r.get("price_bdt") is not None]
+    dates = [str(r.get("price_date"))[:10] for r, _a in priced if r.get("price_date") is not None]
+    return {
+        "cost": round(sum(float(r["price_bdt"]) * a for r, a in priced), 2) if priced else None,
+        "complete": len(priced) == parts,
+        "parts": parts,
+        "priced_parts": len(priced),
+        "price_date": min(dates) if dates else None,
+    }
+
+
 # --------------------------------------------------------------------------- #
 # The list
 # --------------------------------------------------------------------------- #
