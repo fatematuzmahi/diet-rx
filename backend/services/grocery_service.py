@@ -118,10 +118,9 @@ CATEGORY_ORDER = (
 # --------------------------------------------------------------------------- #
 #: Allow-listed shops. Only these hosts can ever be linked to.
 STORES: Tuple[Dict[str, str], ...] = (
-    {"id": "chaldal", "name": "Chaldal", "template": "https://chaldal.com/search/{q}"},
     {"id": "daraz", "name": "Daraz", "template": "https://www.daraz.com.bd/catalog/?q={q}"},
 )
-ALLOWED_HOSTS = frozenset({"chaldal.com", "www.daraz.com.bd"})
+ALLOWED_HOSTS = frozenset({"www.daraz.com.bd"})
 ALLOWED_SEARCH_WORDS = frozenset(w for _n, _c, w in GROCERY_ITEMS.values() if w)
 _SAFE_WORD = re.compile(r"^[a-z ]{2,30}$")
 
