@@ -183,6 +183,25 @@ def find_price(name: str, prices: Sequence[Dict[str, Any]]) -> Optional[Dict[str
     return best
 
 
+def exact_price(name: str, prices: Sequence[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+    """Only a price recorded for exactly this name (singular/plural ignored)."""
+    target = _norm(name)
+    for row in prices:
+        if target and row.get("price_bdt") is not None and _norm(row.get("item_name", "")) == target:
+            return row
+    return None
+
+
+def ingredient_price(key: str, dish: Optional[str], prices: Sequence[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+    """Price of one grocery line: its ingredient, else (single-ingredient dish) the dish."""
+    if key.startswith("other:"):
+        return find_price(dish, prices) if dish else None
+    row = find_price(key.replace("_", " "), prices)
+    if row is None and dish:
+        row = find_price(dish, prices)
+    return row
+
+
 # --------------------------------------------------------------------------- #
 # The list
 # --------------------------------------------------------------------------- #
@@ -207,8 +226,16 @@ def build_grocery_list(
         keys = PLAN_ITEM_MAP.get(plan_item.lower())
         if not keys:  # unknown item -> keep it as its own grocery line
             keys = ("other:" + plan_item.lower(),)
-        price_row = find_price(plan_item, prices)
+        # A price recorded for the whole dish (e.g. "Khichuri") is used once.
+        # Otherwise every grocery line is priced by its OWN ingredient, so a
+        # two-ingredient dish such as "Oats porridge with milk" never shows the
+        # milk price on the oats line.
+        whole_dish = exact_price(plan_item, prices)
+        line_prices = {key: whole_dish if i == 0 else None for i, key in enumerate(keys)} if whole_dish else {
+            key: ingredient_price(key, plan_item if len(keys) == 1 else None, prices) for key in keys
+        }
         for key in keys:
+            price_row = line_prices[key]
             if key.startswith("other:"):
                 name, category, word = plan_item, "Other", None
             else:
@@ -221,11 +248,10 @@ def build_grocery_list(
             g["servings"] += 1
             if plan_item not in g["used_in"]:
                 g["used_in"].append(plan_item)
-            if price_row is None:
+            if price_row is None and not (whole_dish and key != keys[0]):
                 continue
             g["covered"] += 1
-            if key == keys[0]:
-                # A dish's price is counted once, on its first grocery line.
+            if price_row is not None:
                 g["cost_bdt"] += float(price_row["price_bdt"])
                 g["priced"] += 1
                 g["unit"] = g["unit"] or price_row.get("unit")

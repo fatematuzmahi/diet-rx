@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget &amp; Prices | DietRx</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/prices.css">
+    <script>
+        if (!(localStorage.getItem("access_token") || localStorage.getItem("session_token"))) {
+            window.location.replace("login.html");
+        }
+    </script>
+</head>
+<body>
+    <header class="site-header">
+        <a class="brand brand-logo" href="../index.html" aria-label="DietRx home">
+            <img src="../assets/images/dietrx-logo.png" alt="DietRx" onerror="this.hidden=true; this.nextElementSibling.hidden=false;">
+            <span hidden>DietRx</span>
+        </a>
+        <nav>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="diet_plan.html">Diet plan</a>
+            <a href="prescriptions.html">Prescriptions</a>
+            <a href="safety_checker.html">Safety</a>
+            <a href="grocery.html">Grocery</a>
+            <a href="prices.html" aria-current="page">Budget</a>
+            <a href="meal-plan.html">Meal Plan</a>
+            <a href="dish_dna.html">Dish DNA</a>
+            <a href="daily_log.html">Daily Log</a>
+            <a href="notifications.html">Reminders</a>
+            <a href="#" id="logoutBtn">Logout</a>
+        </nav>
+    </header>
+
+    <main class="page pb-page">
+        <!-- Hero -->
+        <section class="pb-hero">
+            <div class="pb-hero-text">
+                <p class="pb-eyebrow">Budget &amp; local prices</p>
+                <h1>Plan meals that fit your pocket</h1>
+                <p class="pb-sub">Set your food budget the way you think about money: per day, per week, per month or for your whole plan. DietRx uses it for your grocery list and meal suggestions.</p>
+                <div class="pb-badges" id="pb-badges"></div>
+            </div>
+            <div class="pb-hero-figure">
+                <span>Your daily budget</span>
+                <strong id="pb-hero-day">—</strong>
+                <small id="pb-hero-month">Not set yet</small>
+            </div>
+        </section>
+
+        <p class="pb-status" id="pb-status" role="status" aria-live="polite"></p>
+
+        <div class="pb-grid">
+            <!-- Budget form -->
+            <section class="pb-card">
+                <div class="pb-card-head"><h2>My food budget</h2><span class="pb-pill is-soft" id="pb-budget-pill">Not set</span></div>
+                <form id="pb-form" novalidate>
+                    <fieldset class="pb-modes">
+                        <legend>How do you plan your budget?</legend>
+                        <label><input type="radio" name="mode" value="DAILY"><span>📅 Daily</span></label>
+                        <label><input type="radio" name="mode" value="WEEKLY" checked><span>🗓️ Weekly</span></label>
+                        <label><input type="radio" name="mode" value="MONTHLY"><span>📆 Monthly</span></label>
+                        <label><input type="radio" name="mode" value="PLAN"><span>🍽️ Whole plan</span></label>
+                    </fieldset>
+                    <div class="pb-fields">
+                        <label class="pb-field">
+                            <span id="pb-amount-label">Amount per week (BDT)</span>
+                            <div class="pb-money"><b>৳</b><input type="number" id="pb-amount" min="1" step="1" inputmode="numeric" placeholder="e.g. 1500" required></div>
+                        </label>
+                        <label class="pb-field" id="pb-days-wrap" hidden>
+                            <span>Plan length (days)</span>
+                            <input type="number" id="pb-days" min="1" max="31" step="1" value="7">
+                        </label>
+                        <label class="pb-field pb-wide">
+                            <span>Where do you usually shop? <em>(optional)</em></span>
+                            <input type="text" id="pb-market" maxlength="100" placeholder="e.g. Karwan Bazar, local market">
+                        </label>
+                    </div>
+                    <div class="pb-preview" id="pb-preview" aria-live="polite"></div>
+                    <p class="pb-form-error" id="pb-error" role="alert" hidden></p>
+                    <div class="pb-actions">
+                        <button type="submit" class="pb-btn pb-btn-primary" id="pb-save">💾 Save budget</button>
+                        <a class="pb-btn pb-btn-soft" href="grocery.html">🛒 See my grocery list</a>
+                    </div>
+                </form>
+            </section>
+
+            <!-- How prices work -->
+            <aside class="pb-card pb-info">
+                <div class="pb-card-head"><h2>About these prices</h2><span class="pb-pill is-soft">ℹ️</span></div>
+                <ul class="pb-points">
+                    <li><span>🏪</span><div>Prices come from published Dhaka retail market reports. Each one shows its <b>source</b> and <b>date</b>.</div></li>
+                    <li><span>🍽️</span><div>Each price is for <b>one serving</b>, worked out from the market price and the serving size shown.</div></li>
+                    <li><span>⏳</span><div>Prices older than 30 days are marked <b>may be outdated</b>.</div></li>
+                    <li><span>🌦️</span><div>Vegetable and fruit prices change with the <b>season</b>.</div></li>
+                </ul>
+                <div class="pb-sources" id="pb-sources"></div>
+            </aside>
+        </div>
+
+        <!-- Price list -->
+        <section class="pb-card pb-list-card">
+            <div class="pb-card-head">
+                <h2>Local prices per serving</h2>
+                <span class="pb-pill" id="pb-count">0 items</span>
+            </div>
+            <div class="pb-toolbar">
+                <label class="pb-search"><span aria-hidden="true">🔍</span><input type="search" id="pb-filter" placeholder="Find a food…" autocomplete="off"></label>
+                <div class="pb-chips" id="pb-chips" role="tablist" aria-label="Category"></div>
+            </div>
+            <div class="pb-table-wrap">
+                <table class="pb-table">
+                    <thead><tr><th>Food</th><th>Serving</th><th class="r">Per serving</th><th>Market price</th><th>Season</th><th>Source</th></tr></thead>
+                    <tbody id="pb-rows"><tr><td colspan="6" class="pb-empty">Loading prices…</td></tr></tbody>
+                </table>
+            </div>
+        </section>
+
+        <p class="pb-disclaimer" id="pb-disclaimer">Prices are estimates. DietRx is a decision-support system and does not replace professional medical advice.</p>
+    </main>
+
+    <div class="pb-toast" id="pb-toast" role="status" aria-live="polite" hidden></div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/prices.js"></script>
+</body>
+</html>

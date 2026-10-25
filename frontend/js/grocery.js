@@ -136,7 +136,7 @@
     pill.className = "gr-pill is-soft";
     if (b.status === "not_set") {
       pill.textContent = "Not set";
-      $("gr-budget").innerHTML = `<p class="gr-budget-note">No monthly food budget is saved yet. Once you save one, this card shows whether your list is within or above it.</p>`;
+      $("gr-budget").innerHTML = `<p class="gr-budget-note">No food budget is saved yet. <a href="prices.html">Set your budget</a> and this card shows whether your list is within or above it.</p>`;
       return;
     }
     const rows = [
