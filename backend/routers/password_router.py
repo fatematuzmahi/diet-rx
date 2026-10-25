@@ -176,7 +176,9 @@ def reset_password(
 ):
     if data.new_password != data.confirm_password:
         raise HTTPException(status_code=400, detail="Passwords do not match.")
-
+    # No reset cookie (expired or never verified) -> 401, not a 500 crash.
+    if not reset_session:
+        raise HTTPException(status_code=401, detail="Your reset session is invalid or has expired.")
     try:
         payload = jwt.decode(reset_session, RESET_SESSION_SECRET, algorithms=[RESET_SESSION_ALGORITHM])
         patient_id = int(payload.get("sub"))

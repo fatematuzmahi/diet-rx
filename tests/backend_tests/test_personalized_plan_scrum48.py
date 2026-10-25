@@ -66,29 +66,17 @@ from backend.schemas.plan import (
     PlanGenerateResponse,
     PlanHistoryResponse,
 )
-from backend.services import conflict_resolver, diet_generator
-from backend.services.diet_generator import (
-    SAFE_MIN_CALORIES,
-    generate_diet_plan,
+# The plan engine lives in plan_generator.py / plan_conflict_resolver.py
+# (renamed from diet_generator.py / conflict_resolver.py during SCRUM-48).
+from backend.services.plan_generator import (
+    MIN_CALORIE_TARGET,
+    calculate_calorie_target,
+    generate_plan,
 )
-from backend.services.conflict_resolver import (
+from backend.services.plan_conflict_resolver import (
     find_dietary_conflicts,
+    resolve_effective_restrictions,
 )
-# Aliases for backward compatibility with test expectations
-generate_plan = generate_diet_plan
-resolve_effective_restrictions = find_dietary_conflicts
-
-
-def patient_principal(subject_id=1):
-    """Create a test Principal for a patient.
-    
-    The patient subject_id comes from the verified JWT token in production;
-    in tests we use this helper to create test principals.
-    """
-    from backend.core.security import Principal, ROLE_PATIENT
-    return Principal(subject=str(subject_id), role=ROLE_PATIENT)
-
-
 def run(func_result):
     """Drive async dependency/endpoint calls on a fresh event loop if needed."""
     if asyncio.iscoroutine(func_result):
@@ -607,7 +595,7 @@ def db(monkeypatch):
 # 5) RBAC: the endpoints are bound to require_patient
 # --------------------------------------------------------------------------- #
 def test_patient_passes_require_patient():
-    assert run(require_patient(principal=patient_principal())) is not None
+    assert run(require_patient(principal=patient_principal(1))) is not None
 
 
 def test_doctor_is_403_on_require_patient():
@@ -660,7 +648,7 @@ def test_no_endpoint_accepts_a_patient_id_from_the_request():
 def test_generate_returns_a_full_plan(db):
     response = run(plan_router.generate_my_plan(
         payload=PlanGenerateRequest(days=3),
-        principal=patient_principal(),
+        principal=patient_principal(1),
     ))
     assert isinstance(response, PlanGenerateResponse)
     assert response.patient_id == 1
@@ -675,7 +663,7 @@ def test_generate_returns_a_full_plan(db):
 def test_generate_stores_the_plan(db):
     run(plan_router.generate_my_plan(
         payload=PlanGenerateRequest(days=2),
-        principal=patient_principal(),
+        principal=patient_principal(1),
     ))
     assert len(db.plans) == 1
     stored = next(iter(db.plans.values()))
@@ -690,7 +678,7 @@ def test_generate_stores_the_plan(db):
 def test_generate_writes_a_matching_activity_plan_row(db):
     run(plan_router.generate_my_plan(
         payload=PlanGenerateRequest(days=1),
-        principal=patient_principal(),
+        principal=patient_principal(1),
     ))
     assert len(db.activities) == 1
     activity = next(iter(db.activities.values()))
@@ -703,11 +691,11 @@ def test_regeneration_keeps_the_previous_plan_as_history(db):
     """SRS 3.3.6.5: the old plan is retained, only the new one is CURRENT."""
     first = run(plan_router.generate_my_plan(
         payload=PlanGenerateRequest(days=1),
-        principal=patient_principal(),
+        principal=patient_principal(1),
     ))
     second = run(plan_router.generate_my_plan(
         payload=PlanGenerateRequest(days=1),
-        principal=patient_principal(),
+        principal=patient_principal(1),
     ))
     assert first.plan_id != second.plan_id
     assert len(db.plans) == 2
@@ -718,11 +706,11 @@ def test_regeneration_keeps_the_previous_plan_as_history(db):
 
 def test_only_one_plan_is_current_at_a_time(db):
     run(plan_router.generate_my_plan(
-        payload=PlanGenerateRequest(days=1), principal=patient_principal()))
+        payload=PlanGenerateRequest(days=1), principal=patient_principal(1)))
     run(plan_router.generate_my_plan(
-        payload=PlanGenerateRequest(days=1), principal=patient_principal()))
+        payload=PlanGenerateRequest(days=1), principal=patient_principal(1)))
     run(plan_router.generate_my_plan(
-        payload=PlanGenerateRequest(days=1), principal=patient_principal()))
+        payload=PlanGenerateRequest(days=1), principal=patient_principal(1)))
     current = [p for p in db.plans.values() if p["status"] == STATUS_CURRENT]
     assert len(current) == 1
 
@@ -730,18 +718,18 @@ def test_only_one_plan_is_current_at_a_time(db):
 def test_regenerate_false_keeps_the_current_plan(db):
     """regenerate=False adds a plan without demoting the current one."""
     run(plan_router.generate_my_plan(
-        payload=PlanGenerateRequest(days=1), principal=patient_principal()))
+        payload=PlanGenerateRequest(days=1), principal=patient_principal(1)))
     run(plan_router.generate_my_plan(
         payload=PlanGenerateRequest(days=1, regenerate=False),
-        principal=patient_principal()))
+        principal=patient_principal(1)))
     current = [p for p in db.plans.values() if p["status"] == STATUS_CURRENT]
     assert len(current) == 2
 
 
 def test_a_patient_never_sees_another_patients_plan(db):
     run(plan_router.generate_my_plan(
-        payload=PlanGenerateRequest(days=1), principal=patient_principal()))
-    response = run(plan_router.read_my_current_plan(principal=patient_principal()))
+        payload=PlanGenerateRequest(days=1), principal=patient_principal(1)))
+    response = run(plan_router.read_my_current_plan(principal=patient_principal(2)))
     assert response.found is False
     assert response.patient_id == 2
 
@@ -749,7 +737,7 @@ def test_a_patient_never_sees_another_patients_plan(db):
 def test_plan_id_is_never_written_by_the_application(db):
     """PLAN_ID is GENERATED ALWAYS AS IDENTITY: never inserted, never a sequence."""
     run(plan_router.generate_my_plan(
-        payload=PlanGenerateRequest(days=1), principal=patient_principal()))
+        payload=PlanGenerateRequest(days=1), principal=patient_principal(1)))
     inserts = [sql for sql, _ in db.statements if sql.lower().startswith("insert into diet_plan")]
     assert inserts
     for sql in inserts:
@@ -766,7 +754,7 @@ def test_generation_is_rolled_back_on_a_database_error(db, monkeypatch):
     monkeypatch.setattr(FakeCursor, "execute", boom)
     with pytest.raises(HTTPException) as exc:
         plan_router.generate_my_plan(
-            payload=PlanGenerateRequest(days=1), principal=patient_principal())
+            payload=PlanGenerateRequest(days=1), principal=patient_principal(1))
     assert status_of(exc) == 500
     assert db.rolled_back is True
 
@@ -776,8 +764,8 @@ def test_generation_is_rolled_back_on_a_database_error(db, monkeypatch):
 # --------------------------------------------------------------------------- #
 def test_read_current_plan_returns_the_stored_plan(db):
     generated = run(plan_router.generate_my_plan(
-        payload=PlanGenerateRequest(days=2), principal=patient_principal()))
-    current = run(plan_router.read_my_current_plan(principal=patient_principal()))
+        payload=PlanGenerateRequest(days=2), principal=patient_principal(1)))
+    current = run(plan_router.read_my_current_plan(principal=patient_principal(1)))
     assert isinstance(current, PlanCurrentResponse)
     assert current.found is True
     assert current.plan_id == generated.plan_id
@@ -787,7 +775,7 @@ def test_read_current_plan_returns_the_stored_plan(db):
 
 
 def test_read_current_plan_is_empty_when_nothing_was_generated(db):
-    current = run(plan_router.read_my_current_plan(principal=patient_principal()))
+    current = run(plan_router.read_my_current_plan(principal=patient_principal(2)))
     assert current.found is False
     assert current.days == []
     assert current.activities == []
@@ -795,10 +783,10 @@ def test_read_current_plan_is_empty_when_nothing_was_generated(db):
 
 def test_plan_history_lists_the_superseded_plans(db):
     run(plan_router.generate_my_plan(
-        payload=PlanGenerateRequest(days=1), principal=patient_principal()))
+        payload=PlanGenerateRequest(days=1), principal=patient_principal(1)))
     run(plan_router.generate_my_plan(
-        payload=PlanGenerateRequest(days=1), principal=patient_principal()))
-    history = run(plan_router.read_my_plan_history(principal=patient_principal()))
+        payload=PlanGenerateRequest(days=1), principal=patient_principal(1)))
+    history = run(plan_router.read_my_plan_history(principal=patient_principal(1)))
     assert isinstance(history, PlanHistoryResponse)
     assert history.total == 2
     statuses = {entry.status for entry in history.plans}
@@ -806,7 +794,7 @@ def test_plan_history_lists_the_superseded_plans(db):
 
 
 def test_plan_history_is_empty_for_a_new_patient(db):
-    history = run(plan_router.read_my_plan_history(principal=patient_principal()))
+    history = run(plan_router.read_my_plan_history(principal=patient_principal(2)))
     assert history.plans == []
     assert history.total == 0
     assert history.disclaimer == DECISION_SUPPORT_DISCLAIMER
