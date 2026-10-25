@@ -1,0 +1,109 @@
+```html
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget & Cost | DietRx</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/budget.css">
+    <script>
+        if (!(localStorage.getItem("access_token") ||
+              localStorage.getItem("session_token"))) {
+            window.location.replace("login.html");
+        }
+    </script>
+</head>
+<body>
+<header class="site-header">
+    <a class="brand brand-logo" href="../index.html" aria-label="DietRx home">
+        <img src="../assets/images/dietrx-logo.png" alt="DietRx"
+             onerror="this.hidden=true; this.nextElementSibling.hidden=false;">
+        <span hidden>DietRx</span>
+    </a>
+    <nav>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="diet_plan.html">Diet plan</a>
+        <a href="prescriptions.html">Prescriptions</a>
+        <a href="safety_checker.html">Safety</a>
+        <a href="grocery.html">Grocery</a>
+        <a href="meal-plan.html">Meal Plan</a>
+        <a href="budget.html" aria-current="page">Budget</a>
+        <a href="dish_dna.html">Dish DNA</a>
+        <a href="daily_log.html">Daily Log</a>
+        <a href="notifications.html">Reminders</a>
+        <a href="#" id="logoutBtn">Logout</a>
+    </nav>
+</header>
+
+<main class="budget-page">
+    <section class="budget-hero">
+        <p class="eyebrow">SMART COST ESTIMATION</p>
+        <h1>Your meal plan budget</h1>
+        <p>Estimate your meal plan cost using recorded food prices.</p>
+    </section>
+
+    <p id="budget-status" class="status" role="status" aria-live="polite">
+        Loading your estimate…
+    </p>
+
+    <section id="budget-content" hidden>
+        <div class="cost-cards">
+            <article class="cost-card">
+                <p>Average per day</p><h2 id="per-day">৳0</h2>
+            </article>
+            <article class="cost-card">
+                <p>Estimated per week</p><h2 id="per-week">৳0</h2>
+            </article>
+            <article class="cost-card">
+                <p>Estimated per month</p><h2 id="per-month">৳0</h2>
+            </article>
+        </div>
+
+        <section class="budget-panel">
+            <h2>Monthly budget comparison</h2>
+            <p id="budget-message"></p>
+            <div class="budget-track">
+                <div id="budget-bar" class="budget-bar"></div>
+            </div>
+            <p id="budget-details"></p>
+        </section>
+
+        <section class="budget-panel">
+            <h2>Day-by-day cost</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                    <tr><th>Day</th><th>Meal</th><th>Estimated cost</th></tr>
+                    </thead>
+                    <tbody id="day-costs"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="budget-panel">
+            <h2>Top cost items</h2>
+            <ol id="top-items"></ol>
+        </section>
+
+        <section class="budget-panel">
+            <h2>Items without recorded prices</h2>
+            <ul id="missing-prices"></ul>
+            <p id="coverage"></p>
+        </section>
+
+        <section class="budget-panel">
+            <h2>Price information</h2>
+            <p id="prices-date"></p>
+            <ul id="warnings"></ul>
+            <p id="disclaimer" class="disclaimer"></p>
+        </section>
+    </section>
+</main>
+
+<script src="../js/api.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/budget.js"></script>
+</body>
+</html>
+```
