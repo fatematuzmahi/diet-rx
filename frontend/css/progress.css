@@ -1,4 +1,3 @@
-```css
 /* SCRUM-54: Progress Dashboard */
 
 .progress-page {
@@ -322,4 +321,7 @@
     transition: none !important;
   }
 }
-```
+
+/* Logo size (style.css has none) */
+.site-header .brand-logo { display: inline-flex; align-items: center; text-decoration: none; }
+.site-header .brand-logo img { display: block; height: 76px; width: auto; margin: -8px 0; mix-blend-mode: multiply; }
