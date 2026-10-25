@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from  fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from backend.routers.password_router import router as password_router
@@ -9,6 +9,7 @@ from backend.routers.health_profile_router import router as health_profile_route
 from backend.routers.prescription_router import router as prescription_router
 from backend.routers.dish_dna_router import router as dish_dna_router
 from backend.routers.plan_router import router as plan_router
+from backend.routes.safety_routes import safety_router
 
 
 app = FastAPI(
@@ -38,12 +39,13 @@ app.include_router(health_profile_router)
 app.include_router(prescription_router)
 app.include_router(dish_dna_router)
 app.include_router(plan_router)
+app.include_router(safety_router)
 
 
 @app.get("/")
 def root():
     return {
-        "message": "DietRx FastAPI Backend is running"
+        "message": "DietRx  Backend is running"
     }
 
 
