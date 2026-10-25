@@ -1,0 +1,102 @@
+```html
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progress | DietRx</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/progress.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand brand-logo" href="../index.html" aria-label="DietRx home">
+      <img src="../assets/images/dietrx-logo.png" alt="DietRx">
+    </a>
+    <nav>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="daily_log.html">Daily Log</a>
+      <a href="progress.html" aria-current="page">Progress</a>
+      <a href="#" id="logoutBtn">Logout</a>
+    </nav>
+  </header>
+
+  <main class="progress-page">
+    <section class="progress-hero">
+      <div>
+        <p class="eyebrow">YOUR HEALTH JOURNEY</p>
+        <h1>Progress & Trends</h1>
+        <p>Track your daily habits and see how consistently you're meeting your goals.</p>
+      </div>
+      <button id="refresh-progress" type="button">↻ Refresh</button>
+    </section>
+
+    <section class="progress-controls" aria-label="Trend period">
+      <button type="button" data-period="7" class="period-btn active" aria-pressed="true">Weekly · 7 days</button>
+      <button type="button" data-period="30" class="period-btn" aria-pressed="false">Monthly · 30 days</button>
+    </section>
+
+    <p id="progress-status" role="status" aria-live="polite">Loading your progress…</p>
+    <p id="progress-error" class="progress-error" role="alert" hidden></p>
+
+    <section class="overall-card">
+      <div>
+        <p class="eyebrow">OVERALL ADHERENCE</p>
+        <h2 id="overall-percent">—</h2>
+        <p id="overall-detail">Calculating your progress</p>
+      </div>
+      <div id="overall-status" class="status-pill">Loading</div>
+    </section>
+
+    <section id="progress-cards" class="progress-grid" aria-label="Progress by category">
+      <article class="metric-card" data-metric="meals">
+        <p class="metric-label">🍽️ Meals</p>
+        <strong class="metric-percent">—</strong>
+        <span class="status-pill metric-status">Loading</span>
+        <p class="metric-detail">Adherence</p>
+        <div class="metric-track"><span class="metric-fill"></span></div>
+        <div class="trend-heading"><span>Daily trend</span><span class="days-count">—</span></div>
+        <div class="mini-trend" aria-label="Daily meals adherence"></div>
+      </article>
+
+      <article class="metric-card" data-metric="water">
+        <p class="metric-label">💧 Water</p>
+        <strong class="metric-percent">—</strong>
+        <span class="status-pill metric-status">Loading</span>
+        <p class="metric-detail">Adherence</p>
+        <div class="metric-track"><span class="metric-fill"></span></div>
+        <div class="trend-heading"><span>Daily trend</span><span class="days-count">—</span></div>
+        <div class="mini-trend" aria-label="Daily water adherence"></div>
+      </article>
+
+      <article class="metric-card" data-metric="activity">
+        <p class="metric-label">🏃 Activity</p>
+        <strong class="metric-percent">—</strong>
+        <span class="status-pill metric-status">Loading</span>
+        <p class="metric-detail">Adherence</p>
+        <div class="metric-track"><span class="metric-fill"></span></div>
+        <div class="trend-heading"><span>Daily trend</span><span class="days-count">—</span></div>
+        <div class="mini-trend" aria-label="Daily activity adherence"></div>
+      </article>
+
+      <article class="metric-card" data-metric="medication">
+        <p class="metric-label">💊 Medication</p>
+        <strong class="metric-percent">—</strong>
+        <span class="status-pill metric-status">Loading</span>
+        <p class="metric-detail">Taken / scheduled</p>
+        <div class="metric-track"><span class="metric-fill"></span></div>
+        <div class="trend-heading"><span>Daily trend</span><span class="days-count">—</span></div>
+        <div class="mini-trend" aria-label="Daily medication adherence"></div>
+      </article>
+    </section>
+
+    <p class="progress-note">Today is included and may still change.</p>
+    <p id="progress-empty" hidden>No log entries yet. Log your first day in Daily Log.</p>
+    <a class="daily-log-link" href="daily_log.html">Open Daily Log →</a>
+  </main>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/progress.js"></script>
+</body>
+</html>
+```
