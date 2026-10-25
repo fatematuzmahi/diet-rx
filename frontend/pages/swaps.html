@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Swaps | DietRx</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/swaps.css">
+    <script>
+        if (!(localStorage.getItem("access_token") || localStorage.getItem("session_token"))) {
+            window.location.replace("login.html");
+        }
+    </script>
+</head>
+<body>
+    <header class="site-header">
+        <a class="brand brand-logo" href="../index.html" aria-label="DietRx home">
+            <img src="../assets/images/dietrx-logo.png" alt="DietRx" onerror="this.hidden=true; this.nextElementSibling.hidden=false;">
+            <span hidden>DietRx</span>
+        </a>
+        <nav>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="meal-plan.html">Meal Plan</a>
+            <a href="grocery.html">Grocery</a>
+            <a href="prices.html">Budget</a>
+            <a href="swaps.html" aria-current="page">Smart Swaps</a>
+            <a href="safety_checker.html">Safety</a>
+            <a href="#" id="logoutBtn">Logout</a>
+        </nav>
+    </header>
+
+    <main class="page sw-page">
+        <section class="sw-hero">
+            <div class="sw-hero-text">
+                <p class="sw-eyebrow">Budget-aware Bengali food optimizer</p>
+                <h1>Smart swaps</h1>
+                <p class="sw-sub">Cheaper local foods that are still safe for you. DietRx checks your allergies, diet, conditions and prescriptions first, then looks at the price.</p>
+                <div class="sw-badges" id="sw-badges"></div>
+            </div>
+            <div class="sw-meter" id="sw-meter" aria-live="polite">
+                <span>Your plan this week</span>
+                <strong id="sw-cost">—</strong>
+                <small id="sw-budget">Budget: —</small>
+                <em class="sw-status" id="sw-status-pill">…</em>
+            </div>
+        </section>
+
+        <p class="sw-status-line" id="sw-status" role="status" aria-live="polite"></p>
+        <div class="sw-band" id="sw-band" hidden></div>
+
+        <div class="sw-grid">
+            <section class="sw-main">
+                <div class="sw-head">
+                    <h2>Swap ideas for your plan</h2>
+                    <span class="sw-pill" id="sw-count">0 ideas</span>
+                </div>
+                <div id="sw-ideas" class="sw-ideas">
+                    <div class="sw-card sw-empty">Loading your plan…</div>
+                </div>
+            </section>
+
+            <aside class="sw-side">
+                <section class="sw-card">
+                    <div class="sw-head"><h2>Your swaps</h2><span class="sw-pill is-soft" id="sw-active-count">0</span></div>
+                    <div id="sw-active"><p class="sw-muted">No swaps yet. Pick one from the ideas.</p></div>
+                </section>
+
+                <section class="sw-card">
+                    <div class="sw-head"><h2>Check any food</h2><span class="sw-pill is-soft">🔎</span></div>
+                    <form id="sw-check" class="sw-check">
+                        <label class="sw-sr" for="sw-food">Food</label>
+                        <select id="sw-food" required><option value="">Choose a food…</option></select>
+                        <button type="submit" class="sw-btn sw-btn-soft">Show cheaper options</button>
+                    </form>
+                    <div id="sw-check-result"></div>
+                </section>
+
+                <section class="sw-card sw-rules">
+                    <div class="sw-head"><h2>How swaps are chosen</h2></div>
+                    <ol>
+                        <li><b>Safe for you</b> – your allergies, diet type, conditions and prescriptions.</li>
+                        <li><b>Same food group</b> – protein for protein, grain for grain.</li>
+                        <li><b>Real local price</b> – with its source and date. No guessed prices.</li>
+                        <li><b>Cheaper</b> – for about the same amount of food.</li>
+                    </ol>
+                    <p class="sw-muted" id="sw-checked"></p>
+                </section>
+            </aside>
+        </div>
+
+        <p class="sw-disclaimer" id="sw-disclaimer">Swaps are suggestions. DietRx is a decision-support system and does not replace professional medical advice.</p>
+    </main>
+
+    <div class="sw-toast" id="sw-toast" role="status" aria-live="polite" hidden></div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/swaps.js"></script>
+</body>
+</html>

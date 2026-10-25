@@ -27,6 +27,7 @@ from backend.core.security import Principal, require_patient
 from backend.database.connection import get_connection
 from backend.services import plan_service
 from backend.services.grocery_service import build_grocery_list
+from backend.services.optimizer_service import build_context, grocery_swaps
 
 logger = logging.getLogger(__name__)
 
@@ -78,6 +79,30 @@ def _load_budget(cursor, patient_id: int):
     )
     row = cursor.fetchone()
     return (row[0], float(row[1]) if row[1] is not None else None) if row else (None, None)
+
+
+def _load_swaps(cursor, patient_id: int, prices):
+    """SCRUM-59: the patient's saved cheaper swaps, re-checked for safety.
+
+    If the MEAL_SWAP table is not there yet, the list is built without swaps.
+    """
+    try:
+        cursor.execute(
+            "SELECT swap_id, from_item, to_item, servings_ratio, created_at FROM meal_swap "
+            "WHERE patient_id = :patient_id AND status = 'ACTIVE' ORDER BY swap_id",
+            patient_id=patient_id,
+        )
+        rows = cursor.fetchall() or []
+    except oracledb.Error as error:
+        if _code(error) in (_TABLE_MISSING, 904):
+            return {}, [], []
+        raise
+    if not rows:
+        return {}, [], []
+    from backend.routers.safety_router import _load_profile
+    ctx = build_context(_load_profile(cursor, patient_id), plan_service.read_prescription_rows(cursor, patient_id))
+    swap_rows = [{"swap_id": int(r[0]), "from_item": r[1], "to_item": r[2], "created_at": r[4]} for r in rows]
+    return grocery_swaps(swap_rows, ctx, prices)
 
 
 def _save_snapshot(connection, cursor, patient_id: int, plan_id: int,
@@ -139,7 +164,8 @@ def read_grocery_list(principal: Principal = Depends(require_patient)):
 
         prices = _load_prices(cursor)
         budget_id, monthly_budget = _load_budget(cursor, patient_id)
-        result = build_grocery_list(days, prices, monthly_budget)
+        swap_map, swaps_applied, swaps_paused = _load_swaps(cursor, patient_id, prices)
+        result = build_grocery_list(days, prices, monthly_budget, swaps=swap_map)
         saved = _save_snapshot(connection, cursor, patient_id, int(plan["plan_id"]), budget_id, result)
 
         return {
@@ -148,6 +174,8 @@ def read_grocery_list(principal: Principal = Depends(require_patient)):
             "accepted_at": latest[1],
             **result,
             **saved,
+            "swaps_applied": swaps_applied,
+            "swaps_paused": swaps_paused,
         }
     except HTTPException:
         raise

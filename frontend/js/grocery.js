@@ -152,7 +152,7 @@
     } else if (b.status === "above") {
       pill.textContent = "Above"; pill.className = "gr-pill is-above"; barClass = "is-above";
       rows.push(`<div class="gr-row"><span>Over by</span><b class="is-above">${taka(Math.abs(b.difference_bdt))} / month</b></div>`);
-      note = "Your list costs more than your budget. Cheaper local alternatives can help (budget optimizer).";
+      note = "Your list costs more than your budget. Cheaper, safe local swaps can help.";
     } else {
       const partial = b.status === "within_so_far";
       pill.textContent = partial ? "Within so far" : "Within";
@@ -166,7 +166,18 @@
       <div class="gr-budget-figures">${rows.join("")}</div>
       ${b.used_percent !== undefined ? `<div class="gr-budget-bar"><i class="${barClass}" style="width:${pct}%"></i></div>
       <div class="gr-row"><span>Used</span><b>${b.used_percent}%</b></div>` : ""}
-      <p class="gr-budget-note">${escapeHtml(note)}</p>`;
+      <p class="gr-budget-note">${escapeHtml(note)} <a href="swaps.html">💡 Find cheaper swaps</a></p>
+      ${swapsHtml()}`;
+  }
+
+  // SCRUM-59: saved cheaper swaps that this list already uses.
+  function swapsHtml() {
+    const applied = state.data.swaps_applied || [];
+    const paused = state.data.swaps_paused || [];
+    if (!applied.length && !paused.length) return "";
+    const line = (s) => `${escapeHtml(s.from_name)} → ${escapeHtml(s.to_name)}`;
+    return `<p class="gr-budget-note">🔄 Using ${applied.length} swap${applied.length === 1 ? "" : "s"}${applied.length ? ": " + applied.map(line).join(", ") : ""}.${
+      paused.length ? ` ⏸️ ${paused.length} paused because it no longer suits your health information.` : ""}</p>`;
   }
 
   // ---------- list ----------

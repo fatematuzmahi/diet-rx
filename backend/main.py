@@ -16,6 +16,7 @@ from backend.routers.safety_router import router as safety_router
 from backend.routers.grocery_router import router as grocery_router
 from backend.routers.drift_router import router as drift_router
 from backend.routers.price_router import router as price_router
+from backend.routers.optimizer_router import router as optimizer_router
 
 
 app = FastAPI(
@@ -51,6 +52,7 @@ app.include_router(safety_router)
 app.include_router(grocery_router)
 app.include_router(drift_router)
 app.include_router(price_router)
+app.include_router(optimizer_router)
 
 @app.get("/")
 def root():

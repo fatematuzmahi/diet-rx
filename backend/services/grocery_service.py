@@ -161,6 +161,10 @@ def purchase_links(search_word: Optional[str]) -> Dict[str, Any]:
 # --------------------------------------------------------------------------- #
 # Prices (from FOOD_PRICE, SCRUM-57)
 # --------------------------------------------------------------------------- #
+def _count(value: float) -> str:
+    return str(int(value)) if float(value).is_integer() else f"{value:.1f}"
+
+
 def _norm(text: str) -> str:
     words = re.sub(r"[^a-z ]", " ", (text or "").lower()).split()
     return " ".join(w[:-1] if len(w) > 3 and w.endswith("s") and not w.endswith("ss") else w for w in words)
@@ -192,14 +196,32 @@ def exact_price(name: str, prices: Sequence[Dict[str, Any]]) -> Optional[Dict[st
     return None
 
 
+#: grocery key -> FOOD_PRICE item names that price ONE serving of exactly that
+#: ingredient. Only exact names are used, so "Mixed fruit salad" can never be
+#: priced as the cucumber "Salad" row, and "Oats porridge with milk" never as "Milk".
+INGREDIENT_PRICE_NAMES: Dict[str, Tuple[str, ...]] = {
+    "rice": ("Rice",), "atta": ("Atta",), "bread": ("Whole wheat bread", "Bread"),
+    "oats": ("Oats",), "biscuit": ("Whole wheat biscuit", "Biscuit"),
+    "dal": ("Dal", "Lentil", "Lentils"), "chana": ("Chana", "Chickpeas"),
+    "sprouts": ("Sprouts", "Mung beans"), "eggs": ("Egg", "Eggs"), "fish": ("Fish",),
+    "chicken": ("Chicken",), "milk": ("Milk",), "curd": ("Curd", "Doi"),
+    "buttermilk": ("Buttermilk",), "paneer": ("Paneer",), "vegetables": ("Vegetables",),
+    "salad": ("Salad",), "lemon": ("Lemon",), "banana": ("Banana",), "apple": ("Apple",),
+    "fruit": ("Fruit",), "coconut_water": ("Coconut water",), "green_tea": ("Green tea",),
+    "nuts": ("Nuts", "Mixed nuts"), "peanut_chikki": ("Peanut chikki",), "papad": ("Papad",),
+}
+
+
 def ingredient_price(key: str, dish: Optional[str], prices: Sequence[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
-    """Price of one grocery line: its ingredient, else (single-ingredient dish) the dish."""
-    if key.startswith("other:"):
-        return find_price(dish, prices) if dish else None
-    row = find_price(key.replace("_", " "), prices)
-    if row is None and dish:
-        row = find_price(dish, prices)
-    return row
+    """Price of one grocery line: its own ingredient, else -- for a dish made of
+    that one ingredient ("Roti", "Lime water") -- a price recorded under the
+    dish's exact name. Never a partly matching name: no guessed prices."""
+    if not key.startswith("other:"):
+        for name in INGREDIENT_PRICE_NAMES.get(key, (key.replace("_", " "),)):
+            row = exact_price(name, prices)
+            if row is not None:
+                return row
+    return exact_price(dish, prices) if dish else None
 
 
 # --------------------------------------------------------------------------- #
@@ -217,8 +239,13 @@ def build_grocery_list(
     days: Sequence[Dict[str, Any]],
     prices: Optional[Sequence[Dict[str, Any]]] = None,
     monthly_budget: Optional[float] = None,
+    swaps: Optional[Dict[str, Dict[str, Any]]] = None,
 ) -> Dict[str, Any]:
+    """``swaps`` (SCRUM-59): grocery key -> {"to_key", "ratio", "price_row",
+    "from_name"}. A swapped ingredient is bought as the cheaper safe food
+    instead, ``ratio`` servings for every serving it replaces."""
     prices = list(prices or [])
+    swaps = swaps or {}
     day_count = max(len(days or []), 1)
     groceries: Dict[str, Dict[str, Any]] = {}
 
@@ -230,12 +257,21 @@ def build_grocery_list(
         # Otherwise every grocery line is priced by its OWN ingredient, so a
         # two-ingredient dish such as "Oats porridge with milk" never shows the
         # milk price on the oats line.
-        whole_dish = exact_price(plan_item, prices)
+        whole_dish = None if any(k in swaps for k in keys) else exact_price(plan_item, prices)
         line_prices = {key: whole_dish if i == 0 else None for i, key in enumerate(keys)} if whole_dish else {
             key: ingredient_price(key, plan_item if len(keys) == 1 else None, prices) for key in keys
         }
         for key in keys:
             price_row = line_prices[key]
+            amount = 1
+            used_label = plan_item
+            hops = 0
+            while key in swaps and hops < 5:  # follows chained swaps, e.g. sprouts -> chana -> dal
+                swap = swaps[key]
+                key, amount, price_row = swap["to_key"], amount * float(swap["ratio"]), swap.get("price_row")
+                if hops == 0:
+                    used_label = f"{plan_item} (swap for {swap.get('from_name') or 'another food'})"
+                hops += 1
             if key.startswith("other:"):
                 name, category, word = plan_item, "Other", None
             else:
@@ -245,14 +281,14 @@ def build_grocery_list(
                 "servings": 0, "used_in": [], "cost_bdt": 0.0, "priced": 0,
                 "covered": 0, "shared_with": [], "unit": None, "price_date": None,
             })
-            g["servings"] += 1
-            if plan_item not in g["used_in"]:
-                g["used_in"].append(plan_item)
+            g["servings"] += amount
+            if used_label not in g["used_in"]:
+                g["used_in"].append(used_label)
             if price_row is None and not (whole_dish and key != keys[0]):
                 continue
-            g["covered"] += 1
+            g["covered"] += amount
             if price_row is not None:
-                g["cost_bdt"] += float(price_row["price_bdt"])
+                g["cost_bdt"] += float(price_row["price_bdt"]) * amount
                 g["priced"] += 1
                 g["unit"] = g["unit"] or price_row.get("unit")
                 d = price_row.get("price_date")
@@ -280,7 +316,7 @@ def build_grocery_list(
             "name": g["name"],
             "category": g["category"],
             "servings": g["servings"],
-            "quantity_label": f"{g['servings']} serving{'s' if g['servings'] != 1 else ''}",
+            "quantity_label": f"{_count(g['servings'])} serving{'s' if g['servings'] != 1 else ''}",
             "unit": g["unit"],
             "used_in": g["used_in"],
             "estimated_cost_bdt": round(g["cost_bdt"]) if g["priced"] else None,
