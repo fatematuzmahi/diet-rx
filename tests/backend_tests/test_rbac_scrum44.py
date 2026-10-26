@@ -134,7 +134,8 @@ def test_token_missing_role_is_401():
 
 
 def test_token_with_unknown_role_is_401():
-    bad_role = create_access_token({"sub": "42", "role": "ADMIN", "typ": "access"})
+    # SCRUM-61 made ADMIN a real role, so an unknown role is now e.g. SUPERUSER.
+    bad_role = create_access_token({"sub": "42", "role": "SUPERUSER", "typ": "access"})
     with pytest.raises(HTTPException) as exc:
         decode_access_token(bad_role)
     assert status_of(exc) == 401

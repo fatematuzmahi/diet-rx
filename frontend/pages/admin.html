@@ -1,0 +1,123 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DietRx Admin Panel</title>
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+    <header class="topbar">
+        <div>
+            <h1>DietRx Admin Panel</h1>
+            <p>Manage users, Dish DNA and food prices</p>
+        </div>
+        <button id="logoutButton" class="button secondary" type="button">
+            Logout
+        </button>
+    </header>
+
+    <main class="container">
+        <div id="statusMessage" class="status" role="status"></div>
+
+        <!-- SCRUM-61 fix: admin sign-in (admins had no way to log in from the UI) -->
+        <section id="adminLogin" class="panel hidden">
+            <h2>Admin sign in</h2>
+            <p>Admin accounts are created by the team lead. There is no public sign-up.</p>
+            <form id="adminLoginForm">
+                <label for="adminEmail">Email</label>
+                <input id="adminEmail" type="email" autocomplete="username" required>
+                <label for="adminPassword">Password</label>
+                <input id="adminPassword" type="password" autocomplete="current-password" required>
+                <button id="adminLoginButton" class="button" type="submit">Sign in</button>
+                <p id="adminLoginMessage" class="form-message" role="status"></p>
+            </form>
+        </section>
+
+        <div id="adminApp" class="hidden">
+        <nav class="tabs" aria-label="Admin sections">
+            <button class="tab active" data-tab="users" type="button">Users</button>
+            <button class="tab" data-tab="dish-dna" type="button">Dish DNA</button>
+            <button class="tab" data-tab="food-prices" type="button">Food Prices</button>
+        </nav>
+
+        <section id="users" class="panel">
+            <h2>Users</h2>
+
+            <div class="toolbar">
+                <input id="userSearch" type="search" placeholder="Search by name or email">
+                <select id="roleFilter">
+                    <option value="">All roles</option>
+                    <option value="PATIENT">Patient</option>
+                    <option value="DOCTOR">Doctor</option>
+                </select>
+                <button id="searchUsersButton" class="button" type="button">Search</button>
+            </div>
+
+            <p id="usersSummary"></p>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Created At</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <tr><td colspan="5">Loading users...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pagination">
+                <button id="previousPageButton" class="button secondary" type="button">Previous</button>
+                <span id="pageInfo">Page 1</span>
+                <button id="nextPageButton" class="button secondary" type="button">Next</button>
+            </div>
+        </section>
+
+        <section id="dish-dna" class="panel hidden">
+            <h2>Dish DNA</h2>
+            <p>Manage Dish DNA using the existing backend endpoints.</p>
+
+            <form id="dishDnaForm">
+                <label for="dishDnaId">Dish DNA ID (for update)</label>
+                <input id="dishDnaId" name="id" type="text" placeholder="Leave blank to create">
+
+                <label for="dishDnaPayload">Dish DNA data (JSON)</label>
+                <textarea id="dishDnaPayload" name="payload" rows="8"
+                          placeholder='{"key": "value"}' required></textarea>
+
+                <button class="button" type="submit">Save Dish DNA</button>
+                <p id="dishDnaMessage" class="form-message" role="status"></p>
+            </form>
+        </section>
+
+        <section id="food-prices" class="panel hidden">
+            <h2>Food Prices</h2>
+            <p>Manage food prices using the existing backend endpoints.</p>
+
+            <form id="foodPriceForm">
+                <label for="foodPriceId">Price ID (for update)</label>
+                <input id="foodPriceId" name="id" type="text" placeholder="Leave blank to create">
+
+                <label for="foodPricePayload">Food price data (JSON)</label>
+                <textarea id="foodPricePayload" name="payload" rows="8"
+                          placeholder='{"key": "value"}' required></textarea>
+
+                <button class="button" type="submit">Save Food Price</button>
+                <p id="foodPriceMessage" class="form-message" role="status"></p>
+            </form>
+        </section>
+        </div>
+    </main>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/admin.js"></script>
+</body>
+</html>

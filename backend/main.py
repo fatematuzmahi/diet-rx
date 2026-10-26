@@ -22,11 +22,12 @@ from backend.routers.optimizer_router import router as optimizer_router
 from backend.routers.cost_router import router as cost_router
 from backend.routers.sharing_router import router as sharing_router
 from backend.routers.doctor_portal_router import router as doctor_portal_router
+from backend.routers.admin_router import router as admin_router
 
 
 app = FastAPI(
     title="DietRx API",
-    version="1.0.0"
+    version="1.0.0",
 )
 
 
@@ -69,6 +70,8 @@ app.include_router(optimizer_router)
 app.include_router(cost_router)
 app.include_router(sharing_router)
 app.include_router(doctor_portal_router)
+app.include_router(admin_router)
+
 
 @app.get("/")
 def root():
@@ -82,3 +85,4 @@ def health_check():
     return {
         "status": "ok"
     }
+

@@ -139,7 +139,8 @@ def test_login_without_database_is_an_error_not_a_crash(monkeypatch):
     monkeypatch.setattr(auth_router, "get_connection", lambda: None)
     with pytest.raises(HTTPException) as error:
         login("verified@example.com", "Correct#123")
-    assert error.value.status_code == 500
+    # SCRUM-61 changed "database unreachable" from 500 to 503 Service Unavailable.
+    assert error.value.status_code == 503
 
 
 # --------------------------------------------------------------------------- #

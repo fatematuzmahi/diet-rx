@@ -16,7 +16,7 @@ import pytest
 from fastapi import HTTPException
 from pydantic import ValidationError
 
-from backend.core.security import Principal, require_doctor, require_patient
+from backend.core.security import Principal, require_doctor, require_doctor_or_admin, require_patient
 from backend.routers import price_router as router
 from backend.schemas.price import BudgetIn, PriceIn
 from backend.services.grocery_service import build_grocery_list
@@ -234,7 +234,7 @@ def price_body(**overrides):
 def test_price_writes_are_limited_to_the_data_maintainer_role():
     import inspect
     for fn in (router.add_price, router.update_price):
-        assert inspect.signature(fn).parameters["principal"].default.dependency is require_doctor
+        assert inspect.signature(fn).parameters["principal"].default.dependency is require_doctor_or_admin  # SCRUM-61
 
 
 def test_budget_routes_are_patient_only():

@@ -2,10 +2,10 @@
 
 Design notes
 ------------
-* Roles are IMPLICIT, not stored in a column. A principal is a PATIENT or a
-  DOCTOR purely by virtue of which table it authenticated against. There is
-  deliberately NO role column and NO ADMIN role, because neither the SRS nor
-  the current schema defines one.
+* Roles are IMPLICIT, not stored in a column. A principal is a PATIENT, a
+  DOCTOR or (SCRUM-61) an ADMIN purely by virtue of which table it
+  authenticated against (PATIENT, DOCTOR, ADMIN_USER). There is no role column.
+  ADMIN is never treated as a DOCTOR: it can only reach routes that name it.
 
 * ``PATIENT_ID`` and ``DOCTOR_ID`` are independent identity sequences that both
   start at 1, so a bare numeric id is ambiguous across the two principals.
@@ -41,6 +41,7 @@ ACCESS_TOKEN_TYPE = "access"
 
 ROLE_PATIENT = "PATIENT"
 ROLE_DOCTOR = "DOCTOR"
+ROLE_ADMIN = "ADMIN"  # SCRUM-61
 
 CREDENTIALS_EXCEPTION_HEADERS = {"WWW-Authenticate": "Bearer"}
 
@@ -63,6 +64,10 @@ class Principal:
     @property
     def is_doctor(self) -> bool:
         return self.role == ROLE_DOCTOR
+
+    @property
+    def is_admin(self) -> bool:
+        return self.role == ROLE_ADMIN
 
 
 def _unauthorized(detail: str) -> HTTPException:
@@ -98,7 +103,7 @@ def decode_access_token(token: str) -> Principal:
 
     subject = payload.get("sub")
     role = payload.get("role")
-    if not subject or role not in (ROLE_PATIENT, ROLE_DOCTOR):
+    if not subject or role not in (ROLE_PATIENT, ROLE_DOCTOR, ROLE_ADMIN):
         raise _unauthorized("Authentication token is missing required claims.")
 
     return Principal(subject=str(subject), role=role)
@@ -149,6 +154,8 @@ def require_role(*allowed_roles: str):
 
 require_patient = require_role(ROLE_PATIENT)
 require_doctor = require_role(ROLE_DOCTOR)
+require_admin = require_role(ROLE_ADMIN)  # SCRUM-61
+require_doctor_or_admin = require_role(ROLE_DOCTOR, ROLE_ADMIN)  # SCRUM-61: data maintainers
 
 
 async def require_self_or_doctor(

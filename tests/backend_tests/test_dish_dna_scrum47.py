@@ -40,7 +40,7 @@ os.environ.setdefault("JWT_SECRET_KEY", "test-secret-key-for-scrum47")
 import pytest
 from fastapi import HTTPException
 
-from backend.core.security import ROLE_DOCTOR, ROLE_PATIENT, Principal, require_doctor
+from backend.core.security import ROLE_DOCTOR, ROLE_PATIENT, Principal, require_doctor, require_doctor_or_admin
 import backend.routers.dish_dna_router as dna
 from backend.schemas.dish_dna import (
     DECISION_SUPPORT_DISCLAIMER,
@@ -492,13 +492,13 @@ def test_create_endpoint_is_bound_to_require_doctor():
     """Proves the create route cannot be reached without the DOCTOR dependency."""
     params = signature(dna.create_dish).parameters.values()
     principal = next(p for p in params if p.name == "principal")
-    assert principal.default.dependency is require_doctor
+    assert principal.default.dependency is require_doctor_or_admin  # SCRUM-61: admin may maintain Dish DNA
 
 
 def test_update_endpoint_is_bound_to_require_doctor():
     params = signature(dna.update_dish).parameters.values()
     principal = next(p for p in params if p.name == "principal")
-    assert principal.default.dependency is require_doctor
+    assert principal.default.dependency is require_doctor_or_admin  # SCRUM-61: admin may maintain Dish DNA
 
 
 def test_delete_endpoint_is_bound_to_require_doctor():
