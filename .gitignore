@@ -18,3 +18,6 @@ _pyflakes.txt
 _full_out.txt
 _fix_rowcount.py
 s48_pdf/
+
+# SCRUM-63: database backups contain personal health data - never commit
+backups/
