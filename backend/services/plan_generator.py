@@ -231,7 +231,9 @@ IRON_DEFICIENCY_MARKERS = (
 #: allergy such as "Peanuts" or "Eggs" is matched by meaning, not by the exact
 #: spelling, so "Peanut chikki" or "Egg bhurji" is still removed.
 ALLERGEN_FAMILIES: Dict[str, Tuple[str, ...]] = {
-    "peanut": ("peanut", "chikki"),
+    # SCRUM-69: "Roasted nuts" / "badam" mixes often contain peanuts, so a peanut
+    # allergy also removes generic nut items (safety first; coconut is still kept).
+    "peanut": ("peanut", "chikki", "nut", "badam"),
     "nut": ("nut", "peanut", "chikki", "almond", "cashew"),
     "egg": ("egg", "bhurji"),
     "milk": ("milk", "curd", "buttermilk", "paneer", "yogurt", "doi"),
