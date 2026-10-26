@@ -19,7 +19,29 @@ from backend.database.connection import get_connection
 
 
 VERIFICATION_CODE_TTL = timedelta(minutes=10)
-SECRET_KEY = os.getenv("JWT_SECRET_KEY", "dietrx-secret-key")
+def load_secret_key(env=None) -> str:
+    """SCRUM-62: the JWT signing key must come from the environment (.env).
+
+    There is no built-in fallback any more: a key written in the source code
+    is public on GitHub, so anyone could forge tokens with it. If the key is
+    missing the server refuses to start with a clear message.
+    """
+    value = (env if env is not None else os.environ).get("JWT_SECRET_KEY", "")
+    value = (value or "").strip()
+    if not value:
+        raise RuntimeError(
+            "JWT_SECRET_KEY is not set. Add JWT_SECRET_KEY=<a long random value> "
+            "to the .env file in the project root, then start the server again."
+        )
+    if value == "dietrx-secret-key":
+        raise RuntimeError(
+            "JWT_SECRET_KEY still uses the old public default value. "
+            "Put a new long random value in .env."
+        )
+    return value
+
+
+SECRET_KEY = load_secret_key()
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 logger = logging.getLogger(__name__)

@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from backend.core.security_headers import apply_security_headers
+
 from backend.routers.password_router import router as password_router
 from backend.routers.auth_router import router as auth_router
 from backend.routers.doctor_router import router as doctor_router
@@ -38,6 +40,14 @@ app.add_middleware(
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
+
+
+@app.middleware("http")
+async def security_headers(request, call_next):
+    """SCRUM-62: strict browser security headers on every response."""
+    response = await call_next(request)
+    apply_security_headers(request.url.path, response.headers)
+    return response
 
 
 app.include_router(password_router)

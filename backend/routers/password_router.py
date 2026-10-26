@@ -18,7 +18,8 @@ load_dotenv()
 
 RESET_CODE_TTL = timedelta(minutes=10)
 RESET_SESSION_COOKIE = "dietrx_reset_session"
-RESET_SESSION_SECRET = os.getenv("JWT_SECRET_KEY", "dietrx-secret-key")
+# SCRUM-62: same key as access tokens, loaded once (no hard-coded fallback).
+from backend.routers.auth_router import SECRET_KEY as RESET_SESSION_SECRET  # noqa: E402
 RESET_SESSION_ALGORITHM = "HS256"
 
 router = APIRouter(prefix="/auth", tags=["Password Recovery"])
