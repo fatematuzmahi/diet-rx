@@ -18,6 +18,8 @@ from backend.routers.drift_router import router as drift_router
 from backend.routers.price_router import router as price_router
 from backend.routers.optimizer_router import router as optimizer_router
 from backend.routers.cost_router import router as cost_router
+from backend.routers.sharing_router import router as sharing_router
+from backend.routers.doctor_portal_router import router as doctor_portal_router
 
 
 app = FastAPI(
@@ -55,6 +57,8 @@ app.include_router(drift_router)
 app.include_router(price_router)
 app.include_router(optimizer_router)
 app.include_router(cost_router)
+app.include_router(sharing_router)
+app.include_router(doctor_portal_router)
 
 @app.get("/")
 def root():

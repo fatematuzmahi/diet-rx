@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor View | DietRx</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/sharing.css">
+</head>
+<body>
+    <header class="site-header">
+        <a class="brand brand-logo" href="../index.html" aria-label="DietRx home">
+            <img src="../assets/images/dietrx-logo.png" alt="DietRx" onerror="this.hidden=true; this.nextElementSibling.hidden=false;">
+            <span hidden>DietRx</span>
+        </a>
+        <nav>
+            <a href="doctor.html" aria-current="page">Doctor view</a>
+            <a href="login.html">Patient login</a>
+            <a href="#" id="logoutBtn" hidden>Logout</a>
+        </nav>
+    </header>
+
+    <main class="page sh-page">
+        <!-- Doctor login (shown when no doctor token is saved) -->
+        <section id="dc-login" hidden>
+            <section class="sh-hero">
+                <div class="sh-hero-text">
+                    <p class="sh-eyebrow">For doctors</p>
+                    <h1>Doctor view</h1>
+                    <p class="sh-sub">See the progress your patients chose to share with you, and review plans that need a professional check.</p>
+                </div>
+            </section>
+            <section class="sh-card sh-login">
+                <div class="sh-head"><h2>Doctor login</h2><span class="sh-pill is-soft">🩺</span></div>
+                <form id="dc-login-form" class="sh-form">
+                    <label class="sh-label" for="dc-email">Email
+                        <input type="email" id="dc-email" autocomplete="username" required>
+                    </label>
+                    <label class="sh-label" for="dc-password">Password
+                        <input type="password" id="dc-password" autocomplete="current-password" required>
+                    </label>
+                    <button type="submit" class="sh-btn sh-btn-primary" id="dc-login-btn">Log in</button>
+                    <p class="sh-muted">Doctor accounts are created by the DietRx team. There is no public sign-up.</p>
+                </form>
+            </section>
+        </section>
+
+        <!-- Doctor portal -->
+        <section id="dc-portal" hidden>
+            <section class="sh-hero">
+                <div class="sh-hero-text">
+                    <p class="sh-eyebrow">Professional review</p>
+                    <h1 id="dc-hello">Doctor view</h1>
+                    <p class="sh-sub">You only see what each patient switched on for you. Plans with a dietary conflict wait here for your review.</p>
+                </div>
+                <div class="sh-meter" aria-live="polite">
+                    <span>Waiting for review</span>
+                    <strong id="dc-pending">—</strong>
+                    <small id="dc-patients-count">patients</small>
+                </div>
+            </section>
+
+            <p class="sh-status-line" id="dc-status" role="status" aria-live="polite"></p>
+
+            <div class="sh-grid">
+                <div class="sh-main">
+                    <section class="sh-card" id="dc-detail">
+                        <div class="sh-head"><h2 id="dc-detail-title">Choose a patient</h2><span class="sh-pill is-soft" id="dc-detail-pill">👤</span></div>
+                        <div class="sh-tabs" role="tablist" id="dc-tabs" hidden>
+                            <button type="button" class="sh-tab" role="tab" data-tab="plan">🍽️ Diet plan</button>
+                            <button type="button" class="sh-tab" role="tab" data-tab="daily_log">📒 Daily Log</button>
+                            <button type="button" class="sh-tab" role="tab" data-tab="progress">📈 Progress</button>
+                        </div>
+                        <div id="dc-panel"><p class="sh-empty">Pick a patient or a plan from the lists to see what they shared.</p></div>
+                    </section>
+                </div>
+
+                <aside class="sh-side">
+                    <section class="sh-card">
+                        <div class="sh-head"><h2>Review list</h2><span class="sh-pill" id="dc-queue-count">0</span></div>
+                        <div id="dc-queue" class="sh-list"><p class="sh-muted">Loading…</p></div>
+                    </section>
+                    <section class="sh-card">
+                        <div class="sh-head"><h2>My patients</h2><span class="sh-pill is-soft" id="dc-patient-count">0</span></div>
+                        <div id="dc-patients" class="sh-list"><p class="sh-muted">Loading…</p></div>
+                    </section>
+                </aside>
+            </div>
+        </section>
+
+        <p class="sh-disclaimer">DietRx is a decision-support system and does not replace professional medical advice.</p>
+    </main>
+
+    <div class="sh-toast" id="sh-toast" role="status" aria-live="polite" hidden></div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/doctor.js"></script>
+</body>
+</html>

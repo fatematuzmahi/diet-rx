@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sharing | DietRx</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/sharing.css">
+    <script>
+        if (!(localStorage.getItem("access_token") || localStorage.getItem("session_token"))) {
+            window.location.replace("login.html");
+        }
+    </script>
+</head>
+<body>
+    <header class="site-header">
+        <a class="brand brand-logo" href="../index.html" aria-label="DietRx home">
+            <img src="../assets/images/dietrx-logo.png" alt="DietRx" onerror="this.hidden=true; this.nextElementSibling.hidden=false;">
+            <span hidden>DietRx</span>
+        </a>
+        <nav>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="meal-plan.html">Meal Plan</a>
+            <a href="daily_log.html">Daily Log</a>
+            <a href="progress.html">Progress</a>
+            <a href="sharing.html" aria-current="page">Sharing</a>
+            <a href="#" id="logoutBtn">Logout</a>
+        </nav>
+    </header>
+
+    <main class="page sh-page">
+        <section class="sh-hero">
+            <div class="sh-hero-text">
+                <p class="sh-eyebrow">Progress sharing &amp; professional review</p>
+                <h1>Share with your doctor</h1>
+                <p class="sh-sub">You choose what each doctor can see: your Daily Log, your diet plan, your progress. Turn any of them off whenever you want.</p>
+            </div>
+            <div class="sh-meter" aria-live="polite">
+                <span>Sharing with</span>
+                <strong id="sh-count">—</strong>
+                <small id="sh-count-label">doctors</small>
+            </div>
+        </section>
+
+        <p class="sh-status-line" id="sh-status" role="status" aria-live="polite"></p>
+
+        <div class="sh-grid">
+            <div class="sh-main">
+                <section class="sh-card">
+                    <div class="sh-head"><h2>Share with a doctor</h2><span class="sh-pill is-soft">🔐 You decide</span></div>
+                    <form id="sh-form" class="sh-form">
+                        <label class="sh-label" for="sh-doctor">Doctor
+                            <select id="sh-doctor" required><option value="">Loading doctors…</option></select>
+                        </label>
+                        <div class="sh-toggles" role="group" aria-label="What this doctor can see">
+                            <label class="sh-toggle"><input type="checkbox" id="sh-daily_log"><span class="sh-ico">📒</span><b>Daily Log</b><small>Meals, water, activity and medicine you logged</small></label>
+                            <label class="sh-toggle"><input type="checkbox" id="sh-plan"><span class="sh-ico">🍽️</span><b>Diet plan</b><small>Your current plan, so the doctor can review it</small></label>
+                            <label class="sh-toggle"><input type="checkbox" id="sh-progress"><span class="sh-ico">📈</span><b>Progress</b><small>Your daily totals and trends</small></label>
+                        </div>
+                        <div class="sh-actions">
+                            <button type="submit" class="sh-btn sh-btn-primary" id="sh-save">Save sharing</button>
+                            <span class="sh-muted" id="sh-form-note">Leave all three off to stop sharing with this doctor.</span>
+                        </div>
+                    </form>
+                </section>
+
+                <section class="sh-card">
+                    <div class="sh-head"><h2>Who can see what</h2><span class="sh-pill is-soft" id="sh-list-count">0</span></div>
+                    <div id="sh-list" class="sh-list"><p class="sh-empty">Loading…</p></div>
+                </section>
+            </div>
+
+            <aside class="sh-side">
+                <section class="sh-card">
+                    <div class="sh-head"><h2>Professional review</h2><span class="sh-review-status is-none" id="sh-review-pill">…</span></div>
+                    <div id="sh-review"><p class="sh-muted">Loading…</p></div>
+                </section>
+
+                <section class="sh-card">
+                    <div class="sh-head"><h2>Review history</h2><span class="sh-pill is-soft">🩺</span></div>
+                    <div id="sh-history"><p class="sh-muted">No reviews yet.</p></div>
+                </section>
+
+                <section class="sh-card sh-rules">
+                    <div class="sh-head"><h2>Your privacy</h2></div>
+                    <ol>
+                        <li>A doctor sees <b>only</b> what you switched on.</li>
+                        <li>You can turn sharing off at any time.</li>
+                        <li>Doctors see your name, not your email or phone.</li>
+                        <li>Every review is saved with the doctor's name and time.</li>
+                    </ol>
+                </section>
+            </aside>
+        </div>
+
+        <p class="sh-disclaimer">DietRx is a decision-support system and does not replace professional medical advice.</p>
+    </main>
+
+    <div class="sh-toast" id="sh-toast" role="status" aria-live="polite" hidden></div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/sharing.js"></script>
+</body>
+</html>
