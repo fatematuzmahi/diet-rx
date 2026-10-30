@@ -1,0 +1,102 @@
+/* SCRUM-69 (round 3): one shared header and menu for every patient page.
+   Selectors start with .site-header so they win over older page-level nav rules. */
+.site-header.app-header {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px 24px;
+    flex-wrap: wrap;
+    background: transparent;
+    position: relative;
+    z-index: 50;
+}
+.site-header.app-header .brand-logo { display: inline-flex; align-items: center; text-decoration: none; }
+.site-header.app-header .brand-logo img { display: block; height: 64px; width: auto; margin: -6px 0; mix-blend-mode: multiply; }
+.site-header.app-header .brand-logo span { color: #167047; font: 800 1.45rem/1 Arial, sans-serif; }
+
+.site-header nav.app-nav {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 0;
+    background: transparent;
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+}
+.site-header nav.app-nav > a,
+.site-header nav.app-nav summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 14px;
+    border-radius: 999px;
+    color: #17352a;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    list-style: none;
+    white-space: nowrap;
+}
+.site-header nav.app-nav summary::-webkit-details-marker { display: none; }
+.site-header nav.app-nav summary::after {
+    content: "";
+    width: 7px; height: 7px;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg) translateY(-2px);
+    opacity: .6;
+}
+.site-header nav.app-nav > a:hover,
+.site-header nav.app-nav summary:hover { background: #e3efe7; }
+.site-header nav.app-nav > a[aria-current="page"],
+.site-header nav.app-nav .nav-group.is-active > summary { background: #167047; color: #ffffff; }
+.site-header nav.app-nav a:focus-visible,
+.site-header nav.app-nav summary:focus-visible { outline: 2px solid #167047; outline-offset: 2px; }
+
+.site-header nav.app-nav .nav-group { position: relative; }
+.site-header nav.app-nav .nav-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    min-width: 210px;
+    display: flex;
+    flex-direction: column;
+    padding: 6px;
+    background: #ffffff;
+    border: 1px solid #d5e4da;
+    border-radius: 14px;
+    box-shadow: 0 14px 34px rgba(23, 53, 42, .16);
+}
+.site-header nav.app-nav .nav-menu a {
+    padding: 10px 12px;
+    border-radius: 9px;
+    color: #17352a;
+    text-decoration: none;
+    font-weight: 500;
+}
+.site-header nav.app-nav .nav-menu a:hover { background: #eef6f1; }
+.site-header nav.app-nav .nav-menu a[aria-current="page"] { background: #e3efe7; color: #0f5a37; font-weight: 700; }
+
+.site-header nav.app-nav > a#logoutBtn.nav-logout {
+    margin-left: 6px;
+    padding: 8px 16px;
+    border: 1.5px solid #c2413b;
+    border-radius: 999px;
+    background: transparent;
+    box-shadow: none;
+    color: #b0322c;
+    font-size: 15px;
+    font-weight: 700;
+}
+.site-header nav.app-nav > a#logoutBtn.nav-logout:hover { background: #c2413b; color: #ffffff; }
+
+@media (max-width: 760px) {
+    .site-header.app-header { padding: 12px 16px; }
+    .site-header nav.app-nav { width: 100%; position: relative; }
+    .site-header nav.app-nav .nav-group { position: static; }
+    .site-header nav.app-nav .nav-menu { left: 0; right: 0; min-width: 0; }
+}

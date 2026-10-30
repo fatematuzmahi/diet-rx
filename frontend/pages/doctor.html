@@ -32,12 +32,12 @@
             </section>
             <section class="sh-card sh-login">
                 <div class="sh-head"><h2>Doctor login</h2><span class="sh-pill is-soft">🩺</span></div>
-                <form id="dc-login-form" class="sh-form">
+                <form id="dc-login-form" class="sh-form" autocomplete="off" data-no-autofill>
                     <label class="sh-label" for="dc-email">Email
-                        <input type="email" id="dc-email" autocomplete="username" required>
+                        <input type="email" id="dc-email" autocomplete="off" readonly required>
                     </label>
                     <label class="sh-label" for="dc-password">Password
-                        <input type="password" id="dc-password" autocomplete="current-password" required>
+                        <input type="password" id="dc-password" autocomplete="off" readonly required>
                     </label>
                     <button type="submit" class="sh-btn sh-btn-primary" id="dc-login-btn">Log in</button>
                     <p class="sh-muted">Doctor accounts are created by the DietRx team. There is no public sign-up.</p>
@@ -95,5 +95,6 @@
 
     <script src="../js/api.js"></script>
     <script src="../js/doctor.js"></script>
+    <script src="../js/no_autofill.js"></script>
 </body>
 </html>

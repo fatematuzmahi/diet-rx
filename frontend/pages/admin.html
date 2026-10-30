@@ -25,11 +25,11 @@
         <section id="adminLogin" class="panel hidden">
             <h2>Admin sign in</h2>
             <p>Admin accounts are created by the team lead. There is no public sign-up.</p>
-            <form id="adminLoginForm">
+            <form id="adminLoginForm" autocomplete="off" data-no-autofill>
                 <label for="adminEmail">Email</label>
-                <input id="adminEmail" type="email" autocomplete="username" required>
+                <input id="adminEmail" type="email" autocomplete="off" readonly required>
                 <label for="adminPassword">Password</label>
-                <input id="adminPassword" type="password" autocomplete="current-password" required>
+                <input id="adminPassword" type="password" autocomplete="off" readonly required>
                 <button id="adminLoginButton" class="button" type="submit">Sign in</button>
                 <p id="adminLoginMessage" class="form-message" role="status"></p>
             </form>
@@ -119,5 +119,6 @@
 
     <script src="../js/api.js"></script>
     <script src="../js/admin.js"></script>
+    <script src="../js/no_autofill.js"></script>
 </body>
 </html>

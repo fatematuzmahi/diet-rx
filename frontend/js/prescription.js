@@ -66,10 +66,22 @@
         }
     }
 
+    function setCount(id, value) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = String(value);
+    }
+
+    function renderCounts(items) {
+        setCount("rx-count-total", items.length);
+        setCount("rx-count-active", items.filter((i) => (i.status || "ACTIVE") === "ACTIVE").length);
+        setCount("rx-count-pending", items.filter((i) => !i.validated).length);
+    }
+
     function renderList(items) {
+        renderCounts(items);
         if (!listEl) return;
         if (!items.length) {
-            listEl.innerHTML = '<p class="rx-empty">No self-submitted prescriptions yet. Add one above.</p>';
+            listEl.innerHTML = '<li class="rx-empty-state"><strong>No prescriptions yet</strong><span>Add your first one with the form.</span></li>';
             return;
         }
         listEl.innerHTML = "";
@@ -199,6 +211,16 @@
             if (addBtn) addBtn.disabled = false;
         }
     }
+
+    const fileInput = document.getElementById("rx-file");
+    const fileName = document.getElementById("rx-file-name");
+    const fileHint = fileName ? fileName.textContent : "";
+    function showFileName() {
+        if (!fileName || !fileInput) return;
+        fileName.textContent = fileInput.files && fileInput.files[0] ? fileInput.files[0].name : fileHint;
+    }
+    if (fileInput) fileInput.addEventListener("change", showFileName);
+    if (addForm) addForm.addEventListener("reset", () => setTimeout(showFileName, 0));
 
     if (addForm) addForm.addEventListener("submit", submitAdd);
     if (refreshBtn) refreshBtn.addEventListener("click", loadList);

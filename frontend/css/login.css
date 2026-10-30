@@ -177,3 +177,70 @@ body {
         font-size: 28px;
     }
 }
+/* SCRUM-69 (round 3): tidy sign-in links */
+.forgot-row {
+    display: flex;
+    justify-content: flex-end;
+    margin: -8px 0 0;
+}
+
+.forgot-row a {
+    color: #16835a;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.forgot-row a:hover { text-decoration: underline; }
+
+.other-logins { margin-top: 26px; }
+
+.other-logins-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #66737e;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+}
+
+.other-logins-title::before,
+.other-logins-title::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #dbe7e0;
+}
+
+.other-logins-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.role-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 8px 12px;
+    border: 1.5px solid #cfe3d7;
+    border-radius: 12px;
+    color: #17352a;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    transition: 0.2s ease;
+}
+
+.role-button:hover {
+    border-color: #2f9e64;
+    background: #f1f9f4;
+}
+
+@media (max-width: 420px) {
+    .other-logins-buttons { grid-template-columns: 1fr; }
+}

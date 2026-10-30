@@ -34,7 +34,7 @@
         </div>
 
 
-        <form id="login-form">
+        <form id="login-form" autocomplete="off" data-no-autofill>
 
             <div class="form-group">
 
@@ -47,7 +47,8 @@
                     name="email"
                     type="email"
                     placeholder="Enter your email address"
-                    autocomplete="email"
+                    autocomplete="off"
+                    readonly
                     required
                 >
 
@@ -67,7 +68,8 @@
                         name="password"
                         type="password"
                         placeholder="Enter your password"
-                        autocomplete="current-password"
+                        autocomplete="off"
+                        readonly
                         required
                     >
 
@@ -80,6 +82,11 @@
 
                 </div>
 
+            </div>
+
+
+            <div class="forgot-row">
+                <a href="forgot-password.html">Forgot password?</a>
             </div>
 
 
@@ -97,15 +104,13 @@
             </button>
 
         </form>
-        <p class="forgot-password-text">
-    <a href="forgot-password.html">Forgot Password?</a>
-</p>
-        <p class="forgot-password-text">
-    Doctor? <a href="doctor.html">Log in to the doctor view</a>
-</p>
-        <p class="forgot-password-text">
-    Admin? <a href="admin.html">Open the admin panel</a>
-</p>
+        <div class="other-logins">
+            <p class="other-logins-title"><span>Not a patient?</span></p>
+            <div class="other-logins-buttons">
+                <a class="role-button" href="doctor.html">Doctor / Nutritionist login</a>
+                <a class="role-button" href="admin.html">Admin login</a>
+            </div>
+        </div>
 
 
         <p class="register-text">
@@ -152,6 +157,7 @@
 
     <script src="../js/api.js"></script>
     <script src="../js/auth.js"></script>
+    <script src="../js/no_autofill.js"></script>
 
 </body>
 
