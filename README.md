@@ -1,19 +1,41 @@
 # DietRx
 
-University course project for prescription-aware diet planning, food safety, and budget grocery support.
+## 1. What is DietRx?
 
-## Stack
+DietRx is a decision-support system for prescription-aware diet planning, food safety, and budget-friendly grocery support.
 
-HTML, CSS and Vanilla JavaScript; Flask REST API; SQLAlchemy; MySQL (SQLite for local development); JWT authentication.
+It helps users manage personalized meal plans and related dietary information.
 
-## Run locally
+DietRx is a decision-support system and does not replace professional medical advice.
 
-```powershell
-py -m venv .venv
-.\.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-Copy-Item .env.example .env
-py backend/app.py
-```
+## 2. Tech Stack
 
-Open `frontend/index.html`. The API is at `http://127.0.0.1:5000/api`.
+- Python 3.13
+- FastAPI and Uvicorn
+- Pydantic
+- Oracle Database with `python-oracledb`
+- JWT authentication with `python-jose`
+- Password hashing with Werkzeug
+- HTML, CSS, and JavaScript
+- Pytest
+- Git and GitHub
+- Jira
+
+## 3. Folder Structure
+
+```text
+diet-rx/
+├── backend/
+│   ├── routers/
+│   ├── services/
+│   ├── schemas/
+│   └── database/
+├── frontend/
+│   ├── pages/
+│   ├── css/
+│   └── js/
+├── tests/
+│   └── backend_tests/
+├── README.md
+├── .env.example
+└── requirements.txt
