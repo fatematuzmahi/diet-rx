@@ -33,6 +33,7 @@ from dataclasses import dataclass
 from typing import Iterable
 
 from fastapi import Depends, Header, HTTPException, status
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from jose import JWTError, jwt
 
 from backend.routers.auth_router import ALGORITHM, SECRET_KEY
@@ -44,6 +45,15 @@ ROLE_DOCTOR = "DOCTOR"
 ROLE_ADMIN = "ADMIN"  # SCRUM-61
 
 CREDENTIALS_EXCEPTION_HEADERS = {"WWW-Authenticate": "Bearer"}
+
+# Swagger "Authorize" button. Swagger UI never sends a plain header parameter
+# named Authorization, so protected routes declare this Bearer scheme instead.
+# auto_error=False: the checks below still produce the same 401 messages.
+bearer_scheme = HTTPBearer(
+    auto_error=False,
+    scheme_name="BearerToken",
+    description="Paste the access_token from /auth/login (without the word Bearer).",
+)
 
 
 @dataclass(frozen=True)
@@ -121,9 +131,15 @@ def _extract_bearer_token(authorization: str | None) -> str:
 
 
 async def require_authenticated(
-    authorization: str | None = Header(default=None),
+    authorization: str | None = Header(default=None, include_in_schema=False),
+    _swagger_bearer: HTTPAuthorizationCredentials | None = Depends(bearer_scheme),
 ) -> Principal:
-    """FastAPI dependency: any valid access token. 401 otherwise."""
+    """FastAPI dependency: any valid access token. 401 otherwise.
+
+    The token is always read from the raw Authorization header, so the
+    behaviour is the same for the frontend, tests and Swagger. ``_swagger_bearer``
+    only adds the Bearer scheme to the API docs (the Swagger Authorize button).
+    """
 
     return decode_access_token(_extract_bearer_token(authorization))
 
