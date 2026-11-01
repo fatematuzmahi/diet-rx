@@ -21,3 +21,6 @@ s48_pdf/
 
 # SCRUM-63: database backups contain personal health data - never commit
 backups/
+
+# Selenium failure screenshots can show personal data - never commit
+tests/frontend_tests/screenshots/

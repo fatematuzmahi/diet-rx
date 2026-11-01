@@ -15,3 +15,5 @@ Jinja2>=3.1,<4.0
 # SCRUM-69: used by the FastAPI backend but missing from this list
 python-jose[cryptography]>=3.3,<4.0
 Werkzeug>=3.0,<4.0
+# Browser (UI) tests in tests/frontend_tests
+selenium>=4.20,<5.0
