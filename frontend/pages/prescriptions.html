@@ -57,37 +57,45 @@
     </header>
 
     <main class="rx-page">
-        <!-- SCRUM-46: Prescription Management (SRS 3.1.3.x); layout refreshed in SCRUM-69 round 3 -->
+        <!-- SCRUM-46: Prescription Management (SRS 3.1.3.x); new layout in SCRUM-69 round 4 -->
         <section class="rx-hero" aria-labelledby="rx-heading">
             <div class="rx-hero-text">
-                <p class="rx-eyebrow">Prescriptions</p>
+                <p class="rx-eyebrow"><span aria-hidden="true">&#8478;</span> Health &middot; Prescriptions</p>
                 <h1 id="rx-heading">Your prescriptions</h1>
-                <p class="rx-hero-sub">Add the restrictions from your doctor&rsquo;s prescription. DietRx uses them in your meal plan, safety checks and grocery list.</p>
+                <p class="rx-hero-sub">Add the food rules from your doctor&rsquo;s prescription. DietRx follows them everywhere it suggests food for you.</p>
             </div>
             <div class="rx-stats" aria-label="Prescription summary">
-                <div class="rx-stat"><span class="rx-stat-num" id="rx-count-total">&ndash;</span><span class="rx-stat-label">Total</span></div>
-                <div class="rx-stat"><span class="rx-stat-num" id="rx-count-active">&ndash;</span><span class="rx-stat-label">Active</span></div>
-                <div class="rx-stat"><span class="rx-stat-num" id="rx-count-pending">&ndash;</span><span class="rx-stat-label">Awaiting review</span></div>
+                <div class="rx-stat"><span class="rx-stat-icon" aria-hidden="true">&#128203;</span><span class="rx-stat-num" id="rx-count-total">&ndash;</span><span class="rx-stat-label">Total</span></div>
+                <div class="rx-stat"><span class="rx-stat-icon" aria-hidden="true">&#9989;</span><span class="rx-stat-num" id="rx-count-active">&ndash;</span><span class="rx-stat-label">Active</span></div>
+                <div class="rx-stat"><span class="rx-stat-icon" aria-hidden="true">&#9203;</span><span class="rx-stat-num" id="rx-count-pending">&ndash;</span><span class="rx-stat-label">Awaiting review</span></div>
             </div>
         </section>
 
+        <ul class="rx-uses" aria-label="Where DietRx uses your prescription">
+            <li><span class="rx-use-icon" aria-hidden="true">&#127869;&#65039;</span><span><strong>Meal plan</strong><small>Meals follow your food rules</small></span></li>
+            <li><span class="rx-use-icon" aria-hidden="true">&#128737;&#65039;</span><span><strong>Safety checker</strong><small>Foods are checked against them</small></span></li>
+            <li><span class="rx-use-icon" aria-hidden="true">&#128722;</span><span><strong>Grocery list</strong><small>Built from foods that fit</small></span></li>
+        </ul>
+
         <div id="rx-status" class="rx-status" role="status" aria-live="polite"></div>
 
-        <div class="rx-layout">
-            <!-- Add / upload -->
-            <section class="rx-card rx-add" aria-labelledby="rx-add-heading">
-                <div class="rx-card-head">
+        <!-- Add / upload -->
+        <section class="rx-add" aria-labelledby="rx-add-heading">
+            <div class="rx-add-intro">
+                <span class="rx-add-icon" aria-hidden="true">&#10010;</span>
+                <div>
                     <h2 id="rx-add-heading">Add a prescription</h2>
-                    <span class="rx-chip">Stays private</span>
+                    <p>Copy the food rules, allergies or medicine notes. Write one rule per line.</p>
                 </div>
-                <form id="rx-add-form" class="rx-form" novalidate>
-                    <div class="rx-field">
-                        <label for="rx-restrictions">Restrictions and notes</label>
-                        <textarea id="rx-restrictions" name="restrictions" rows="5" maxlength="4000"
-                            placeholder="e.g. Low sodium, no grapefruit, avoid peanuts"></textarea>
-                        <p class="rx-hint">Write the food rules, allergies or medicine notes from the prescription.</p>
-                    </div>
-
+                <span class="rx-chip"><span aria-hidden="true">&#128274;</span> Stays private</span>
+            </div>
+            <form id="rx-add-form" class="rx-add-form" novalidate>
+                <div class="rx-field rx-field-main">
+                    <label for="rx-restrictions">Restrictions and notes</label>
+                    <textarea id="rx-restrictions" name="restrictions" rows="6" maxlength="4000"
+                        placeholder="e.g.&#10;Low salt&#10;No grapefruit&#10;Avoid peanuts (allergy)"></textarea>
+                </div>
+                <div class="rx-add-side">
                     <div class="rx-field">
                         <label for="rx-status-input">Status</label>
                         <select id="rx-status-input" name="status">
@@ -96,30 +104,35 @@
                             <option value="CANCELLED">Cancelled</option>
                         </select>
                     </div>
-
                     <div class="rx-field">
                         <span class="rx-label">Original prescription (optional)</span>
                         <label class="rx-drop" for="rx-file">
-                            <span class="rx-drop-icon" aria-hidden="true">&#128196;</span>
+                            <span class="rx-drop-icon" aria-hidden="true">&#128206;</span>
                             <span class="rx-drop-text"><strong>Choose a file</strong> <span id="rx-file-name">PDF or image, up to 5 MB</span></span>
                         </label>
                         <input id="rx-file" class="rx-file-input" name="file" type="file" accept="application/pdf,image/png,image/jpeg,image/gif,image/webp">
                     </div>
-
                     <button id="rx-add-btn" class="rx-btn rx-btn-primary" type="submit">Add prescription</button>
-                </form>
-            </section>
-
-            <!-- List -->
-            <section class="rx-card rx-history" aria-labelledby="rx-list-heading">
-                <div class="rx-card-head">
-                    <h2 id="rx-list-heading">Submitted prescriptions</h2>
-                    <button id="rx-refresh" class="rx-btn rx-btn-ghost" type="button">Refresh</button>
                 </div>
-                <p class="rx-note">Prescriptions you add stay <strong>unvalidated</strong> until a clinician reviews them. Doctor-issued prescriptions are managed by your doctor.</p>
-                <ul id="rx-list" class="rx-list"></ul>
-            </section>
-        </div>
+            </form>
+        </section>
+
+        <!-- List -->
+        <section class="rx-history" aria-labelledby="rx-list-heading">
+            <div class="rx-history-head">
+                <h2 id="rx-list-heading">Submitted prescriptions</h2>
+                <div class="rx-history-tools">
+                    <div class="rx-filters" role="group" aria-label="Show">
+                        <button type="button" class="rx-filter is-on" data-rx-filter="all" aria-pressed="true">All</button>
+                        <button type="button" class="rx-filter" data-rx-filter="active" aria-pressed="false">Active</button>
+                        <button type="button" class="rx-filter" data-rx-filter="pending" aria-pressed="false">Awaiting review</button>
+                    </div>
+                    <button id="rx-refresh" class="rx-btn rx-btn-ghost" type="button"><span aria-hidden="true">&#8635;</span> Refresh</button>
+                </div>
+            </div>
+            <p class="rx-note"><span aria-hidden="true">&#9432;</span> Prescriptions you add stay <strong>unvalidated</strong> until a clinician reviews them. Doctor-issued prescriptions are managed by your doctor.</p>
+            <ul id="rx-list" class="rx-list"></ul>
+        </section>
 
         <p class="rx-disclaimer">DietRx is a decision-support system and does not replace professional medical advice.</p>
     </main>

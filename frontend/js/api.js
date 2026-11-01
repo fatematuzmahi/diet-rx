@@ -5,7 +5,10 @@ async function apiRequest(path, options = {}) {
   // endpoints can enforce 401/403. Falls back to no auth header for public
   // endpoints (register/verify/login/forgot/reset), which stay unchanged.
   const token = localStorage.getItem("access_token");
-  const headers = { "Content-Type": "application/json", ...options.headers };
+  // SCRUM-69: a FormData body (file upload) must let the browser set its own
+  // multipart Content-Type; forcing JSON made the server drop the form fields.
+  const isForm = typeof FormData !== "undefined" && options.body instanceof FormData;
+  const headers = { ...(isForm ? {} : { "Content-Type": "application/json" }), ...options.headers };
   if (token) headers["Authorization"] = `Bearer ${token}`;
   const response = await fetch(`${API_BASE_URL}${path}`, { headers, ...options });
   let data = {};

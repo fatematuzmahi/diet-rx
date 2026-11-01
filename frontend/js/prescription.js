@@ -35,12 +35,6 @@
         return '<span class="rx-badge status-' + s + '">' + escapeHtml(status || "ACTIVE") + "</span>";
     }
 
-    function validatedBadge(validated) {
-        return validated
-            ? '<span class="rx-badge validated-yes">Validated</span>'
-            : '<span class="rx-badge validated-no">Unvalidated</span>';
-    }
-
     function escapeHtml(value) {
         return String(value === null || value === undefined ? "" : value)
             .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
@@ -77,41 +71,87 @@
         setCount("rx-count-pending", items.filter((i) => !i.validated).length);
     }
 
+    let allItems = [];
+    let currentFilter = "all";
+
+    function matchesFilter(item) {
+        if (currentFilter === "active") return (item.status || "ACTIVE") === "ACTIVE";
+        if (currentFilter === "pending") return !item.validated;
+        return true;
+    }
+
     function renderList(items) {
+        allItems = items;
         renderCounts(items);
         if (!listEl) return;
         if (!items.length) {
-            listEl.innerHTML = '<li class="rx-empty-state"><strong>No prescriptions yet</strong><span>Add your first one with the form.</span></li>';
+            listEl.innerHTML = '<li class="rx-empty-state"><span class="rx-empty-icon" aria-hidden="true">&#128203;</span>' +
+                '<strong>No prescriptions yet</strong><span>Add your first one with the form above.</span></li>';
+            return;
+        }
+        const shown = items.filter(matchesFilter);
+        if (!shown.length) {
+            listEl.innerHTML = '<li class="rx-empty-state"><span class="rx-empty-icon" aria-hidden="true">&#128269;</span>' +
+                '<strong>Nothing to show here</strong><span>No prescription matches this filter.</span></li>';
             return;
         }
         listEl.innerHTML = "";
-        items.forEach((item) => listEl.appendChild(renderItem(item)));
+        shown.forEach((item) => listEl.appendChild(renderItem(item)));
+    }
+
+    // One rule per line; a long one-line note is also split at ". " or ";".
+    function splitRules(text) {
+        return String(text || "")
+            .split(/\r?\n|;|\.(?=\s+[A-Z(]|\s*$)/)
+            .map((part) => part.trim().replace(/^[-*\u2022]\s*/, ""))
+            .filter(Boolean);
+    }
+
+    function shortDate(value) {
+        if (!value) return "";
+        const d = new Date(value);
+        return isNaN(d.getTime()) ? "" : d.toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" });
     }
 
     function renderItem(item) {
         const li = document.createElement("li");
-        li.className = "rx-item";
+        const status = (item.status || "ACTIVE").toLowerCase();
+        li.className = "rx-item is-" + status;
         li.dataset.id = item.prescription_id;
 
-        const restrictions = item.restrictions ? escapeHtml(item.restrictions) : '<em class="rx-empty">No restrictions recorded.</em>';
+        const rules = splitRules(item.restrictions);
+        const rulesHtml = rules.length
+            ? '<ul class="rx-rules">' + rules.map((r) => "<li>" + escapeHtml(r) + "</li>").join("") + "</ul>"
+            : '<p class="rx-empty">No restrictions recorded.</p>';
+        const review = item.validated
+            ? '<p class="rx-review is-yes"><span aria-hidden="true">&#9989;</span> <span><b>Validated</b> &middot; checked by a clinician</span></p>'
+            : '<p class="rx-review is-no"><span aria-hidden="true">&#9203;</span> <span><b>Unvalidated</b> &middot; waiting for a clinician</span></p>';
         const fileBit = item.has_file
-            ? '<button type="button" class="rx-link" data-rx-download="' + item.prescription_id + '">Download file' +
-              (item.file_name ? " (" + escapeHtml(item.file_name) + ")" : "") + "</button>"
+            ? '<div class="rx-item-file"><span aria-hidden="true">&#128206;</span><span>' +
+              escapeHtml(item.file_name || "Attached file") + "</span>" +
+              '<button type="button" class="rx-link" data-rx-download="' + item.prescription_id + '">Download file</button></div>'
             : "";
+        const updated = item.updated_at ? "Updated " + escapeHtml(shortDate(item.updated_at)) : "";
 
         li.innerHTML =
             '<div class="rx-item-top">' +
-                '<span class="rx-item-title">Prescription #' + escapeHtml(item.prescription_id) + "</span>" +
-                '<span class="rx-badges">' + statusBadge(item.status) + validatedBadge(item.validated) + "</span>" +
+                '<span class="rx-item-icon" aria-hidden="true">&#8478;</span>' +
+                '<div class="rx-item-heading">' +
+                    '<span class="rx-item-title">Prescription #' + escapeHtml(item.prescription_id) + "</span>" +
+                    '<span class="rx-item-date" title="' + escapeHtml(formatDate(item.upload_date)) + '">Added ' +
+                        escapeHtml(shortDate(item.upload_date)) + "</span>" +
+                "</div>" +
+                '<span class="rx-badges">' + statusBadge(item.status) + "</span>" +
             "</div>" +
-            '<p class="rx-item-restrictions">' + restrictions + "</p>" +
-            '<div class="rx-item-meta">' +
-                "<span>Uploaded: " + escapeHtml(formatDate(item.upload_date)) + "</span>" +
-                (item.updated_at ? "<span>Updated: " + escapeHtml(formatDate(item.updated_at)) + "</span>" : "") +
-            "</div>" +
-            '<div class="rx-item-actions">' +
-                '<button type="button" class="rx-link" data-rx-edit-btn="' + item.prescription_id + '">Edit</button>' +
-                fileBit +
+            review +
+            '<p class="rx-rules-label">Food rules</p>' +
+            rulesHtml +
+            fileBit +
+            '<div class="rx-item-foot">' +
+                '<span class="rx-item-meta">' + updated + "</span>" +
+                '<div class="rx-item-actions">' +
+                    '<button type="button" class="rx-btn rx-btn-soft" data-rx-edit-btn="' + item.prescription_id + '">&#9999;&#65039; Edit</button>' +
+                "</div>" +
             "</div>";
 
         li.querySelector("[data-rx-edit-btn]").addEventListener("click", () => openEdit(li, item));
@@ -144,7 +184,8 @@
                     '<button type="button" class="rx-btn rx-btn-ghost" data-rx-cancel>Cancel</button>' +
                 "</div>" +
             "</form>";
-        li.appendChild(wrap);
+        const foot = li.querySelector(".rx-item-foot");
+        li.insertBefore(wrap, foot);
         wrap.querySelector("[data-rx-cancel]").addEventListener("click", () => wrap.remove());
         wrap.querySelector("form").addEventListener("submit", (event) => submitEdit(event, item.prescription_id));
     }
@@ -224,6 +265,18 @@
 
     if (addForm) addForm.addEventListener("submit", submitAdd);
     if (refreshBtn) refreshBtn.addEventListener("click", loadList);
+
+    document.querySelectorAll("[data-rx-filter]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            currentFilter = btn.dataset.rxFilter;
+            document.querySelectorAll("[data-rx-filter]").forEach((b) => {
+                const on = b === btn;
+                b.classList.toggle("is-on", on);
+                b.setAttribute("aria-pressed", String(on));
+            });
+            renderList(allItems);
+        });
+    });
 
     document.addEventListener("DOMContentLoaded", loadList);
     if (document.readyState !== "loading") loadList();

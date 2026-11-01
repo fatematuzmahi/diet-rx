@@ -46,3 +46,22 @@ def test_requirements_list_the_fastapi_backend_packages():
     lines = (ROOT / "requirements.txt").read_text(encoding="utf-8").lower()
     for package in ("fastapi", "uvicorn", "oracledb", "python-dotenv", "python-jose", "werkzeug", "pytest"):
         assert package in lines, package
+
+
+def test_api_helper_lets_file_uploads_set_their_own_content_type():
+    # A FormData body with a forced JSON Content-Type made the server drop the
+    # prescription text and file (SCRUM-69 round 4).
+    text = (ROOT / "frontend" / "js" / "api.js").read_text(encoding="utf-8")
+    assert "instanceof FormData" in text
+
+
+def test_prescriptions_page_keeps_every_element_the_script_uses():
+    page = (ROOT / "frontend" / "pages" / "prescriptions.html").read_text(encoding="utf-8")
+    script = (ROOT / "frontend" / "js" / "prescription.js").read_text(encoding="utf-8")
+    for element_id in ("rx-list", "rx-status", "rx-add-form", "rx-add-btn", "rx-refresh", "rx-file",
+                       "rx-file-name", "rx-count-total", "rx-count-active", "rx-count-pending"):
+        assert f'id="{element_id}"' in page, element_id
+        assert element_id in script, element_id
+    for label in ("Add a prescription", "Add prescription", "Submitted prescriptions"):
+        assert label in page, label
+    assert page.count("data-rx-filter=") == 3
