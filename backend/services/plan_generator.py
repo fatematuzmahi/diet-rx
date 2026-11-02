@@ -213,6 +213,8 @@ RESTRICTION_EXCLUSIONS: Dict[str, List[str]] = {
     "gluten_free": ["Whole wheat bread", "Whole wheat toast", "Vegetable paratha", "Roti", "Khichuri"],
     "lactose_free": ["Curd", "Buttermilk", "Oats porridge with milk", "Paneer curry"],
     "low_sugar": ["Apple", "Banana", "Seasonal fruit", "Mixed fruit salad", "Coconut water"],
+    # SCRUM-68 UAT: papad and pickles are very salty, so a low-sodium plan leaves them out.
+    "low_sodium": ["Papad", "Pickle"],
     # Tea reduces iron absorption, so it is left out for low iron / anaemia.
     "iron_rich": ["Green tea"],
 }

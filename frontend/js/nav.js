@@ -5,6 +5,24 @@
 (function () {
     "use strict";
 
+    // UAT (SCRUM-68): every patient page loads this file, so it also guards
+    // the page. With no sign-in the page is replaced by the login page, also
+    // when the browser shows it again from its back/forward cache.
+    function signedIn() {
+        try {
+            return !!localStorage.getItem("access_token");
+        } catch (error) {
+            return false;
+        }
+    }
+
+    function guard() {
+        if (!signedIn()) window.location.replace("login.html");
+    }
+
+    guard();
+    window.addEventListener("pageshow", guard);
+
     function groups() {
         return Array.prototype.slice.call(document.querySelectorAll(".app-nav .nav-group"));
     }

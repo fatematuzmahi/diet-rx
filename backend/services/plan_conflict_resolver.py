@@ -47,9 +47,14 @@ CODE_HIGH_RISK = "high_risk_restriction"
 
 #: Normalised rule token -> the keywords that identify it in free text.
 RULE_KEYWORDS: Dict[str, Tuple[str, ...]] = {
-    "low_sodium": ("low sodium", "no salt", "salt free", "sodium free", "reduce salt", "less salt"),
+    "low_sodium": ("low sodium", "no salt", "salt free", "sodium free", "reduce salt", "less salt",
+                   # SCRUM-68 UAT: common wording and the conditions that need it
+                   "low salt", "avoid salt", "no added salt", "salt restrict", "restrict salt",
+                   "hypertension", "high blood pressure"),
     "high_sodium": ("high sodium", "more salt", "salty food", "increase salt"),
-    "low_sugar": ("low sugar", "no sugar", "sugar free", "reduce sugar", "less sugar", "diabetic", "diabetes"),
+    "low_sugar": ("low sugar", "no sugar", "sugar free", "reduce sugar", "less sugar", "diabetic", "diabetes",
+                  # SCRUM-68 UAT: common prescription wording
+                  "avoid sugar", "avoid sweets", "no sweets", "less sweets"),
     "high_sugar": ("high sugar", "more sugar", "increase sugar", "sugar rich"),
     "low_fat": ("low fat", "reduced fat", "less fat", "no fat"),
     "high_fat": ("high fat", "increase fat"),

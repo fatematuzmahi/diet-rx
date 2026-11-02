@@ -97,6 +97,8 @@
             });
             fillForm(saved);
             setStatus("Health profile saved successfully.", "success");
+            // SCRUM-68 UAT: let the dashboard refresh the activity guidance.
+            document.dispatchEvent(new CustomEvent("dietrx:profile-saved"));
         } catch (error) {
             setStatus(error.message || "Could not save your health profile.", "error");
         } finally {

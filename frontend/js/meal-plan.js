@@ -31,7 +31,9 @@
   function pad(n) { return String(n).padStart(2, "0"); }
   function localDate() { const d = new Date(); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; }
   function niceDate(stamp) {
-    const d = new Date(stamp);
+    // SCRUM-68 UAT: the server stores UTC without a zone, so mark it as UTC.
+    const text = String(stamp || "");
+    const d = new Date(/[zZ]|[+-]\d\d:?\d\d$/.test(text) ? text : `${text}Z`);
     return Number.isNaN(d.getTime()) ? "" : d.toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" });
   }
   function mealKey(meal) { return `From today's plan: ${meal.meal_type}`; }

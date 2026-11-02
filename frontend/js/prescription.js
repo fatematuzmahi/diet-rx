@@ -236,6 +236,14 @@
 
     async function submitAdd(event) {
         event.preventDefault();
+        // SCRUM-68 UAT: DietRx follows the typed food rules (an attached file is
+        // only kept as a record), so an empty prescription is not saved.
+        const rulesBox = addForm.elements.restrictions;
+        if (!rulesBox || !rulesBox.value.trim()) {
+            setStatus("Type at least one food rule, so DietRx can follow it. A file alone is only kept as a record.", "error");
+            if (rulesBox) rulesBox.focus();
+            return;
+        }
         if (addBtn) addBtn.disabled = true;
         setStatus("Saving your prescription…", "loading");
         // Multipart so the optional attachment is validated + stored securely

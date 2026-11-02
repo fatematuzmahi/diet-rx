@@ -32,7 +32,9 @@
   function round(n) { return Math.round((Number(n) || 0) * 10) / 10; }
   function niceDate(stamp) {
     if (!stamp) return "";
-    const d = new Date(stamp);
+    // SCRUM-68 UAT: the server stores UTC without a zone, so mark it as UTC.
+    const text = String(stamp);
+    const d = new Date(/[zZ]|[+-]\d\d:?\d\d$/.test(text) ? text : `${text}Z`);
     if (Number.isNaN(d.getTime())) return String(stamp);
     return d.toLocaleString(undefined, { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
   }

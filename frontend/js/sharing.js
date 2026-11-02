@@ -143,7 +143,10 @@
             : '<p class="sh-band is-alert">Share your <b>diet plan</b> with a doctor so it can be reviewed.</p>';
         }
       } else {
-        html += '<p class="sh-muted">Your current plan does not need a professional review. You can still share it with your doctor.</p>';
+        // SCRUM-68 UAT: once a doctor has reviewed the plan, show that instead.
+        html += review.reviews.length
+          ? '<p class="sh-muted">Your doctor reviewed this plan. The latest review is below.</p>'
+          : '<p class="sh-muted">Your current plan does not need a professional review. You can still share it with your doctor.</p>';
       }
       const latest = review.reviews[0];
       if (latest) html += `<ul class="sh-timeline">${reviewItem(latest)}</ul>`;

@@ -239,5 +239,7 @@
     loadPlan();
     loadGuidance();
     loadWeek();
+    // SCRUM-68 UAT: new conditions change the guidance at once, no reload needed.
+    document.addEventListener("dietrx:profile-saved", loadGuidance);
   });
 })();
