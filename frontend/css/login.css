@@ -180,7 +180,8 @@ body {
 /* SCRUM-69 (round 3): tidy sign-in links */
 .forgot-row {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    gap: 12px;
     margin: -8px 0 0;
 }
 

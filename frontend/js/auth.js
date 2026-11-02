@@ -6,9 +6,15 @@ document.querySelector("#register-form")?.addEventListener("submit", async (even
     message.textContent = "Passwords do not match.";
     return;
   }
-  try { const result = await apiRequest("/auth/register", { method: "POST", body: JSON.stringify(formData) }); message.textContent = result.message; window.location.href = "verify-email.html"; }
+  try { const result = await apiRequest("/auth/register", { method: "POST", body: JSON.stringify(formData) }); message.textContent = result.message; window.location.href = "verify-email.html?email=" + encodeURIComponent(formData.email || ""); }
   catch (error) { message.textContent = error.message; }
 });
+// UAT (SCRUM-68): fill the email when the page is opened from login/register.
+(() => {
+  const emailInput = document.querySelector("#verify-email-form input[name='email']");
+  const email = new URLSearchParams(window.location.search).get("email");
+  if (emailInput && email && !emailInput.value) emailInput.value = email;
+})();
 document.querySelector("#send-code-button")?.addEventListener("click", async () => {
   const emailInput = document.querySelector("#verify-email-form input[name='email']");
   const sendMessage = document.querySelector("#send-code-message");
@@ -42,6 +48,12 @@ document.querySelector("#login-form")?.addEventListener("submit", async (event) 
 
     } catch (error) {
         alert(error.message);
+        // UAT (SCRUM-68): an unverified account is sent straight to the
+        // verify-email page with its email filled in.
+        if (/verify your email/i.test(error.message || "")) {
+            const email = new FormData(event.target).get("email") || "";
+            window.location.href = "verify-email.html?email=" + encodeURIComponent(email);
+        }
     }
 });
 const logoutBtn = document.getElementById("logoutBtn");
