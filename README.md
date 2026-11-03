@@ -134,7 +134,7 @@ Run the backend tests from the project root:
 python -m pytest tests/backend_tests -v
 ```
 
-The last reported test result was **418 passed**. Run the command again to verify the current result.
+The last reported test result was **485 passed**. Run the command again to verify the current result.
 
 The tests use a fake database, so a live database connection is not required to run them.
 
