@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prescriptions | DietRx</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/prescription.css">
+    <link rel="stylesheet" href="../css/nav.css">
+</head>
+
+<body>
+    <header class="site-header app-header">
+        <a class="brand brand-logo" href="dashboard.html" aria-label="DietRx dashboard">
+            <img src="../assets/images/dietrx-logo.png" alt="DietRx" onerror="this.hidden=true; this.nextElementSibling.hidden=false;">
+            <span hidden>DietRx</span>
+        </a>
+        <nav class="app-nav" aria-label="Main menu">
+            <a href="dashboard.html">Dashboard</a>
+            <details class="nav-group">
+                <summary>My plan</summary>
+                <div class="nav-menu">
+                    <a href="diet_plan.html">Diet plan</a>
+                    <a href="meal-plan.html">Meal plan</a>
+                    <a href="drift.html">Today's balance</a>
+                    <a href="dish_dna.html">Dish DNA</a>
+                </div>
+            </details>
+            <details class="nav-group">
+                <summary>Tracking</summary>
+                <div class="nav-menu">
+                    <a href="daily_log.html">Daily log</a>
+                    <a href="progress.html">Progress</a>
+                    <a href="notifications.html">Reminders</a>
+                </div>
+            </details>
+            <details class="nav-group">
+                <summary>Food &amp; budget</summary>
+                <div class="nav-menu">
+                    <a href="grocery.html">Grocery list</a>
+                    <a href="prices.html">Budget &amp; prices</a>
+                    <a href="budget.html">Cost estimate</a>
+                    <a href="swaps.html">Smart swaps</a>
+                </div>
+            </details>
+            <details class="nav-group is-active">
+                <summary>Health</summary>
+                <div class="nav-menu">
+                    <a href="prescriptions.html" aria-current="page">Prescriptions</a>
+                    <a href="safety_checker.html">Safety checker</a>
+                    <a href="sharing.html">Share with doctor</a>
+                </div>
+            </details>
+            <a href="#" id="logoutBtn" class="nav-logout" data-nav-logout>Logout</a>
+        </nav>
+    </header>
+
+    <main class="rx-page">
+        <!-- SCRUM-46: Prescription Management (SRS 3.1.3.x); new layout in SCRUM-69 round 4 -->
+        <section class="rx-hero" aria-labelledby="rx-heading">
+            <div class="rx-hero-text">
+                <p class="rx-eyebrow"><span aria-hidden="true">&#8478;</span> Health &middot; Prescriptions</p>
+                <h1 id="rx-heading">Your prescriptions</h1>
+                <p class="rx-hero-sub">Add the food rules from your doctor&rsquo;s prescription. DietRx follows them everywhere it suggests food for you.</p>
+            </div>
+            <div class="rx-stats" aria-label="Prescription summary">
+                <div class="rx-stat"><span class="rx-stat-icon" aria-hidden="true">&#128203;</span><span class="rx-stat-num" id="rx-count-total">&ndash;</span><span class="rx-stat-label">Total</span></div>
+                <div class="rx-stat"><span class="rx-stat-icon" aria-hidden="true">&#9989;</span><span class="rx-stat-num" id="rx-count-active">&ndash;</span><span class="rx-stat-label">Active</span></div>
+                <div class="rx-stat"><span class="rx-stat-icon" aria-hidden="true">&#9203;</span><span class="rx-stat-num" id="rx-count-pending">&ndash;</span><span class="rx-stat-label">Awaiting review</span></div>
+            </div>
+        </section>
+
+        <ul class="rx-uses" aria-label="Where DietRx uses your prescription">
+            <li><span class="rx-use-icon" aria-hidden="true">&#127869;&#65039;</span><span><strong>Meal plan</strong><small>Meals follow your food rules</small></span></li>
+            <li><span class="rx-use-icon" aria-hidden="true">&#128737;&#65039;</span><span><strong>Safety checker</strong><small>Foods are checked against them</small></span></li>
+            <li><span class="rx-use-icon" aria-hidden="true">&#128722;</span><span><strong>Grocery list</strong><small>Built from foods that fit</small></span></li>
+        </ul>
+
+        <div id="rx-status" class="rx-status" role="status" aria-live="polite"></div>
+
+        <!-- Add / upload -->
+        <section class="rx-add" aria-labelledby="rx-add-heading">
+            <div class="rx-add-intro">
+                <span class="rx-add-icon" aria-hidden="true">&#10010;</span>
+                <div>
+                    <h2 id="rx-add-heading">Add a prescription</h2>
+                    <p>Copy the food rules, allergies or medicine notes. Write one rule per line.</p>
+                </div>
+                <span class="rx-chip"><span aria-hidden="true">&#128274;</span> Stays private</span>
+            </div>
+            <form id="rx-add-form" class="rx-add-form" novalidate>
+                <div class="rx-field rx-field-main">
+                    <label for="rx-restrictions">Restrictions and notes</label>
+                    <textarea id="rx-restrictions" name="restrictions" rows="6" maxlength="4000"
+                        placeholder="e.g.&#10;Low salt&#10;No grapefruit&#10;Avoid peanuts (allergy)"></textarea>
+                </div>
+                <div class="rx-add-side">
+                    <div class="rx-field">
+                        <label for="rx-status-input">Status</label>
+                        <select id="rx-status-input" name="status">
+                            <option value="ACTIVE" selected>Active</option>
+                            <option value="COMPLETED">Completed</option>
+                            <option value="CANCELLED">Cancelled</option>
+                        </select>
+                    </div>
+                    <div class="rx-field">
+                        <span class="rx-label">Original prescription (optional)</span>
+                        <label class="rx-drop" for="rx-file">
+                            <span class="rx-drop-icon" aria-hidden="true">&#128206;</span>
+                            <span class="rx-drop-text"><strong>Choose a file</strong> <span id="rx-file-name">PDF or image, up to 5 MB</span></span>
+                        </label>
+                        <input id="rx-file" class="rx-file-input" name="file" type="file" accept="application/pdf,image/png,image/jpeg,image/gif,image/webp">
+                    </div>
+                    <button id="rx-add-btn" class="rx-btn rx-btn-primary" type="submit">Add prescription</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- List -->
+        <section class="rx-history" aria-labelledby="rx-list-heading">
+            <div class="rx-history-head">
+                <h2 id="rx-list-heading">Submitted prescriptions</h2>
+                <div class="rx-history-tools">
+                    <div class="rx-filters" role="group" aria-label="Show">
+                        <button type="button" class="rx-filter is-on" data-rx-filter="all" aria-pressed="true">All</button>
+                        <button type="button" class="rx-filter" data-rx-filter="active" aria-pressed="false">Active</button>
+                        <button type="button" class="rx-filter" data-rx-filter="pending" aria-pressed="false">Awaiting review</button>
+                    </div>
+                    <button id="rx-refresh" class="rx-btn rx-btn-ghost" type="button"><span aria-hidden="true">&#8635;</span> Refresh</button>
+                </div>
+            </div>
+            <p class="rx-note"><span aria-hidden="true">&#9432;</span> Prescriptions you add stay <strong>unvalidated</strong> until a clinician reviews them. Doctor-issued prescriptions are managed by your doctor.</p>
+            <ul id="rx-list" class="rx-list"></ul>
+        </section>
+
+        <p class="rx-disclaimer">DietRx is a decision-support system and does not replace professional medical advice.</p>
+    </main>
+
+    <script>
+    // Dashboard protection (SCRUM-44 session token).
+    const token = localStorage.getItem("session_token");
+    if (!token) {
+        window.location.replace("login.html");
+    }
+    window.addEventListener("pageshow", function () {
+        if (!localStorage.getItem("session_token")) {
+            window.location.replace("login.html");
+        }
+    });
+
+    // Logout: clear session + RBAC access token.
+    const logoutBtn = document.getElementById("logoutBtn");
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", function (event) {
+            event.preventDefault();
+            localStorage.removeItem("dietrx_user");
+            localStorage.removeItem("session_token");
+            localStorage.removeItem("access_token");
+            localStorage.removeItem("user");
+            window.location.replace("login.html");
+        });
+    }
+    </script>
+
+    <!-- SCRUM-46: prescription data access + UI wiring -->
+    <script src="../js/api.js"></script>
+    <script src="../js/prescription.js"></script>
+    <script src="../js/nav.js"></script>
+</body>
+
+</html>

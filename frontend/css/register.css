@@ -1,0 +1,183 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(
+        135deg,
+        rgba(232, 249, 239, 0.96),
+        rgba(235, 247, 252, 0.96)
+    );
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 15px;
+}
+
+.register-container {
+    width: 100%;
+    max-width: 480px;
+    background: rgba(255, 255, 255, 0.97);
+    border-radius: 22px;
+    padding: 34px 32px;
+    box-shadow: 0 15px 40px rgba(0, 64, 96, 0.12);
+    border: 1px solid rgba(34, 139, 94, 0.12);
+}
+
+.logo-section {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.dietrx-logo {
+    width: 135px;
+    height: 135px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+}
+
+.page-title {
+    font-size: 30px;
+    color: #123c56;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.page-subtitle {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #60727d;
+    max-width: 360px;
+    margin: 0 auto;
+}
+
+#register-form {
+    margin-top: 10px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #17384a;
+}
+
+.form-group input {
+    width: 100%;
+    height: 50px;
+    padding: 0 15px;
+    border: 1.5px solid #cfdde3;
+    border-radius: 11px;
+    font-size: 15px;
+    color: #24343d;
+    background: #ffffff;
+    outline: none;
+    transition: 0.2s ease;
+}
+
+.form-group input:focus {
+    border-color: #39a96b;
+    box-shadow: 0 0 0 3px rgba(57, 169, 107, 0.12);
+}
+
+.form-group input::placeholder {
+    color: #9aa9b0;
+}
+
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper input {
+    padding-right: 50px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 18px;
+    user-select: none;
+}
+
+#form-message {
+    min-height: 20px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.register-button {
+    width: 100%;
+    height: 52px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #2fa866, #188c76);
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.register-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(24, 140, 118, 0.22);
+}
+
+.register-button:active {
+    transform: translateY(0);
+}
+
+.login-text {
+    text-align: center;
+    margin-top: 18px;
+    font-size: 14px;
+    color: #63747d;
+}
+
+.login-text a {
+    color: #16865f;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.login-text a:hover {
+    text-decoration: underline;
+}
+
+.medical-note {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 12px;
+    color: #8b9aa1;
+}
+
+@media (max-width: 520px) {
+    .register-container {
+        padding: 26px 20px;
+        border-radius: 18px;
+    }
+
+    .dietrx-logo {
+        width: 110px;
+        height: 110px;
+    }
+
+    .page-title {
+        font-size: 26px;
+    }
+}

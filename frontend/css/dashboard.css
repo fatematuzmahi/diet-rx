@@ -1,1 +1,16 @@
 .page h1 { margin-bottom: .25rem; }
+#logoutBtn {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    margin-left: 12px;
+}
+
+#logoutBtn:hover {
+    background: #b52a37;
+}

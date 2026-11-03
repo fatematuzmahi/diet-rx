@@ -1,0 +1,161 @@
+/* SCRUM-45: Patient Health Profile UI (consistent with dashboard/login theme) */
+.health-profile {
+    margin-top: 2rem;
+    background: #ffffff;
+    border: 1px solid #d6e6dc;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 10px 30px #17352a12;
+}
+
+.hp-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: .35rem;
+}
+
+.health-profile h2 {
+    margin: 0;
+    font-size: 1.35rem;
+    color: #167047;
+}
+
+.hp-subtitle {
+    margin: 0 0 1.25rem;
+    color: #5d6f66;
+    font-size: .95rem;
+    max-width: 60ch;
+}
+
+/* Status banner (success / error / info) */
+.hp-status {
+    min-height: 1.25rem;
+    margin-bottom: 1rem;
+    font-size: .92rem;
+    font-weight: 600;
+}
+
+.hp-status:empty {
+    margin-bottom: 0;
+}
+
+.hp-status.is-success {
+    color: #167047;
+}
+
+.hp-status.is-error {
+    color: #b52a37;
+}
+
+.hp-status.is-loading {
+    color: #4a5b52;
+}
+
+/* Form layout */
+.hp-form {
+    display: block;
+}
+
+.hp-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.hp-field-wide {
+    grid-column: 1 / -1;
+}
+
+.hp-field label {
+    font-weight: 600;
+    color: #17352a;
+    margin-bottom: .3rem;
+}
+
+.hp-field input,
+.hp-field select,
+.hp-field textarea {
+    width: 100%;
+    padding: .65rem .75rem;
+    border: 1px solid #b6c9bd;
+    border-radius: .5rem;
+    font: inherit;
+    color: #17352a;
+    background: #ffffff;
+}
+
+.hp-field textarea {
+    resize: vertical;
+}
+
+.hp-field input:focus,
+.hp-field select:focus,
+.hp-field textarea:focus {
+    outline: none;
+    border-color: #167047;
+    box-shadow: 0 0 0 3px #1670471f;
+}
+
+/* Actions + buttons */
+.hp-actions {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    margin-top: 1.25rem;
+}
+
+.hp-btn {
+    border: 0;
+    border-radius: .5rem;
+    padding: .7rem 1.15rem;
+    background: #167047;
+    color: #ffffff;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform .15s ease, box-shadow .15s ease, opacity .15s ease;
+}
+
+.hp-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px #16704733;
+}
+
+.hp-btn:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.hp-btn-ghost {
+    background: #eef5f0;
+    color: #167047;
+    padding: .45rem .8rem;
+    font-size: .85rem;
+    font-weight: 600;
+}
+
+.hp-btn-ghost:hover {
+    box-shadow: none;
+    background: #e1eee6;
+}
+
+/* Decision-support disclaimer */
+.hp-disclaimer {
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px dashed #d6e6dc;
+    font-size: .82rem;
+    color: #7b8a81;
+    line-height: 1.5;
+}
+
+/* Responsive: single column on small screens */
+@media (max-width: 640px) {
+    .hp-grid {
+        grid-template-columns: 1fr;
+    }
+}

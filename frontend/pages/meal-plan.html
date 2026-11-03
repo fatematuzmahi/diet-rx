@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal Plan | DietRx</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/meal-plan.css">
+    <script>
+        if (!(localStorage.getItem("access_token") || localStorage.getItem("session_token"))) {
+            window.location.replace("login.html");
+        }
+    </script>
+    <link rel="stylesheet" href="../css/nav.css">
+</head>
+<body>
+    <header class="site-header app-header">
+        <a class="brand brand-logo" href="dashboard.html" aria-label="DietRx dashboard">
+            <img src="../assets/images/dietrx-logo.png" alt="DietRx" onerror="this.hidden=true; this.nextElementSibling.hidden=false;">
+            <span hidden>DietRx</span>
+        </a>
+        <nav class="app-nav" aria-label="Main menu">
+            <a href="dashboard.html">Dashboard</a>
+            <details class="nav-group is-active">
+                <summary>My plan</summary>
+                <div class="nav-menu">
+                    <a href="diet_plan.html">Diet plan</a>
+                    <a href="meal-plan.html" aria-current="page">Meal plan</a>
+                    <a href="drift.html">Today's balance</a>
+                    <a href="dish_dna.html">Dish DNA</a>
+                </div>
+            </details>
+            <details class="nav-group">
+                <summary>Tracking</summary>
+                <div class="nav-menu">
+                    <a href="daily_log.html">Daily log</a>
+                    <a href="progress.html">Progress</a>
+                    <a href="notifications.html">Reminders</a>
+                </div>
+            </details>
+            <details class="nav-group">
+                <summary>Food &amp; budget</summary>
+                <div class="nav-menu">
+                    <a href="grocery.html">Grocery list</a>
+                    <a href="prices.html">Budget &amp; prices</a>
+                    <a href="budget.html">Cost estimate</a>
+                    <a href="swaps.html">Smart swaps</a>
+                </div>
+            </details>
+            <details class="nav-group">
+                <summary>Health</summary>
+                <div class="nav-menu">
+                    <a href="prescriptions.html">Prescriptions</a>
+                    <a href="safety_checker.html">Safety checker</a>
+                    <a href="sharing.html">Share with doctor</a>
+                </div>
+            </details>
+            <a href="#" id="logoutBtn" class="nav-logout" data-nav-logout>Logout</a>
+        </nav>
+    </header>
+
+    <main class="page mp-page">
+        <!-- Hero -->
+        <section class="mp-hero">
+            <div class="mp-hero-text">
+                <p class="mp-eyebrow" id="mp-date">Today</p>
+                <h1>Today's meal plan</h1>
+                <p class="mp-sub" id="mp-sub">Your meals for today, straight from your personalized plan.</p>
+                <div class="mp-badges" id="mp-badges"></div>
+                <div class="mp-hero-actions">
+                    <button type="button" class="mp-btn mp-btn-light" id="mp-accept" hidden>✅ Accept this plan</button>
+                    <a class="mp-btn mp-btn-ghost" href="diet_plan.html">📅 Full 7-day plan</a>
+                </div>
+            </div>
+            <div class="mp-progress" aria-label="Calories eaten today">
+                <div class="mp-ring" id="mp-ring">
+                    <div class="mp-ring-text">
+                        <strong id="mp-eaten">0</strong>
+                        <span>of <b id="mp-target">—</b> kcal</span>
+                    </div>
+                </div>
+                <p id="mp-meals-done">0 of 0 meals eaten</p>
+            </div>
+        </section>
+
+        <p class="mp-status" id="mp-status" role="status" aria-live="polite"></p>
+
+        <!-- Notices -->
+        <section class="mp-notice is-review" id="mp-review" hidden>
+            <span aria-hidden="true">⚠️</span>
+            <div>
+                <strong>Needs professional review</strong>
+                <p>Some rules in this plan conflict. A doctor or nutritionist must check it before you accept it.</p>
+            </div>
+        </section>
+        <section class="mp-notice" id="mp-older-accepted" hidden>
+            <span aria-hidden="true">ℹ️</span>
+            <div>
+                <strong>You have a newer plan</strong>
+                <p id="mp-older-text"></p>
+            </div>
+        </section>
+
+        <!-- Empty -->
+        <section class="mp-card mp-empty" id="mp-empty" hidden>
+            <span aria-hidden="true">🍽️</span>
+            <strong>No meal plan yet</strong>
+            <p>Create your personalized plan first. It uses your allergies, food preference, conditions, goals and budget.</p>
+            <a class="mp-btn mp-btn-primary" href="diet_plan.html">✨ Create my plan</a>
+        </section>
+
+        <div class="mp-grid" id="mp-content" hidden>
+            <!-- Today's meals -->
+            <section class="mp-card">
+                <div class="mp-card-head">
+                    <h2>Today's meals</h2>
+                    <span class="mp-pill" id="mp-day-pill">Day 1</span>
+                </div>
+                <div class="mp-meals" id="mp-meals"></div>
+            </section>
+
+            <aside class="mp-side">
+                <!-- Macros -->
+                <section class="mp-card">
+                    <div class="mp-card-head"><h2>Today's nutrition</h2></div>
+                    <div class="mp-macros" id="mp-macros"></div>
+                </section>
+
+                <!-- Rules -->
+                <section class="mp-card">
+                    <div class="mp-card-head"><h2>Your plan follows</h2></div>
+                    <div class="mp-rules" id="mp-rules"></div>
+                </section>
+
+                <!-- Tomorrow -->
+                <section class="mp-card">
+                    <div class="mp-card-head">
+                        <h2>Tomorrow</h2>
+                        <span class="mp-pill is-soft" id="mp-tomorrow-pill">Day 2</span>
+                    </div>
+                    <ul class="mp-tomorrow" id="mp-tomorrow"></ul>
+                </section>
+            </aside>
+        </div>
+
+        <p class="mp-disclaimer">DietRx is a decision-support system and does not replace professional medical advice. Final clinical decisions remain with qualified healthcare professionals.</p>
+    </main>
+
+    <div class="mp-toast" id="mp-toast" role="status" aria-live="polite" hidden></div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/meal-plan.js"></script>
+    <script src="../js/nav.js"></script>
+</body>
+</html>

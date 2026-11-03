@@ -1,1 +1,214 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Diet Plan | DietRx</title><link rel="stylesheet" href="../css/style.css"></head><body><main class="page"><a class="brand" href="dashboard.html">DietRx</a><h1>Your diet plan</h1><p>Your personalized meal plan will appear here.</p></main></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diet Plan | DietRx</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/plan.css">
+    <script>
+        // Page protection: no token, no plan page.
+        if (!(localStorage.getItem("access_token") || localStorage.getItem("session_token"))) {
+            window.location.replace("login.html");
+        }
+    </script>
+    <link rel="stylesheet" href="../css/nav.css">
+</head>
+<body>
+    <header class="site-header app-header">
+        <a class="brand brand-logo" href="dashboard.html" aria-label="DietRx dashboard">
+            <img src="../assets/images/dietrx-logo.png" alt="DietRx" onerror="this.hidden=true; this.nextElementSibling.hidden=false;">
+            <span hidden>DietRx</span>
+        </a>
+        <nav class="app-nav" aria-label="Main menu">
+            <a href="dashboard.html">Dashboard</a>
+            <details class="nav-group is-active">
+                <summary>My plan</summary>
+                <div class="nav-menu">
+                    <a href="diet_plan.html" aria-current="page">Diet plan</a>
+                    <a href="meal-plan.html">Meal plan</a>
+                    <a href="drift.html">Today's balance</a>
+                    <a href="dish_dna.html">Dish DNA</a>
+                </div>
+            </details>
+            <details class="nav-group">
+                <summary>Tracking</summary>
+                <div class="nav-menu">
+                    <a href="daily_log.html">Daily log</a>
+                    <a href="progress.html">Progress</a>
+                    <a href="notifications.html">Reminders</a>
+                </div>
+            </details>
+            <details class="nav-group">
+                <summary>Food &amp; budget</summary>
+                <div class="nav-menu">
+                    <a href="grocery.html">Grocery list</a>
+                    <a href="prices.html">Budget &amp; prices</a>
+                    <a href="budget.html">Cost estimate</a>
+                    <a href="swaps.html">Smart swaps</a>
+                </div>
+            </details>
+            <details class="nav-group">
+                <summary>Health</summary>
+                <div class="nav-menu">
+                    <a href="prescriptions.html">Prescriptions</a>
+                    <a href="safety_checker.html">Safety checker</a>
+                    <a href="sharing.html">Share with doctor</a>
+                </div>
+            </details>
+            <a href="#" id="logoutBtn" class="nav-logout" data-nav-logout>Logout</a>
+        </nav>
+    </header>
+
+    <main class="page pl-page">
+        <!-- Hero -->
+        <section class="pl-hero">
+            <div class="pl-hero-text">
+                <p class="pl-eyebrow" id="pl-eyebrow">Personalized plan</p>
+                <h1>Your diet &amp; activity plan</h1>
+                <p class="pl-sub">Built from your health profile, prescriptions, goals and budget. Regenerate it any time your goals or health change.</p>
+                <div class="pl-chips" id="pl-restrictions"></div>
+                <div class="pl-hero-actions">
+                    <button type="button" class="pl-btn pl-btn-light" id="plan-generate">✨ Generate new plan</button>
+                    <button type="button" class="pl-btn pl-btn-ghost" id="pl-toggle-options" aria-expanded="false" aria-controls="pl-options">⚙️ Customize</button>
+                    <button type="button" class="pl-btn pl-btn-ghost" id="plan-history">🕘 History</button>
+                </div>
+            </div>
+            <div class="pl-ring-wrap">
+                <div class="pl-ring" id="pl-ring" aria-label="Daily calorie target and where the energy comes from">
+                    <div class="pl-ring-text">
+                        <strong id="pl-kcal">—</strong>
+                        <span>kcal / day</span>
+                    </div>
+                </div>
+                <div class="pl-ring-legend" id="pl-ring-legend"></div>
+            </div>
+        </section>
+
+        <!-- Status -->
+        <p class="pl-status" id="plan-status" role="status" aria-live="polite"></p>
+
+        <!-- Options (collapsible) -->
+        <section class="pl-card pl-options" id="pl-options" hidden>
+            <div class="pl-card-head">
+                <h2>Customize this plan</h2>
+                <span class="pl-hint">Leave a field empty to use your health profile.</span>
+            </div>
+            <div class="pl-form">
+                <label class="pl-field">
+                    <span>Number of days</span>
+                    <input id="plan-days" type="number" min="1" max="31" step="1" value="7">
+                </label>
+                <label class="pl-field pl-wide">
+                    <span>Goals</span>
+                    <input id="plan-goals" type="text" maxlength="255" placeholder="e.g. Lose weight, build muscle">
+                </label>
+                <label class="pl-field">
+                    <span>Activity level</span>
+                    <select id="plan-activity-level">
+                        <option value="">Use my profile</option>
+                        <option value="Sedentary">Sedentary</option>
+                        <option value="Light">Light</option>
+                        <option value="Moderate">Moderate</option>
+                        <option value="Active">Active</option>
+                        <option value="Very active">Very active</option>
+                    </select>
+                </label>
+                <label class="pl-field">
+                    <span>Food preference</span>
+                    <select id="plan-food-preference">
+                        <option value="">Use my profile</option>
+                        <option value="No restriction">No restriction</option>
+                        <option value="Vegetarian">Vegetarian</option>
+                        <option value="Vegan">Vegan</option>
+                        <option value="Gluten-free">Gluten-free</option>
+                        <option value="Dairy-free">Dairy-free</option>
+                    </select>
+                </label>
+                <label class="pl-field">
+                    <span>Monthly budget (BDT)</span>
+                    <input id="plan-budget" type="number" min="1" step="1" placeholder="e.g. 3000">
+                </label>
+            </div>
+            <div class="pl-form-actions">
+                <button type="button" class="pl-btn pl-btn-primary" id="plan-regenerate">✨ Regenerate with these settings</button>
+            </div>
+        </section>
+
+        <!-- Empty state -->
+        <section class="pl-card pl-empty" id="pl-empty" hidden>
+            <span aria-hidden="true">🥗</span>
+            <strong>No plan yet</strong>
+            <p>Generate your first personalized plan. It uses your allergies, food preference, conditions and goals.</p>
+            <button type="button" class="pl-btn pl-btn-primary" id="pl-empty-generate">✨ Generate my plan</button>
+        </section>
+
+        <!-- Result -->
+        <div id="plan-result" hidden>
+            <!-- Review warning -->
+            <section class="pl-review" id="plan-review" hidden>
+                <span class="pl-review-icon" aria-hidden="true">⚠️</span>
+                <div>
+                    <strong>Needs professional review</strong>
+                    <p id="plan-review-text"></p>
+                </div>
+            </section>
+
+            <!-- Conflicts -->
+            <section class="pl-card" id="pl-conflicts-card" hidden>
+                <div class="pl-card-head">
+                    <h2>How your rules were combined</h2>
+                    <span class="pl-count" id="pl-conflict-count">0</span>
+                </div>
+                <div class="pl-conflicts" id="plan-conflicts"></div>
+            </section>
+
+            <!-- Meals -->
+            <section class="pl-card">
+                <div class="pl-card-head">
+                    <h2>Meal plan</h2>
+                    <span class="pl-meta" id="plan-meta"></span>
+                </div>
+                <div class="pl-tabs" id="pl-day-tabs" role="tablist" aria-label="Plan days"></div>
+                <div class="pl-day-summary" id="pl-day-summary"></div>
+                <div class="pl-meals" id="plan-meal-days"></div>
+            </section>
+
+            <div class="pl-grid">
+                <!-- Activities -->
+                <section class="pl-card">
+                    <div class="pl-card-head"><h2>Activity guidance</h2></div>
+                    <div class="pl-activities" id="plan-activities"></div>
+                    <div class="pl-cautions" id="pl-cautions"></div>
+                </section>
+
+                <!-- Notes -->
+                <section class="pl-card">
+                    <div class="pl-card-head"><h2>Why your plan looks like this</h2></div>
+                    <ul class="pl-notes" id="plan-notes"></ul>
+                    <h3 class="pl-sub-head">💰 Budget</h3>
+                    <ul class="pl-notes is-budget" id="plan-budget-notes"></ul>
+                </section>
+            </div>
+        </div>
+
+        <!-- History -->
+        <section class="pl-card" id="plan-history-section" hidden>
+            <div class="pl-card-head">
+                <h2>Plan history</h2>
+                <button type="button" class="pl-link-btn" id="pl-history-close">Close ✕</button>
+            </div>
+            <div class="pl-history" id="plan-history-list"></div>
+        </section>
+
+        <p class="pl-disclaimer" id="plan-disclaimer">DietRx is a decision-support system and does not replace professional medical advice. Final clinical decisions remain with qualified healthcare professionals.</p>
+        <p class="pl-disclaimer" id="plan-activity-caution"></p>
+    </main>
+
+    <div class="pl-toast" id="pl-toast" role="status" aria-live="polite" hidden></div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/plan.js"></script>
+    <script src="../js/nav.js"></script>
+</body>
+</html>

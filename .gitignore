@@ -11,3 +11,16 @@ instance/
 .DS_Store
 Thumbs.db
 node_modules/
+
+# Temporary AI-generated log files, test outputs, and draft files
+s48_*
+_pyflakes.txt
+_full_out.txt
+_fix_rowcount.py
+s48_pdf/
+
+# SCRUM-63: database backups contain personal health data - never commit
+backups/
+
+# Selenium failure screenshots can show personal data - never commit
+tests/frontend_tests/screenshots/

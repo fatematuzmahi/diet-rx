@@ -1,1 +1,165 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Login | DietRx</title><link rel="stylesheet" href="../css/style.css"></head><body><main class="auth-card"><a class="brand" href="../index.html">DietRx</a><h1>Welcome back</h1><form id="login-form"><label>Email<input name="email" type="email" required></label><label>Password<input name="password" type="password" required></label><button class="button" type="submit">Login</button><p id="form-message" aria-live="polite"></p></form><p>New here? <a href="register.html">Create an account</a></p></main><script src="../js/api.js"></script><script src="../js/auth.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | DietRx</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/login.css">
+</head>
+
+<body>
+
+    <main class="login-container">
+
+        <div class="logo-section">
+
+            <img
+    src="../assets/images/dietrx-logo.png"
+    alt="DietRx Logo"
+    class="dietrx-logo"
+>
+
+            <h1 class="page-title">
+                Welcome Back
+            </h1>
+
+            <p class="page-subtitle">
+                Continue your personalized prescription-based dietary journey.
+            </p>
+
+        </div>
+
+
+        <form id="login-form" autocomplete="off" data-no-autofill>
+
+            <div class="form-group">
+
+                <label for="email">
+                    Email
+                </label>
+
+                <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="Enter your email address"
+                    autocomplete="off"
+                    readonly
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <div class="password-wrapper">
+
+                    <input
+                        id="password"
+                        name="password"
+                        type="password"
+                        placeholder="Enter your password"
+                        autocomplete="off"
+                        readonly
+                        required
+                    >
+
+                    <span
+                        class="toggle-password"
+                        onclick="togglePassword('password', this)"
+                    >
+                        👁
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="forgot-row">
+                <a href="verify-email.html" id="verify-email-link">Verify email</a>
+                <a href="forgot-password.html">Forgot password?</a>
+            </div>
+
+
+            <p
+                id="form-message"
+                aria-live="polite"
+            ></p>
+
+
+            <button
+                type="submit"
+                class="login-button"
+            >
+                Login
+            </button>
+
+        </form>
+        <div class="other-logins">
+            <p class="other-logins-title"><span>Not a patient?</span></p>
+            <div class="other-logins-buttons">
+                <a class="role-button" href="doctor.html">Doctor / Nutritionist login</a>
+                <a class="role-button" href="admin.html">Admin login</a>
+            </div>
+        </div>
+
+
+        <p class="register-text">
+
+            New to DietRx?
+
+            <a href="register.html">
+                Create an account
+            </a>
+
+        </p>
+
+
+        <p class="medical-note">
+            Prescription-Based Dietary Optimization
+        </p>
+
+    </main>
+
+
+    <script>
+
+        function togglePassword(inputId, icon) {
+
+            const input =
+                document.getElementById(inputId);
+
+            if (input.type === "password") {
+
+                input.type = "text";
+                icon.textContent = "🙈";
+
+            } else {
+
+                input.type = "password";
+                icon.textContent = "👁";
+
+            }
+
+        }
+
+    </script>
+
+
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/no_autofill.js"></script>
+
+</body>
+
+</html>
